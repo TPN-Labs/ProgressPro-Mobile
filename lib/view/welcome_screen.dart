@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:progressp/config/constants.dart';
+import 'package:progressp/config/images.dart';
+import 'package:progressp/view/auth/signin_screen.dart';
+import 'package:progressp/view/auth/signup_screen.dart';
+import 'package:progressp/view/home/home_screen.dart';
+import 'package:progressp/widget/custom_button.dart';
+
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+
+  void init() async {
+    var storageAuthKey = GetStorage().read(StorageKeys.authKey);
+
+    print(GetStorage().read('authKey'));
+    print(storageAuthKey);
+    if (storageAuthKey != null) {
+      Get.offAll(
+        () => const HomeScreen(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      body: Container(
+        color: Theme.of(context).backgroundColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: MediaQuery.of(context).padding.top + 30),
+            Container(
+              height: 300,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    DefaultImages.welcomeImage,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              l10n.welcome,
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontSize: 34,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              l10n.welcome_headline,
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontSize: 16,
+                    height: 1.4,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: CustomButton(
+                title: l10n.welcome_login,
+                onTap: () {
+                  Get.to(
+                    () => const SignInScreen(),
+                    transition: Transition.rightToLeft,
+                  );
+                },
+              ),
+            ),
+            const Expanded(
+              child: SizedBox(
+                height: 40,
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Get.to(
+                  () => const SignUpScreen(),
+                  transition: Transition.rightToLeft,
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    l10n.welcome_no_account,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    l10n.welcome_register,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
+                  const SizedBox(height: 60),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
