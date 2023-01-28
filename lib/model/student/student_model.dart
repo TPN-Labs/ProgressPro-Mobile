@@ -32,4 +32,31 @@ class StudentModel {
       'knownFrom': knownFrom,
     };
   }
+
+  @override
+  String toString() {
+    return '{id: $id, fullName: $fullName}';
+  }
+}
+
+class StudentModelShort {
+  final String id;
+  final String fullName;
+
+  StudentModelShort({
+    required this.id,
+    required this.fullName,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'fullName': fullName,
+    };
+  }
+
+  @override
+  String toString() {
+    return '{id: $id, fullName: $fullName}';
+  }
 }

@@ -56,7 +56,9 @@ class Constants {
 class StorageKeys {
   static const String appThemeMode = 'appThemeMode';
   static const String authKey = 'authKey';
+  static const String allMeetings = 'allMeetings';
   static const String allStudents = 'allStudents';
+  static const String allSessions = 'allSessions';
 }
 
 enum APIMethods {

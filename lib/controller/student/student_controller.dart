@@ -18,20 +18,20 @@ class StudentController extends GetxController {
 }
 
 class APIStudentController {
-  List<StudentModel> getUserAllStudents() {
+  List<StudentModel> getAllStudents() {
     List storageStudents = GetStorage().read(StorageKeys.allStudents) ?? List.empty();
     return storageStudents.map((element) => StudentModel.fromJson(element)).toList();
   }
 
-  void syncStorageForHome(
+  void syncStorage(
     APIMethods method,
     String homeId, {
     String? name,
     String? currencyCode,
     String? ownerId,
   }) {
-    List<StudentModel> storageStudents = getUserAllStudents();
-    /*if (method == APIMethods.update) {
+    /*List<StudentModel> storageStudents = getUserAllStudents();
+    if (method == APIMethods.update) {
       int currentHomeIdx = storageStudents.indexWhere((home) => home.id == homeId);
       storageStudents[currentHomeIdx] = StudentModel(
         id: homeId,
@@ -61,10 +61,10 @@ class APIStudentController {
     );*/
   }
 
-  /*void userGetAll(BuildContext context) async {
+  void userGetAll() async {
     final authKey = GetStorage().read('authKey') ?? '';
     final response = await http.get(
-      Uri.parse('${Constants.apiEndpoint}/homes/my/all'),
+      Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
@@ -73,12 +73,12 @@ class APIStudentController {
     );
     var responseBody = json.decode(response.body);
     if (response.statusCode != 200) {
-      showErrorSnackBar(context, responseBody['message']);
+      print("eroare");
+      print(responseBody['message']);
     } else {
-      GetStorage().write(StorageKeys.userHomesOwned, responseBody['owned']);
-      GetStorage().write(StorageKeys.userHomesInvited, responseBody['invited']);
+      GetStorage().write(StorageKeys.allStudents, responseBody);
     }
-  }*/
+  }
 
   void userUpdate(
     BuildContext context,
@@ -108,7 +108,7 @@ class APIStudentController {
       showErrorSnackBar(context, responseBody['message']);
     } else {
       Navigator.of(context).pop();
-      syncStorageForHome(
+      syncStorage(
         APIMethods.update,
         id,
         name: name,
@@ -137,7 +137,7 @@ class APIStudentController {
     if (response.statusCode != 200) {
       showErrorSnackBar(context, responseBody['message']);
     } else {
-      syncStorageForHome(
+      syncStorage(
         APIMethods.delete,
         id,
       );
