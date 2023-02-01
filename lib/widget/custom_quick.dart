@@ -8,10 +8,10 @@ Widget quickAccessContainer(BuildContext context, String? title, Icon icon, Stri
     decoration: BoxDecoration(
       color: Theme.of(context).bottomAppBarColor,
       borderRadius: BorderRadius.circular(16),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
-          color: Theme.of(context).primaryColor,
-          blurRadius: 2,
+          color: Colors.black,
+          blurRadius: 5,
         ),
       ],
     ),

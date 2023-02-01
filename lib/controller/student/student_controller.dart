@@ -25,40 +25,44 @@ class APIStudentController {
 
   void syncStorage(
     APIMethods method,
-    String homeId, {
-    String? name,
-    String? currencyCode,
-    String? ownerId,
-  }) {
-    /*List<StudentModel> storageStudents = getUserAllStudents();
-    if (method == APIMethods.update) {
-      int currentHomeIdx = storageStudents.indexWhere((home) => home.id == homeId);
-      storageStudents[currentHomeIdx] = StudentModel(
-        id: homeId,
-        ownerId: storageStudents[currentHomeIdx].ownerId,
-        name: name!,
-        currencyCode: currencyCode!,
-        users: [],
-      );
-    } else if (method == APIMethods.delete) {
-      int currentHomeIdx = storageStudents.indexWhere((home) => home.id == homeId);
-      storageStudents.removeAt(currentHomeIdx);
-    } else if (method == APIMethods.create) {
-      StudentModel newHome = StudentModel(
-        id: homeId,
-        ownerId: ownerId!,
-        name: name!,
-        currencyCode: currencyCode!,
-        users: [],
-      );
-      storageStudents.add(newHome);
+    String studentId,
+    Map<String, dynamic> formInput,
+  ) {
+    List<StudentModel> storageStudents = getAllStudents();
+    switch (method) {
+      case APIMethods.create:
+        print(formInput);
+        StudentModel newStudent = StudentModel(
+          id: studentId,
+          fullName: formInput['fullName'],
+          gender: formInput['gender'],
+          height: formInput['height'],
+          knownFrom: formInput['knownFrom'],
+        );
+        storageStudents.add(newStudent);
+        break;
+      case APIMethods.update:
+        int currentStudentIdx = storageStudents.indexWhere((student) => student.id == studentId);
+        storageStudents[currentStudentIdx] = StudentModel(
+          id: studentId,
+          fullName: formInput['fullname'],
+          gender: formInput['gender'],
+          height: formInput['height'],
+          knownFrom: formInput['knownFrom'],
+        );
+        break;
+      case APIMethods.delete:
+        int currentStudentIdx = storageStudents.indexWhere((student) => student.id == studentId);
+        storageStudents.removeAt(currentStudentIdx);
+        break;
+      default:
+        break;
     }
-
-    GetStorage().remove(StorageKeys.userHomesOwned);
+    GetStorage().remove(StorageKeys.allStudents);
     GetStorage().write(
-      StorageKeys.userHomesOwned,
+      StorageKeys.allStudents,
       json.decode(json.encode(storageStudents)),
-    );*/
+    );
   }
 
   void userGetAll() async {
@@ -82,26 +86,29 @@ class APIStudentController {
 
   void userUpdate(
     BuildContext context,
-    String id,
-    String name,
-    String currencyCode,
+    String studentId,
+    String fullName,
+    int gender,
+    double height,
+    String knownFrom,
     Function refreshList,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'id': studentId,
+      'fullName': fullName,
+      'gender': gender,
+      'height': height,
+      'knownFrom': knownFrom,
+    };
     final response = await http.put(
-      Uri.parse('${Constants.apiEndpoint}/homes/my'),
+      Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
         'Authorization': 'Bearer $authKey',
       },
-      body: jsonEncode(
-        <String, String>{
-          'id': id,
-          'name': name,
-          'currencyCode': currencyCode,
-        },
-      ),
+      body: jsonEncode(formInput),
     );
     var responseBody = json.decode(response.body);
     if (response.statusCode != 201) {
@@ -110,9 +117,8 @@ class APIStudentController {
       Navigator.of(context).pop();
       syncStorage(
         APIMethods.update,
-        id,
-        name: name,
-        currencyCode: currencyCode,
+        studentId,
+        formInput,
       );
       refreshList();
       showSuccessSnackBar(context, 'House updated successfully');
@@ -125,8 +131,11 @@ class APIStudentController {
     Function refreshList,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'id': id,
+    };
     final response = await http.delete(
-      Uri.parse('${Constants.apiEndpoint}/homes/my/$id'),
+      Uri.parse('${Constants.apiEndpoint}/students/my/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
@@ -140,6 +149,7 @@ class APIStudentController {
       syncStorage(
         APIMethods.delete,
         id,
+        formInput,
       );
       refreshList();
       showSuccessSnackBar(context, 'House deleted successfully');
@@ -155,6 +165,12 @@ class APIStudentController {
     Function refreshList,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'fullName': fullName,
+      'gender': gender,
+      'height': height,
+      'knownFrom': knownFrom,
+    };
     final response = await http.post(
       Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
@@ -162,28 +178,19 @@ class APIStudentController {
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
         'Authorization': 'Bearer $authKey',
       },
-      body: jsonEncode(
-        <String, dynamic>{
-          'fullName': fullName,
-          'gender': gender,
-          'height': height,
-          'knownFrom': knownFrom,
-        },
-      ),
+      body: jsonEncode(formInput),
     );
     var responseBody = json.decode(response.body);
     if (response.statusCode != 200) {
       showErrorSnackBar(context, responseBody['message']);
     } else {
       Navigator.of(context).pop();
-      /*syncStorageForHome(
+      syncStorage(
         APIMethods.create,
         responseBody['id'],
-        name: name,
-        currencyCode: currencyCode,
-        ownerId: authKey,
+        formInput,
       );
-      refreshList();*/
+      refreshList();
       showSuccessSnackBar(context, 'Student created successfully');
     }
   }

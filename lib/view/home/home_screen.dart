@@ -9,9 +9,10 @@ import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
 import 'package:progressp/controller/student/student_controller.dart';
+import 'package:progressp/controller/user/auth_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
-import 'package:progressp/view/student/add_student_screen.dart';
+import 'package:progressp/view/student/all_students_screen.dart';
 import 'package:progressp/widget/custom_quick.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final APIStudentController _apiStudentController = Get.put(APIStudentController());
   final APIMeetingController _apiMeetingController = Get.put(APIMeetingController());
+  final APIAuthController _apiAuthController = Get.put(APIAuthController());
 
   List<StudentModel>? _allStudents = null;
   Map<String, List<MeetingModel>> _allMeetings = {};
@@ -53,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String getLatestMeeting(String studentId) {
     List<MeetingModel> studentMeetings = _allMeetings[studentId]!;
     studentMeetings.sortBy((element) => element.startAt);
-    final DateFormat formatter = DateFormat('MMMMd', Platform.localeName);
+    final DateFormat formatter = DateFormat('yMMMMd', Platform.localeName);
     return formatter.format(studentMeetings.last.startAt);
   }
 
@@ -74,8 +76,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   SizedBox(height: MediaQuery.of(context).padding.top + 15),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${l10n.home_title},',
+                            style: Theme.of(context).textTheme.headline1!.copyWith(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            _apiAuthController.getUsernameFromToken(),
+                            style: Theme.of(context).textTheme.headline2!.copyWith(
+                              fontSize: 32,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                       InkWell(
                         onTap: () {},
                         child: Container(
@@ -105,70 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    l10n.home_title,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontSize: 24,
-                          color: Colors.white,
-                        ),
-                  ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 30),
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      Container(
-                        height: 48,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white.withOpacity(0.1),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: TextFormField(
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hoverColor: Colors.white,
-                            ),
-                            cursorColor: Colors.white,
-                          ),
-                        ),
-                      ),
-                      CircleAvatar(
-                        radius: 24,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.search,
-                          color: HexColor(AppTheme.primaryColorString),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20)
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20),
-                      Text(
-                        l10n.home_quick,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontSize: 20,
-                            ),
-                      ),
-                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -197,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           InkWell(
                             onTap: () {
                               Get.to(
-                                () => const AddStudentScreen(),
+                                    () => const AllStudentsScreen(),
                                 transition: Transition.rightToLeft,
                                 duration: const Duration(milliseconds: Constants.transitionDuration),
                               );
@@ -215,20 +177,35 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         ],
                       ),
-                      const SizedBox(height: 30),
-                      InkWell(
-                        onTap: () {},
-                        child: Text(
-                          l10n.home_latest,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 20,
-                              ),
+                    ],
+                  ),
+                  const SizedBox(height: 30)
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        l10n.home_latest,
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontSize: 20,
                         ),
                       ),
                       const SizedBox(height: 20),
                       Column(
                         children: [
                           if (_allStudents != null) ...[
+                            for(var q = 1; q <= 10; q++)
                             for (var i = 0; i < _allMeetings.keys.length; i++)
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 25),
