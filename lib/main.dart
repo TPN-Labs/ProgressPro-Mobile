@@ -13,7 +13,6 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/view/home/home_screen.dart';
 import 'package:progressp/view/welcome_screen.dart';
 
-
 void main() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
