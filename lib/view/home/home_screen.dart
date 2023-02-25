@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: Get.width,
             color: HexColor(AppTheme.primaryColorString),
             child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: Constants.defaultScreenPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.zero,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: Constants.defaultScreenPadding,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 20, right: 20),
+                                    padding: Constants.defaultScreenPadding,
                                     child: Row(
                                       children: [
                                         Column(

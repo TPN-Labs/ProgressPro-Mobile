@@ -2,6 +2,7 @@ class StudentModel {
   final String id;
   final String fullName;
   final int gender;
+  final int avatar;
   final double height;
   final String knownFrom;
 
@@ -9,6 +10,7 @@ class StudentModel {
     required this.id,
     required this.fullName,
     required this.gender,
+    required this.avatar,
     required this.height,
     required this.knownFrom,
   });
@@ -18,6 +20,7 @@ class StudentModel {
       id: parsedJson['id'].toString(),
       fullName: parsedJson['fullName'].toString(),
       gender: parsedJson['gender'],
+      avatar: parsedJson['avatar'],
       height: parsedJson['height'],
       knownFrom: parsedJson['meetOn'].toString(),
     );
@@ -28,6 +31,7 @@ class StudentModel {
       'id': id,
       'fullName': fullName,
       'gender': gender,
+      'avatar': avatar,
       'height': height,
       'knownFrom': knownFrom,
     };

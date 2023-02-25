@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/images.dart';
 import 'package:progressp/view/auth/signin_screen.dart';
 import 'package:progressp/view/auth/signup_screen.dart';
@@ -54,9 +55,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             const SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: Constants.defaultScreenPadding,
               child: CustomButton(
                 title: l10n.welcome_login,
+                type: ButtonChildType.text,
                 onTap: () {
                   Get.to(
                     () => const SignInScreen(),

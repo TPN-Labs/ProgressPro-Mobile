@@ -11,7 +11,8 @@ class AddStudentScreen extends StatefulWidget {
   final BuildContext parentContext;
   final Function refreshFunction;
 
-  const AddStudentScreen(this.parentContext, this.refreshFunction, {Key? key}) : super(key: key);
+  const AddStudentScreen(this.parentContext, this.refreshFunction, {Key? key})
+      : super(key: key);
 
   @override
   State<AddStudentScreen> createState() => _AddStudentScreenState();
@@ -22,6 +23,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   final _newStudentController = Get.put(StudentController());
 
   int _studentGender = 0;
+  int _studentAvatar = 0;
   String _studentMeetOn = DateTime.now().toString();
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -63,15 +65,16 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               child: ListView(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    padding: Constants.defaultScreenPadding,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Student fullname',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: 18,
+                                  ),
                         ),
                         const SizedBox(height: 18),
                         CustomTextFormField(
@@ -84,15 +87,17 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             ),
                           ),
                           hintText: 'Full name',
-                          textEditingController: _newStudentController.fullNameController.value,
+                          textEditingController:
+                              _newStudentController.fullNameController.value,
                           capitalization: TextCapitalization.none,
                         ),
                         const SizedBox(height: 18),
                         Text(
                           'Student height',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: 18,
+                                  ),
                         ),
                         const SizedBox(height: 18),
                         CustomTextFormField(
@@ -109,15 +114,17 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             decimal: true,
                           ),
                           hintText: 'Student height (in meters)',
-                          textEditingController: _newStudentController.heightController.value,
+                          textEditingController:
+                              _newStudentController.heightController.value,
                           capitalization: TextCapitalization.none,
                         ),
                         const SizedBox(height: 18),
                         Text(
                           'Gender',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: 18,
+                                  ),
                         ),
                         const SizedBox(height: 18),
                         SizedBox(
@@ -135,7 +142,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   'Male',
                                   Icon(
                                     Icons.male,
-                                    color: _studentGender == 1 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
+                                    color: _studentGender == 1
+                                        ? Theme.of(context).bottomAppBarColor
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .color,
                                     size: 36,
                                   ),
                                   _studentGender == 1,
@@ -153,7 +165,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   'Female',
                                   Icon(
                                     Icons.female,
-                                    color: _studentGender == 2 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
+                                    color: _studentGender == 2
+                                        ? Theme.of(context).bottomAppBarColor
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .color,
                                     size: 36,
                                   ),
                                   _studentGender == 2,
@@ -171,7 +188,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   'Other',
                                   Icon(
                                     Icons.transgender,
-                                    color: _studentGender == 3 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
+                                    color: _studentGender == 3
+                                        ? Theme.of(context).bottomAppBarColor
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .color,
                                     size: 36,
                                   ),
                                   _studentGender == 3,
@@ -182,10 +204,50 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         ),
                         const SizedBox(height: 18),
                         Text(
+                          'Avatar',
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: 18,
+                                  ),
+                        ),
+                        const SizedBox(height: 18),
+                        SizedBox(
+                          width: Get.width,
+                          height: 100,
+                          child: Scrollbar(
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                Row(
+                                  children: [
+                                    for (var i = 0; i < 15; i++) ...[
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            _studentAvatar = i;
+                                          });
+                                        },
+                                        child: avatarContainer(
+                                          context,
+                                          i,
+                                          _studentAvatar == i,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                    ]
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        Text(
                           'First meet on',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: 18,
+                                  ),
                         ),
                         const SizedBox(height: 18),
                         Container(
@@ -203,7 +265,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             padding: const EdgeInsets.only(top: 5.0),
                             child: SfDateRangePicker(
                               onSelectionChanged: _onSelectionChanged,
-                              selectionMode: DateRangePickerSelectionMode.single,
+                              selectionMode:
+                                  DateRangePickerSelectionMode.single,
                             ),
                           ),
                         ),
@@ -218,13 +281,17 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: CustomButton(
                 title: 'Done',
+                type: ButtonChildType.text,
                 onTap: () {
                   print(_newStudentController.heightController.value.text);
                   _apiStudentController.userCreate(
                     context,
                     _newStudentController.fullNameController.value.text,
                     _studentGender,
-                    double.parse(_newStudentController.heightController.value.text),
+                    double.parse(
+                      _newStudentController.heightController.value.text,
+                    ),
+                    _studentAvatar,
                     _studentMeetOn,
                     widget.refreshFunction,
                   );
@@ -238,16 +305,25 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   }
 }
 
-Widget genderContainer(BuildContext context, String? title, Icon icon, bool isSelected) {
+Widget genderContainer(
+  BuildContext context,
+  String? title,
+  Icon icon,
+  bool isSelected,
+) {
   return Container(
     width: (Get.width - 80) / 3,
     height: 100,
     decoration: BoxDecoration(
-      color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
+      color: isSelected != false
+          ? HexColor(AppTheme.primaryColorString)
+          : Theme.of(context).bottomAppBarColor,
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
+          color: isSelected != false
+              ? HexColor(AppTheme.primaryColorString)
+              : Theme.of(context).bottomAppBarColor,
           blurRadius: 2,
         ),
       ],
@@ -265,9 +341,58 @@ Widget genderContainer(BuildContext context, String? title, Icon icon, bool isSe
           title!,
           style: Theme.of(context).textTheme.caption!.copyWith(
                 fontSize: 14,
-                color: isSelected != false ? Theme.of(context).bottomAppBarColor : Theme.of(context).shadowColor,
+                color: isSelected != false
+                    ? Theme.of(context).bottomAppBarColor
+                    : Theme.of(context).shadowColor,
                 fontWeight: FontWeight.w600,
               ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget avatarContainer(
+  BuildContext context,
+  int avatarId,
+  bool isSelected,
+) {
+  return Container(
+    width: (Get.width - 80) / 3,
+    height: 100,
+    decoration: BoxDecoration(
+      color: isSelected != false
+          ? HexColor(AppTheme.primaryColorString).withOpacity(0.5)
+          : Theme.of(context).bottomAppBarColor,
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+          color: isSelected != false
+              ? HexColor(AppTheme.primaryColorString).withOpacity(0.5)
+              : Theme.of(context).bottomAppBarColor,
+          blurRadius: 2,
+        ),
+      ],
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 85,
+              width: 85,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/avatars/avatar_${avatarId % 15}.png',
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     ),

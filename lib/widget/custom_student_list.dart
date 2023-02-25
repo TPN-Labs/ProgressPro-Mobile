@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Widget studentList(
+  BuildContext context,
   String title,
+  int avatarId,
+  int i,
 ) {
   return ListTile(
-    leading: Icon(
-      Icons.person,
-      color: Theme.of(Get.context!).textTheme.headline6!.color!,
-      size: 48,
+    trailing: Container(
+      height: 60,
+      width: 60,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            'assets/avatars/avatar_${i % 15}.png',
+          ),
+        ),
+      ),
     ),
     title: Text(
       title,
@@ -17,34 +26,12 @@ Widget studentList(
             fontWeight: FontWeight.w700,
           ),
     ),
-    trailing: Wrap(
-      children: [
-        Container(
-          height: 48,
-          width: 48,
-          decoration: const BoxDecoration(
-            color: Colors.indigoAccent,
+    subtitle: Text(
+      'Ultima vizita: ',
+      style: Theme.of(Get.context!).textTheme.bodySmall!.copyWith(
+            fontSize: 18,
+            fontWeight: FontWeight.w300,
           ),
-          child: const Icon(
-            Icons.edit,
-            color: Colors.white,
-            size: 32,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Container(
-          height: 48,
-          width: 48,
-          decoration: const BoxDecoration(
-            color: Colors.red,
-          ),
-          child: const Icon(
-            Icons.delete_outline,
-            color: Colors.white,
-            size: 32,
-          ),
-        ),
-      ],
-    )
+    ),
   );
 }

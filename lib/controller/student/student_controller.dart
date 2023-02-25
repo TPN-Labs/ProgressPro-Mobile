@@ -37,6 +37,7 @@ class APIStudentController {
           fullName: formInput['fullName'],
           gender: formInput['gender'],
           height: formInput['height'],
+          avatar: formInput['avatar'],
           knownFrom: formInput['knownFrom'],
         );
         storageStudents.add(newStudent);
@@ -47,6 +48,7 @@ class APIStudentController {
           id: studentId,
           fullName: formInput['fullname'],
           gender: formInput['gender'],
+          avatar: formInput['avatar'],
           height: formInput['height'],
           knownFrom: formInput['knownFrom'],
         );
@@ -161,6 +163,7 @@ class APIStudentController {
     String fullName,
     int gender,
     double height,
+    int avatarId,
     String knownFrom,
     Function refreshList,
   ) async {
@@ -169,6 +172,7 @@ class APIStudentController {
       'fullName': fullName,
       'gender': gender,
       'height': height,
+      'avatar': avatarId,
       'knownFrom': knownFrom,
     };
     final response = await http.post(
