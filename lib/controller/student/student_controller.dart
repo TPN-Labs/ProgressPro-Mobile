@@ -31,26 +31,35 @@ class APIStudentController {
     List<StudentModel> storageStudents = getAllStudents();
     switch (method) {
       case APIMethods.create:
-        print(formInput);
+        List<String> knownFromArr = formInput['knownFrom'].split('-');
         StudentModel newStudent = StudentModel(
           id: studentId,
           fullName: formInput['fullName'],
           gender: formInput['gender'],
           height: formInput['height'],
           avatar: formInput['avatar'],
-          knownFrom: formInput['knownFrom'],
+          knownFrom: DateTime(
+            int.parse(knownFromArr[0]),
+            int.parse(knownFromArr[1]),
+            int.parse(knownFromArr[2]),
+          ),
         );
         storageStudents.add(newStudent);
         break;
       case APIMethods.update:
         int currentStudentIdx = storageStudents.indexWhere((student) => student.id == studentId);
+        List<String> knownFromArr = formInput['knownFrom'].split('-');
         storageStudents[currentStudentIdx] = StudentModel(
           id: studentId,
-          fullName: formInput['fullname'],
+          fullName: formInput['fullName'],
           gender: formInput['gender'],
           avatar: formInput['avatar'],
           height: formInput['height'],
-          knownFrom: formInput['knownFrom'],
+          knownFrom: DateTime(
+            int.parse(knownFromArr[0]),
+            int.parse(knownFromArr[1]),
+            int.parse(knownFromArr[2]),
+          ),
         );
         break;
       case APIMethods.delete:
@@ -92,8 +101,10 @@ class APIStudentController {
     String fullName,
     int gender,
     double height,
+    int avatarId,
     String knownFrom,
     Function refreshList,
+    Function refreshDetails,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
     final formInput = <String, dynamic>{
@@ -101,6 +112,7 @@ class APIStudentController {
       'fullName': fullName,
       'gender': gender,
       'height': height,
+      'avatar': avatarId,
       'knownFrom': knownFrom,
     };
     final response = await http.put(
@@ -113,7 +125,7 @@ class APIStudentController {
       body: jsonEncode(formInput),
     );
     var responseBody = json.decode(response.body);
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       showErrorSnackBar(context, responseBody['message']);
     } else {
       Navigator.of(context).pop();
@@ -123,7 +135,8 @@ class APIStudentController {
         formInput,
       );
       refreshList();
-      showSuccessSnackBar(context, 'House updated successfully');
+      refreshDetails();
+      showSuccessSnackBar(context, 'Student updated successfully');
     }
   }
 
@@ -137,12 +150,13 @@ class APIStudentController {
       'id': id,
     };
     final response = await http.delete(
-      Uri.parse('${Constants.apiEndpoint}/students/my/$id'),
+      Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
         'Authorization': 'Bearer $authKey',
       },
+      body: jsonEncode(formInput),
     );
     var responseBody = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -154,7 +168,7 @@ class APIStudentController {
         formInput,
       );
       refreshList();
-      showSuccessSnackBar(context, 'House deleted successfully');
+      showSuccessSnackBar(context, 'Student deleted successfully');
     }
   }
 
