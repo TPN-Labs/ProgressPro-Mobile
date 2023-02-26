@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:progressp/controller/student/student_controller.dart';
+import 'package:progressp/model/student/student_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
@@ -9,7 +9,18 @@ import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_textformfield.dart';
 
 class AddStudentScreen extends StatefulWidget {
-  const AddStudentScreen({Key? key}) : super(key: key);
+  final BuildContext parentContext;
+  final StudentModel? studentData;
+  final Function mainRefreshFunction;
+  final Function? secondRefreshFunction;
+
+  const AddStudentScreen(
+    this.parentContext,
+    this.studentData,
+    this.mainRefreshFunction,
+    this.secondRefreshFunction, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AddStudentScreen> createState() => _AddStudentScreenState();
@@ -20,6 +31,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   final _newStudentController = Get.put(StudentController());
 
   int _studentGender = 0;
+  int _studentAvatar = 0;
   String _studentMeetOn = DateTime.now().toString();
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -29,14 +41,27 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   }
 
   @override
+  void initState() {
+    if (widget.studentData != null) {
+      _newStudentController.fullNameController.value.text = widget.studentData!.fullName;
+      _newStudentController.heightController.value.text = widget.studentData!.height.toString();
+      _studentGender = widget.studentData!.gender;
+      _studentAvatar = widget.studentData!.avatar;
+      _studentMeetOn = widget.studentData!.knownFrom.toString().substring(0, 10);
+      print(widget.studentData!);
+    } else {
+      _studentMeetOn = Constants.formatDate(DateTime.now());
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme
-              .of(context)
-              .bottomAppBarColor,
+          backgroundColor: Theme.of(context).bottomAppBarColor,
           elevation: 0,
           leading: InkWell(
             onTap: () {
@@ -44,23 +69,15 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             },
             child: Icon(
               Icons.arrow_back,
-              color: Theme
-                  .of(context)
-                  .textTheme
-                  .headline6!
-                  .color,
+              color: Theme.of(context).textTheme.headline6!.color,
             ),
           ),
           title: Text(
-            'Add a new student',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline6!
-                .copyWith(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-            ),
+            widget.studentData != null ? 'Add a new student' : 'Edit student',
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
           ),
         ),
         body: Column(
@@ -71,19 +88,15 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               child: ListView(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    padding: Constants.defaultScreenPadding,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Student fullname',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                            fontSize: 18,
-                          ),
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                fontSize: 18,
+                              ),
                         ),
                         const SizedBox(height: 18),
                         CustomTextFormField(
@@ -91,9 +104,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: Icon(
                               Icons.person,
-                              color: Theme
-                                  .of(context)
-                                  .shadowColor,
+                              color: Theme.of(context).shadowColor,
                               size: Constants.iconSize,
                             ),
                           ),
@@ -104,13 +115,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         const SizedBox(height: 18),
                         Text(
                           'Student height',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                            fontSize: 18,
-                          ),
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                fontSize: 18,
+                              ),
                         ),
                         const SizedBox(height: 18),
                         CustomTextFormField(
@@ -118,9 +125,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: Icon(
                               Icons.height,
-                              color: Theme
-                                  .of(context)
-                                  .shadowColor,
+                              color: Theme.of(context).shadowColor,
                               size: Constants.iconSize,
                             ),
                           ),
@@ -135,13 +140,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         const SizedBox(height: 18),
                         Text(
                           'Gender',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                            fontSize: 18,
-                          ),
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                fontSize: 18,
+                              ),
                         ),
                         const SizedBox(height: 18),
                         SizedBox(
@@ -159,13 +160,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   'Male',
                                   Icon(
                                     Icons.male,
-                                    color: _studentGender == 1 ? Theme
-                                        .of(context)
-                                        .bottomAppBarColor : Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .color,
+                                    color: _studentGender == 1 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
                                     size: 36,
                                   ),
                                   _studentGender == 1,
@@ -183,13 +178,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   'Female',
                                   Icon(
                                     Icons.female,
-                                    color: _studentGender == 2 ? Theme
-                                        .of(context)
-                                        .bottomAppBarColor : Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .color,
+                                    color: _studentGender == 2 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
                                     size: 36,
                                   ),
                                   _studentGender == 2,
@@ -207,13 +196,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   'Other',
                                   Icon(
                                     Icons.transgender,
-                                    color: _studentGender == 3 ? Theme
-                                        .of(context)
-                                        .bottomAppBarColor : Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .color,
+                                    color: _studentGender == 3 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
                                     size: 36,
                                   ),
                                   _studentGender == 3,
@@ -224,26 +207,56 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'First meet on',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                            fontSize: 18,
+                          'Avatar',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                fontSize: 18,
+                              ),
+                        ),
+                        const SizedBox(height: 18),
+                        SizedBox(
+                          width: Get.width,
+                          height: 100,
+                          child: Scrollbar(
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                Row(
+                                  children: [
+                                    for (var i = 0; i < 15; i++) ...[
+                                      InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            _studentAvatar = i;
+                                          });
+                                        },
+                                        child: avatarContainer(
+                                          context,
+                                          i,
+                                          _studentAvatar == i,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                    ]
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
+                        ),
+                        const SizedBox(height: 18),
+                        Text(
+                          'First meet on',
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                fontSize: 18,
+                              ),
                         ),
                         const SizedBox(height: 18),
                         Container(
                           decoration: BoxDecoration(
-                            color: Theme
-                                .of(context)
-                                .selectedRowColor,
+                            color: Theme.of(context).selectedRowColor,
                             boxShadow: [
                               BoxShadow(
-                                color: Theme
-                                    .of(context)
-                                    .shadowColor,
+                                color: Theme.of(context).shadowColor,
                                 blurRadius: 2,
                               ),
                             ],
@@ -253,6 +266,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             padding: const EdgeInsets.only(top: 5.0),
                             child: SfDateRangePicker(
                               onSelectionChanged: _onSelectionChanged,
+                              initialSelectedDate: widget.studentData == null
+                                  ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+                                  : widget.studentData!.knownFrom,
                               selectionMode: DateRangePickerSelectionMode.single,
                             ),
                           ),
@@ -268,16 +284,33 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: CustomButton(
                 title: 'Done',
+                type: ButtonChildType.text,
                 onTap: () {
-                  print(_newStudentController.heightController.value.text);
-                  _apiStudentController.userCreate(
-                    context,
-                    _newStudentController.fullNameController.value.text,
-                    _studentGender,
-                    double.parse(_newStudentController.heightController.value.text),
-                    _studentMeetOn,
-                    () => {},
-                  );
+                  widget.studentData == null
+                      ? _apiStudentController.userCreate(
+                          context,
+                          _newStudentController.fullNameController.value.text,
+                          _studentGender,
+                          double.parse(
+                            _newStudentController.heightController.value.text,
+                          ),
+                          _studentAvatar,
+                          _studentMeetOn,
+                          widget.mainRefreshFunction,
+                        )
+                      : _apiStudentController.userUpdate(
+                          context,
+                          widget.studentData!.id,
+                          _newStudentController.fullNameController.value.text,
+                          _studentGender,
+                          double.parse(
+                            _newStudentController.heightController.value.text,
+                          ),
+                          _studentAvatar,
+                          _studentMeetOn,
+                          widget.mainRefreshFunction,
+                          widget.secondRefreshFunction!,
+                        );
                 },
               ),
             ),
@@ -288,20 +321,21 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   }
 }
 
-Widget genderContainer(BuildContext context, String? title, Icon icon, bool isSelected) {
+Widget genderContainer(
+  BuildContext context,
+  String? title,
+  Icon icon,
+  bool isSelected,
+) {
   return Container(
     width: (Get.width - 80) / 3,
     height: 100,
     decoration: BoxDecoration(
-      color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme
-          .of(context)
-          .bottomAppBarColor,
+      color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme
-              .of(context)
-              .bottomAppBarColor,
+          color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
           blurRadius: 2,
         ),
       ],
@@ -317,19 +351,54 @@ Widget genderContainer(BuildContext context, String? title, Icon icon, bool isSe
         const SizedBox(height: 14),
         Text(
           title!,
-          style: Theme
-              .of(context)
-              .textTheme
-              .caption!
-              .copyWith(
-            fontSize: 14,
-            color: isSelected != false ? Theme
-                .of(context)
-                .bottomAppBarColor : Theme
-                .of(context)
-                .shadowColor,
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.caption!.copyWith(
+                fontSize: 14,
+                color: isSelected != false ? Theme.of(context).bottomAppBarColor : Theme.of(context).shadowColor,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget avatarContainer(
+  BuildContext context,
+  int avatarId,
+  bool isSelected,
+) {
+  return Container(
+    width: (Get.width - 80) / 3,
+    height: 100,
+    decoration: BoxDecoration(
+      color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarColor,
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+          color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarColor,
+          blurRadius: 2,
+        ),
+      ],
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 85,
+              width: 85,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/avatars/avatar_${avatarId % 15}.png',
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     ),

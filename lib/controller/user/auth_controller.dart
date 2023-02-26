@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:progressp/config/constants.dart';
+import 'package:progressp/utils/storage_utils.dart';
 import 'package:progressp/view/auth/signin_screen.dart';
 import 'package:progressp/view/home/home_screen.dart';
 import 'package:progressp/view/welcome_screen.dart';
@@ -26,6 +27,11 @@ class LoginController extends GetxController {
 }
 
 class APIAuthController {
+  String getUsernameFromToken() {
+    final authKey = GetStorage().read('authKey') ?? '';
+    return parseJwt(authKey)['username'];
+  }
+
   void sendLogin(BuildContext context, String user, String password) async {
     final response = await http.post(
       Uri.parse('${Constants.apiEndpoint}/auth/login'),

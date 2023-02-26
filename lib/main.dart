@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
+import 'package:progressp/controller/student/meeting_controller.dart';
+import 'package:progressp/controller/student/session_controller.dart';
+import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/view/home/home_screen.dart';
 import 'package:progressp/view/welcome_screen.dart';
-
 
 void main() async {
   await GetStorage.init();
@@ -33,8 +35,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-  final String? _authKey = GetStorage().read('${StorageKeys.authKey}212');
+  final APIMeetingController _apiMeetingController = Get.put(APIMeetingController());
+  final APISessionController _apiSessionController = Get.put(APISessionController());
+  final APIStudentController _apiStudentController = Get.put(APIStudentController());
+  final String? _authKey = GetStorage().read(StorageKeys.authKey);
 
   ThemeMode _colorScheme = ThemeMode.system;
 
@@ -76,6 +80,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    if(_authKey != null) {
+      _apiMeetingController.userGetAll();
+      _apiSessionController.userGetAll();
+      _apiStudentController.userGetAll();
+    }
+
     return GetMaterialApp(
       title: 'Progress Pro',
       debugShowCheckedModeBanner: false,

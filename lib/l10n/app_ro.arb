@@ -21,12 +21,11 @@
     "signin_button": "Autentifica-te",
     "signin_notice": "Nu ai un cont?",
     "signin_register": "Inregistreaza-te",
-    "home_title": "Cauta un student",
+    "home_title": "Salut",
     "home_quick": "Acces rapid",
-    "home_quick_1": "Adauga o intalnire",
-    "home_quick_2": "Adauga o sesiune",
-    "home_quick_3": "Adauga o notita",
-    "home_quick_4": "Adauga un student",
+    "home_quick_1": "Intalniri",
+    "home_quick_2": "Sesiuni",
+    "home_quick_3": "Studenti",
     "home_latest": "Ultimele intalniri",
-    "home_latest_visited": "Intalnire pe: "
+    "home_latest_visited": "Ultima vizita pe "
 }

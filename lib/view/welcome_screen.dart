@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/images.dart';
 import 'package:progressp/view/auth/signin_screen.dart';
 import 'package:progressp/view/auth/signup_screen.dart';
-import 'package:progressp/view/home/home_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -17,18 +15,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-
-  void init() async {
-    var storageAuthKey = GetStorage().read(StorageKeys.authKey);
-
-    print(GetStorage().read('authKey'));
-    print(storageAuthKey);
-    if (storageAuthKey != null) {
-      Get.offAll(
-        () => const HomeScreen(),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +55,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             const SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: Constants.defaultScreenPadding,
               child: CustomButton(
                 title: l10n.welcome_login,
+                type: ButtonChildType.text,
                 onTap: () {
                   Get.to(
                     () => const SignInScreen(),

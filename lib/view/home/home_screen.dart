@@ -1,10 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:collection/collection.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:progressp/config/constants.dart';
-import 'package:progressp/config/images.dart';
 import 'package:progressp/config/textstyle.dart';
-import 'package:progressp/view/student/add_student_screen.dart';
+import 'package:progressp/controller/student/meeting_controller.dart';
+import 'package:progressp/controller/student/student_controller.dart';
+import 'package:progressp/controller/user/auth_controller.dart';
+import 'package:progressp/model/student/meeting_model.dart';
+import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/view/student/all_students_screen.dart';
+import 'package:progressp/widget/custom_quick.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,10 +23,45 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final APIStudentController _apiStudentController = Get.put(APIStudentController());
+  final APIMeetingController _apiMeetingController = Get.put(APIMeetingController());
+  final APIAuthController _apiAuthController = Get.put(APIAuthController());
+
+  List<StudentModel>? _allStudents = null;
+  Map<String, List<MeetingModel>> _allMeetings = {};
+
+  @override
+  void initState() {
+    _apiStudentController.userGetAll();
+    _apiMeetingController.userGetAll();
+
+    setState(() {
+      List<MeetingModel> allMeetingsUngrouped = _apiMeetingController.getAllMeetings();
+      _allStudents = _apiStudentController.getAllStudents();
+      _allMeetings = groupBy(allMeetingsUngrouped, (MeetingModel obj) => obj.student.id);
+    });
+    super.initState();
+  }
+
+  String getStudentName(String studentId) {
+    for (int i = 0; i < _allStudents!.length; i++) {
+      if (_allStudents![i].id == studentId) {
+        return _allStudents![i].fullName;
+      }
+    }
+    return 'N/A';
+  }
+
+  String getLatestMeeting(String studentId) {
+    List<MeetingModel> studentMeetings = _allMeetings[studentId]!;
+    studentMeetings.sortBy((element) => element.startAt);
+    final DateFormat formatter = DateFormat('yMMMMd', Platform.localeName);
+    return formatter.format(studentMeetings.last.startAt);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -26,25 +70,56 @@ class _HomeScreenState extends State<HomeScreen> {
             width: Get.width,
             color: HexColor(AppTheme.primaryColorString),
             child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: Constants.defaultScreenPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: MediaQuery.of(context).padding.top + 15),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${l10n.home_title},',
+                            style: Theme.of(context).textTheme.headline1!.copyWith(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            _apiAuthController.getUsernameFromToken(),
+                            style: Theme.of(context).textTheme.headline2!.copyWith(
+                              fontSize: 32,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                       InkWell(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                DefaultImages.user,
+                          height: 72,
+                          width: 72,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).appBarTheme.backgroundColor,
+                            border: Border.all(
+                              color: HexColor(AppTheme.primaryColorString),
+                              width: 2,
+                            ),
+                          ),
+                          child: SizedBox(
+                            width: 72,
+                            height: 72,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(72),
+                              child: Icon(
+                                Icons.person,
+                                color: HexColor(AppTheme.primaryColorString),
+                                size: 50,
                               ),
                             ),
                           ),
@@ -52,48 +127,59 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    l10n.home_title,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      fontSize: 24,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 30),
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      Container(
-                        height: 48,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.white.withOpacity(0.1),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: TextFormField(
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hoverColor: Colors.white,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          quickAccessContainer(
+                            context,
+                            l10n.home_quick_1,
+                            Icon(
+                              Icons.calendar_month,
+                              color: Theme.of(context).primaryColor,
+                              size: 36,
                             ),
-                            cursorColor: Colors.white,
+                            null,
                           ),
-                        ),
-                      ),
-                      CircleAvatar(
-                        radius: 24,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.search,
-                          color: HexColor(AppTheme.primaryColorString),
-                        ),
+                          const SizedBox(width: 25),
+                          quickAccessContainer(
+                            context,
+                            l10n.home_quick_2,
+                            Icon(
+                              Icons.sports_handball,
+                              color: Theme.of(context).primaryColor,
+                              size: 36,
+                            ),
+                            null,
+                          ),
+                          const SizedBox(width: 25),
+                          InkWell(
+                            onTap: () {
+                              Get.to(
+                                    () => const AllStudentsScreen(),
+                                transition: Transition.rightToLeft,
+                                duration: const Duration(milliseconds: Constants.transitionDuration),
+                              );
+                            },
+                            child: quickAccessContainer(
+                              context,
+                              l10n.home_quick_3,
+                              Icon(
+                                Icons.person,
+                                color: Theme.of(context).primaryColor,
+                                size: 36,
+                              ),
+                              null,
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20)
+                  const SizedBox(height: 30)
                 ],
               ),
             ),
@@ -104,116 +190,60 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.zero,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: Constants.defaultScreenPadding,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20),
                       Text(
-                        l10n.home_quick,
+                        l10n.home_latest,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           fontSize: 20,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          circleCard(
-                            context,
-                            Icons.calendar_month,
-                            l10n.home_quick_1,
-                            HexColor(AppTheme.primaryColorString),
-                          ),
-                          circleCard(
-                            context,
-                            Icons.sports_handball,
-                            l10n.home_quick_2,
-                            HexColor(AppTheme.primaryColorString),
-                          ),
-                          circleCard(
-                            context,
-                            Icons.note,
-                            l10n.home_quick_3,
-                            HexColor(AppTheme.primaryColorString),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Get.to(
-                                () => const AddStudentScreen(),
-                                transition: Transition.rightToLeft,
-                                duration: const Duration(milliseconds: Constants.transitionDuration),
-                              );
-                            },
-                            child: circleCard(
-                              context,
-                              Icons.person,
-                              l10n.home_quick_4,
-                              HexColor(AppTheme.primaryColorString),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      InkWell(
-                        onTap: () {
-
-                        },
-                        child: Text(
-                          l10n.home_latest,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
                       Column(
                         children: [
-                          for (var i = 0; i < 3; i++)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 25),
-                              child: Container(
-                                height: 100,
-                                width: Get.width,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: HexColor(AppTheme.primaryColorString).withOpacity(0.5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20, right: 20),
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            i == 0
-                                                ? 'Mihai M'
-                                                : i == 1
-                                                    ? 'Adriana R'
-                                                    : 'Ciprian P',
-                                            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 24, color: Colors.white),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            i == 0
-                                                ? 'Ultima vizita pe: Joi, Sep 29'
-                                                : i == 1
-                                                    ? 'Ultima vizita pe: Joi, Sep 29'
-                                                    : 'Ultima vizita pe: Joi, Sep 29',
-                                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.white,
+                          if (_allStudents != null) ...[
+                            for(var q = 1; q <= 10; q++)
+                            for (var i = 0; i < _allMeetings.keys.length; i++)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 25),
+                                child: Container(
+                                  height: 100,
+                                  width: Get.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
+                                  ),
+                                  child: Padding(
+                                    padding: Constants.defaultScreenPadding,
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              getStudentName(_allMeetings.keys.elementAt(i)),
+                                              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 24, color: Colors.white),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              '${l10n.home_latest_visited} ${getLatestMeeting(_allMeetings.keys.elementAt(i))}',
+                                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                          ],
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -230,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 Widget circleCard(BuildContext context, IconData icon, String text, Color color) {
-  return Container(
+  return SizedBox(
     width: (Get.width - 50) / 4,
     child: Column(
       children: [

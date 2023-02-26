@@ -18,53 +18,68 @@ class StudentController extends GetxController {
 }
 
 class APIStudentController {
-  List<StudentModel> getUserAllStudents() {
+  List<StudentModel> getAllStudents() {
     List storageStudents = GetStorage().read(StorageKeys.allStudents) ?? List.empty();
     return storageStudents.map((element) => StudentModel.fromJson(element)).toList();
   }
 
-  void syncStorageForHome(
+  void syncStorage(
     APIMethods method,
-    String homeId, {
-    String? name,
-    String? currencyCode,
-    String? ownerId,
-  }) {
-    List<StudentModel> storageStudents = getUserAllStudents();
-    /*if (method == APIMethods.update) {
-      int currentHomeIdx = storageStudents.indexWhere((home) => home.id == homeId);
-      storageStudents[currentHomeIdx] = StudentModel(
-        id: homeId,
-        ownerId: storageStudents[currentHomeIdx].ownerId,
-        name: name!,
-        currencyCode: currencyCode!,
-        users: [],
-      );
-    } else if (method == APIMethods.delete) {
-      int currentHomeIdx = storageStudents.indexWhere((home) => home.id == homeId);
-      storageStudents.removeAt(currentHomeIdx);
-    } else if (method == APIMethods.create) {
-      StudentModel newHome = StudentModel(
-        id: homeId,
-        ownerId: ownerId!,
-        name: name!,
-        currencyCode: currencyCode!,
-        users: [],
-      );
-      storageStudents.add(newHome);
+    String studentId,
+    Map<String, dynamic> formInput,
+  ) {
+    List<StudentModel> storageStudents = getAllStudents();
+    switch (method) {
+      case APIMethods.create:
+        List<String> knownFromArr = formInput['knownFrom'].split('-');
+        StudentModel newStudent = StudentModel(
+          id: studentId,
+          fullName: formInput['fullName'],
+          gender: formInput['gender'],
+          height: formInput['height'],
+          avatar: formInput['avatar'],
+          knownFrom: DateTime(
+            int.parse(knownFromArr[0]),
+            int.parse(knownFromArr[1]),
+            int.parse(knownFromArr[2]),
+          ),
+        );
+        storageStudents.add(newStudent);
+        break;
+      case APIMethods.update:
+        int currentStudentIdx = storageStudents.indexWhere((student) => student.id == studentId);
+        List<String> knownFromArr = formInput['knownFrom'].split('-');
+        storageStudents[currentStudentIdx] = StudentModel(
+          id: studentId,
+          fullName: formInput['fullName'],
+          gender: formInput['gender'],
+          avatar: formInput['avatar'],
+          height: formInput['height'],
+          knownFrom: DateTime(
+            int.parse(knownFromArr[0]),
+            int.parse(knownFromArr[1]),
+            int.parse(knownFromArr[2]),
+          ),
+        );
+        break;
+      case APIMethods.delete:
+        int currentStudentIdx = storageStudents.indexWhere((student) => student.id == studentId);
+        storageStudents.removeAt(currentStudentIdx);
+        break;
+      default:
+        break;
     }
-
-    GetStorage().remove(StorageKeys.userHomesOwned);
+    GetStorage().remove(StorageKeys.allStudents);
     GetStorage().write(
-      StorageKeys.userHomesOwned,
+      StorageKeys.allStudents,
       json.decode(json.encode(storageStudents)),
-    );*/
+    );
   }
 
-  /*void userGetAll(BuildContext context) async {
+  void userGetAll() async {
     final authKey = GetStorage().read('authKey') ?? '';
     final response = await http.get(
-      Uri.parse('${Constants.apiEndpoint}/homes/my/all'),
+      Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
@@ -73,49 +88,55 @@ class APIStudentController {
     );
     var responseBody = json.decode(response.body);
     if (response.statusCode != 200) {
-      showErrorSnackBar(context, responseBody['message']);
+      print("eroare");
+      print(responseBody['message']);
     } else {
-      GetStorage().write(StorageKeys.userHomesOwned, responseBody['owned']);
-      GetStorage().write(StorageKeys.userHomesInvited, responseBody['invited']);
+      GetStorage().write(StorageKeys.allStudents, responseBody);
     }
-  }*/
+  }
 
   void userUpdate(
     BuildContext context,
-    String id,
-    String name,
-    String currencyCode,
+    String studentId,
+    String fullName,
+    int gender,
+    double height,
+    int avatarId,
+    String knownFrom,
     Function refreshList,
+    Function refreshDetails,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'id': studentId,
+      'fullName': fullName,
+      'gender': gender,
+      'height': height,
+      'avatar': avatarId,
+      'knownFrom': knownFrom,
+    };
     final response = await http.put(
-      Uri.parse('${Constants.apiEndpoint}/homes/my'),
+      Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
         'Authorization': 'Bearer $authKey',
       },
-      body: jsonEncode(
-        <String, String>{
-          'id': id,
-          'name': name,
-          'currencyCode': currencyCode,
-        },
-      ),
+      body: jsonEncode(formInput),
     );
     var responseBody = json.decode(response.body);
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       showErrorSnackBar(context, responseBody['message']);
     } else {
       Navigator.of(context).pop();
-      syncStorageForHome(
+      syncStorage(
         APIMethods.update,
-        id,
-        name: name,
-        currencyCode: currencyCode,
+        studentId,
+        formInput,
       );
       refreshList();
-      showSuccessSnackBar(context, 'House updated successfully');
+      refreshDetails();
+      showSuccessSnackBar(context, 'Student updated successfully');
     }
   }
 
@@ -125,24 +146,29 @@ class APIStudentController {
     Function refreshList,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'id': id,
+    };
     final response = await http.delete(
-      Uri.parse('${Constants.apiEndpoint}/homes/my/$id'),
+      Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
         'Authorization': 'Bearer $authKey',
       },
+      body: jsonEncode(formInput),
     );
     var responseBody = json.decode(response.body);
     if (response.statusCode != 200) {
       showErrorSnackBar(context, responseBody['message']);
     } else {
-      syncStorageForHome(
+      syncStorage(
         APIMethods.delete,
         id,
+        formInput,
       );
       refreshList();
-      showSuccessSnackBar(context, 'House deleted successfully');
+      showSuccessSnackBar(context, 'Student deleted successfully');
     }
   }
 
@@ -151,10 +177,18 @@ class APIStudentController {
     String fullName,
     int gender,
     double height,
+    int avatarId,
     String knownFrom,
     Function refreshList,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'fullName': fullName,
+      'gender': gender,
+      'height': height,
+      'avatar': avatarId,
+      'knownFrom': knownFrom,
+    };
     final response = await http.post(
       Uri.parse('${Constants.apiEndpoint}/students/my'),
       headers: <String, String>{
@@ -162,28 +196,19 @@ class APIStudentController {
         'Device-Type': Platform.isIOS ? 'ios' : 'android',
         'Authorization': 'Bearer $authKey',
       },
-      body: jsonEncode(
-        <String, dynamic>{
-          'fullName': fullName,
-          'gender': gender,
-          'height': height,
-          'knownFrom': knownFrom,
-        },
-      ),
+      body: jsonEncode(formInput),
     );
     var responseBody = json.decode(response.body);
     if (response.statusCode != 200) {
       showErrorSnackBar(context, responseBody['message']);
     } else {
       Navigator.of(context).pop();
-      /*syncStorageForHome(
+      syncStorage(
         APIMethods.create,
         responseBody['id'],
-        name: name,
-        currencyCode: currencyCode,
-        ownerId: authKey,
+        formInput,
       );
-      refreshList();*/
+      refreshList();
       showSuccessSnackBar(context, 'Student created successfully');
     }
   }

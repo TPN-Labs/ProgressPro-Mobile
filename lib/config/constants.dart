@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum WeekStart {
   sunday,
   monday,
@@ -14,6 +16,7 @@ class Constants {
   static const double iconSize = 24.0;
   static const int transitionDuration = 350;
 
+  static const EdgeInsets defaultScreenPadding = EdgeInsets.only(left: 15, right: 15);
   static RegExp regExpenseValue = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
   static String Function(Match) mathFuncExpenseValue =
       (Match match) => '${match[1]},';
@@ -56,7 +59,9 @@ class Constants {
 class StorageKeys {
   static const String appThemeMode = 'appThemeMode';
   static const String authKey = 'authKey';
+  static const String allMeetings = 'allMeetings';
   static const String allStudents = 'allStudents';
+  static const String allSessions = 'allSessions';
 }
 
 enum APIMethods {

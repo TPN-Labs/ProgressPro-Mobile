@@ -21,12 +21,11 @@
     "signin_button": "Log In",
     "signin_notice": "Don't have any account?",
     "signin_register": "Sign Up",
-    "home_title": "Search for a student",
+    "home_title": "Welcome",
     "home_quick": "Quick access",
-    "home_quick_1": "Create meeting",
-    "home_quick_2": "Create session",
-    "home_quick_3": "Create note",
-    "home_quick_4": "Create student",
+    "home_quick_1": "Meetings",
+    "home_quick_2": "Sessions",
+    "home_quick_3": "Students",
     "home_latest": "Latest meetings",
-    "home_latest_visited": "Latest visit: "
+    "home_latest_visited": "Latest visit on"
 }

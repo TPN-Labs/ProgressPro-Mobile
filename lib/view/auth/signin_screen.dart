@@ -48,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
       body: SingleChildScrollView(
         reverse: true,
         child: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
+          padding: Constants.defaultScreenPadding,
           child: Column(
             children: [
               const SizedBox(height: 10),
@@ -119,6 +119,7 @@ class _SignInScreenState extends State<SignInScreen> {
               const SizedBox(height: 28),
               CustomButton(
                 title: l10n.signin_button,
+                type: ButtonChildType.text,
                 onTap: () {
                   _apiAuthController.sendLogin(
                     context,
