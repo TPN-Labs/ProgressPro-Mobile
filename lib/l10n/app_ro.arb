@@ -4,6 +4,7 @@
     "welcome_login": "Autentificare",
     "welcome_no_account": "Nu ai cont?",
     "welcome_register": "Inregistrare",
+
     "signup_title": "Creeaza un cont",
     "signup_user": "Nume de utilizator",
     "signup_email": "Adresa de e-mail",
@@ -15,17 +16,41 @@
     "signup_login": "Autentifica-te",
     "signup_terms": "Termenii si Conditiile",
     "signup_cookies": "Politica de Confidentialitate",
+
     "signin_title": "Bine ai revenit",
     "signin_user": "Utilizator sau e-mail",
     "signin_pass": "Parola",
     "signin_button": "Autentifica-te",
     "signin_notice": "Nu ai un cont?",
     "signin_register": "Inregistreaza-te",
+
     "home_title": "Salut",
     "home_quick": "Acces rapid",
     "home_quick_1": "Intalniri",
     "home_quick_2": "Sesiuni",
     "home_quick_3": "Studenti",
     "home_latest": "Ultimele intalniri",
-    "home_latest_visited": "Ultima vizita pe "
+    "home_latest_visited": "Ultima vizita pe ",
+
+    "student_all_title": "Toti studentii",
+    "student_create": "Adauga",
+    "student_create_title": "Adauga student",
+    "student_edit_title": "Editeaza student",
+    "student_latest_meeting": "Ultima intalnire",
+    "student_modal_fullname": "Numele complet",
+    "student_modal_height": "Inaltime",
+    "student_modal_height_cm": "in metrii",
+    "student_modal_gender": "Sex",
+    "student_modal_gender_male": "Masculin",
+    "student_modal_gender_female": "Feminin",
+    "student_modal_gender_other": "Altul",
+    "student_modal_avatar": "Avatar",
+    "student_modal_first_meet": "Prima intalnire",
+    "student_modal_send": "Trimite",
+    "student_details_title": "Detalii student",
+    "student_details_delete_title": "Esti sigur??",
+    "student_details_delete_body": "Esti pe cale sa stergi un student",
+    "student_details_delete_close": "Inchide",
+    "student_details_delete_confirm": "Sterge"
+
 }

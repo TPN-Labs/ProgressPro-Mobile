@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 
 Widget studentList(
@@ -7,6 +8,7 @@ Widget studentList(
   int avatarId,
   int i,
 ) {
+  final l10n = AppLocalizations.of(context)!;
   return ListTile(
     trailing: Container(
       height: 80,
@@ -30,7 +32,7 @@ Widget studentList(
           ),
     ),
     subtitle: Text(
-      'Ultima vizita: ',
+      l10n.student_latest_meeting,
       style: Theme.of(Get.context!).textTheme.bodySmall!.copyWith(
             color: Colors.white,
             fontSize: 18,

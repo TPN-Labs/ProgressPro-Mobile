@@ -25,7 +25,7 @@ class MeetingModel {
       ),
       session: SessionModelShort(
         id: parsedJson['session']['id'],
-        name: parsedJson['session']['name'],
+        unit: parsedJson['session']['unit'],
         status: parsedJson['session']['status'],
       ),
       startAt: DateTime(
@@ -46,12 +46,22 @@ class MeetingModel {
   }
 
   Map<String, dynamic> toJson() {
+    List<String> startAtArr = startAt.toString().substring(0, 10).split('-');
+    List<String> endAtArr = endAt.toString().substring(0, 10).split('-');
     return {
       'id': id,
       'student': student,
       'session': session,
-      'startAt': startAt,
-      'endAt': endAt,
+      'startAt': [
+        int.parse(startAtArr[0]),
+        int.parse(startAtArr[1]),
+        int.parse(startAtArr[2]),
+      ],
+      'endAt': [
+        int.parse(endAtArr[0]),
+        int.parse(endAtArr[1]),
+        int.parse(endAtArr[2]),
+      ],
     };
   }
 

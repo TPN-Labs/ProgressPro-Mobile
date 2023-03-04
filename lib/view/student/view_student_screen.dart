@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
@@ -61,6 +62,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).bottomAppBarColor,
@@ -75,7 +77,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
           ),
         ),
         title: Text(
-          'Student details',
+          l10n.student_details_title,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -141,26 +143,26 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                                 barrierDismissible: false,
                                 builder: (BuildContext contextDialog) {
                                   return AlertDialog(
-                                    title: const Text('Are you sure?'),
+                                    title: Text(l10n.student_details_delete_title),
                                     icon: const Icon(Icons.warning_amber_rounded),
                                     backgroundColor: Theme.of(contextDialog).appBarTheme.backgroundColor,
-                                    content: const SingleChildScrollView(
+                                    content: SingleChildScrollView(
                                       child: Text(
-                                        'You are about to delete your student',
-                                        style: TextStyle(fontSize: 16),
+                                        l10n.student_details_delete_body,
+                                        style: const TextStyle(fontSize: 16),
                                       ),
                                     ),
                                     actions: [
                                       TextButton(
-                                        child: const Text('Close'),
+                                        child: Text(l10n.student_details_delete_close),
                                         onPressed: () {
                                           Navigator.of(contextDialog).pop();
                                         },
                                       ),
                                       TextButton(
-                                        child: const Text(
-                                          'Delete',
-                                          style: TextStyle(color: Colors.red),
+                                        child: Text(
+                                          l10n.student_details_delete_confirm,
+                                          style: const TextStyle(color: Colors.red),
                                         ),
                                         onPressed: () {
                                           _apiStudentController.userDelete(
@@ -207,7 +209,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Student name',
+                            l10n.student_modal_fullname,
                             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                   fontSize: 18,
                                   color: Colors.white,
@@ -228,7 +230,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Gender',
+                            l10n.student_modal_gender,
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 18,
                                   color: Colors.white,
@@ -249,7 +251,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Height',
+                            l10n.student_modal_height,
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 18,
                                   color: Colors.white,

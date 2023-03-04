@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
@@ -11,14 +10,14 @@ import 'package:progressp/view/student/view_student_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_student_list.dart';
 
-class AllStudentsScreen extends StatefulWidget {
-  const AllStudentsScreen({Key? key}) : super(key: key);
+class AllSessionsScreen extends StatefulWidget {
+  const AllSessionsScreen({Key? key}) : super(key: key);
 
   @override
-  State<AllStudentsScreen> createState() => _AllStudentsScreenState();
+  State<AllSessionsScreen> createState() => _AllSessionsScreenState();
 }
 
-class _AllStudentsScreenState extends State<AllStudentsScreen> {
+class _AllSessionsScreenState extends State<AllSessionsScreen> {
   final _apiStudentController = APIStudentController();
 
   late List<StudentModel> _allStudents;
@@ -44,8 +43,6 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).bottomAppBarColor,
@@ -60,7 +57,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
           ),
         ),
         title: Text(
-          l10n.student_all_title,
+          'Toate sesiunile',
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -82,7 +79,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                   SizedBox(
                     width: Get.width / 3,
                     child: CustomButton(
-                      title: l10n.student_create,
+                      title: 'Create',
                       type: ButtonChildType.text,
                       onTap: () {
                         Get.to(

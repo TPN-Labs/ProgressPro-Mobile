@@ -9,7 +9,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/model/student/meeting_model.dart';
-import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/widget/snackbar_containers.dart';
 
 class MeetingController extends GetxController {
@@ -21,6 +20,11 @@ class MeetingController extends GetxController {
 class APIMeetingController {
   List<MeetingModel> getAllMeetings() {
     List storageMeetings = GetStorage().read(StorageKeys.allMeetings) ?? List.empty();
+    storageMeetings.forEach((element) {
+      print(element);
+      MeetingModel crtMeeting = MeetingModel.fromJson(element);
+      print(crtMeeting);
+    });
     return storageMeetings.map((element) => MeetingModel.fromJson(element)).toList();
   }
 

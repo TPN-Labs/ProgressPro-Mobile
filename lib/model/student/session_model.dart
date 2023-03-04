@@ -4,23 +4,19 @@ class SessionModel {
   final String id;
   final StudentModelShort student;
   final int status;
-  final String name;
+  final int unit;
   final int meetings;
   final int value;
   final String currencyCode;
-  final DateTime startAt;
-  final DateTime endAt;
 
   SessionModel({
     required this.id,
     required this.student,
     required this.status,
-    required this.name,
+    required this.unit,
     required this.meetings,
     required this.value,
     required this.currencyCode,
-    required this.startAt,
-    required this.endAt,
   });
 
   factory SessionModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -31,20 +27,10 @@ class SessionModel {
         fullName: parsedJson['student']['fullName'],
       ),
       status: parsedJson['status'],
-      name: parsedJson['name'],
+      unit: parsedJson['unit'],
       meetings: parsedJson['meetings'],
       value: parsedJson['value'],
       currencyCode: parsedJson['currencyCode'],
-      startAt: DateTime(
-        parsedJson['startAt'][0],
-        parsedJson['startAt'][1],
-        parsedJson['startAt'][2],
-      ),
-      endAt: DateTime(
-        parsedJson['endAt'][0],
-        parsedJson['endAt'][1],
-        parsedJson['endAt'][2],
-      ),
     );
   }
 
@@ -56,36 +42,34 @@ class SessionModel {
         'fullName': student.fullName,
       },
       'status': status,
-      'name': name,
+      'unit': unit,
       'meetings': meetings,
       'value': value,
       'currencyCode': currencyCode,
-      'startAt': startAt,
-      'endAt': endAt,
     };
   }
 
   @override
   String toString() {
-    return '{name: $name, status: $status, value: $value}';
+    return '{unit: $unit, status: $status, value: $value}';
   }
 }
 
 class SessionModelShort {
   final String id;
-  final String name;
+  final int unit;
   final int status;
 
   SessionModelShort({
     required this.id,
-    required this.name,
+    required this.unit,
     required this.status,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
+      'unit': unit,
       'status': status,
     };
   }
