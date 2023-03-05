@@ -19,6 +19,11 @@ class SessionController extends GetxController {
 }
 
 class APISessionController {
+  SessionModel getById(String sessionId) {
+    List<SessionModel> storageSessions = getAllSessions();
+    return storageSessions.where((e) => e.id == sessionId).first;
+  }
+
   List<SessionModel> getAllSessions() {
     List storageSessions = GetStorage().read(StorageKeys.allSessions) ?? List.empty();
     return storageSessions.map((element) => SessionModel.fromJson(element)).toList();

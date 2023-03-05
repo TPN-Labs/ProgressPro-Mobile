@@ -76,13 +76,12 @@ enum APIMethods {
 enum SessionStatus {
   started(1),
   paid(2),
-  closed(3),
-  archived(4);
+  closed(3);
 
   final int value;
 
   const SessionStatus(this.value);
 
-  IconData get icon => value == 1 ? Icons.timeline : value == 2 ? Icons.payment : value == 3 ? Icons.lock : Icons.inventory;
-  Color get color => value == 1 ? Colors.blue : value == 2 ? Colors.green : value == 3 ? Colors.red : Colors.grey;
+  IconData get icon => value == 1 ? Icons.timeline : value == 2 ? Icons.payment : Icons.lock;
+  Color get color => value == 1 ? Colors.blue : value == 2 ? Colors.green : Colors.red;
 }

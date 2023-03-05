@@ -55,16 +55,19 @@ class StudentModel {
 class StudentModelShort {
   final String id;
   final String fullName;
+  final int avatar;
 
   StudentModelShort({
     required this.id,
     required this.fullName,
+    required this.avatar,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'fullName': fullName,
+      'avatar': avatar,
     };
   }
 

@@ -40,7 +40,11 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
     if (widget.sessionData != null) {
       _newSessionController.meetingsController.value.text = widget.sessionData!.meetings.toString();
       _newSessionController.priceController.value.text = widget.sessionData!.price.toString();
-      _selectedStudent = StudentModelShort(id: widget.sessionData!.student.id, fullName: widget.sessionData!.student.fullName);
+      _selectedStudent = StudentModelShort(
+        id: widget.sessionData!.student.id,
+        fullName: widget.sessionData!.student.fullName,
+        avatar: widget.sessionData!.student.avatar,
+      );
     }
     super.initState();
   }
@@ -208,11 +212,14 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                               size: Constants.iconSize,
                             ),
                           ),
-                          inputType: const TextInputType.numberWithOptions(
-                            signed: true,
-                            decimal: false,
-                          ),
+                          inputType: TextInputType.number,
                           hintText: l10n.session_modal_meetings,
+                          limit: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9,]'),
+                            )
+                          ],
                           textEditingController: _newSessionController.meetingsController.value,
                           capitalization: TextCapitalization.none,
                         ),
@@ -234,6 +241,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                             ),
                           ),
                           hintText: l10n.session_modal_price,
+                          inputType: TextInputType.number,
                           limit: [
                             LengthLimitingTextInputFormatter(10),
                             FilteringTextInputFormatter.allow(

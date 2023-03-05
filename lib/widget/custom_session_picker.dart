@@ -1,37 +1,28 @@
-// ignore_for_file: unnecessary_new, prefer_equal_for_default_values, unnecessary_const, empty_catches, unnecessary_string_interpolations, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:progressp/controller/student/student_controller.dart';
+import 'package:progressp/controller/student/session_controller.dart';
+import 'package:progressp/model/student/session_model.dart';
 
-import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/widget/custom_search.dart';
 
-Future<List<StudentModelShort>> getStudents(BuildContext context) async {
-  final APIStudentController apiStudentController = Get.put(APIStudentController());
-  return apiStudentController
-      .getAllStudents()
-      .map(
-        (e) => StudentModelShort(
-          id: e.id,
-          fullName: e.fullName,
-          avatar: e.avatar,
-        ),
-      )
-      .toList();
+Future<List<SessionModel>> getSessions(BuildContext context) async {
+  final APISessionController apiSessionController = Get.put(APISessionController());
+  final allSessions = apiSessionController.getAllSessions().toList();
+  allSessions.removeWhere((element) => element.status > 1);
+  return allSessions;
 }
 
-Future<StudentModelShort> getStudentById(BuildContext context, String studentId) async {
-  final list = await getStudents(context);
-  return list.firstWhere((element) => element.id == studentId);
+Future<SessionModel> getSessionById(BuildContext context, String sessionId) async {
+  final list = await getSessions(context);
+  return list.firstWhere((element) => element.id == sessionId);
 }
 
-Future<StudentModelShort?> showStudentPickerDialog(
+Future<SessionModel?> showSessionPickerDialog(
   BuildContext context, {
   double cornerRadius = 16,
   bool focusSearchBox = false,
 }) {
-  return showDialog<StudentModelShort?>(
+  return showDialog<SessionModel?>(
     context: context,
     barrierColor: Theme.of(context).backgroundColor,
     barrierDismissible: true,
@@ -73,7 +64,7 @@ const TextStyle _defaultSearchInputStyle = const TextStyle(fontSize: 16);
 const String _kDefaultSearchHintText = 'Search country name, code';
 
 class StudentPickerWidget extends StatefulWidget {
-  final ValueChanged<StudentModelShort>? onSelected;
+  final ValueChanged<SessionModel>? onSelected;
 
   final TextStyle itemTextStyle;
 
@@ -106,12 +97,12 @@ class StudentPickerWidget extends StatefulWidget {
 }
 
 class _StudentPickerWidgetState extends State<StudentPickerWidget> {
-  List<StudentModelShort> _list = [];
-  List<StudentModelShort> _filteredList = [];
+  List<SessionModel> _list = [];
+  List<SessionModel> _filteredList = [];
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
   bool _isLoading = false;
-  StudentModelShort? _currentStudent;
+  SessionModel? _currentSession;
 
   void _onSearch(text) {
     if (text == null || text.isEmpty) {
@@ -121,7 +112,8 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
       });
     } else {
       setState(() {
-        _filteredList = _list.where((element) => element.fullName.toLowerCase().contains(text.toString().toLowerCase())).map((e) => e).toList();
+        _filteredList =
+            _list.where((element) => element.student.fullName.toLowerCase().contains(text.toString().toLowerCase())).map((e) => e).toList();
       });
     }
   }
@@ -142,13 +134,13 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
     setState(() {
       _isLoading = true;
     });
-    _list = await getStudents(context);
+    _list = await getSessions(context);
     try {
-      _currentStudent = _list.first;
-      final student = _currentStudent;
-      if (student != null) {
-        _list.removeWhere((element) => element.id == student.id);
-        _list.insert(0, student);
+      _currentSession = _list.first;
+      final session = _currentSession;
+      if (session != null) {
+        _list.removeWhere((element) => element.id == session.id);
+        _list.insert(0, session);
       }
     } catch (e) {
     } finally {
@@ -238,7 +230,7 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
                                   ),
                                 ),
                                 Text(
-                                  _filteredList[index].fullName,
+                                  'Sesiunea ${_filteredList[index].unit} (${_filteredList[index].student.fullName})',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context).shadowColor,

@@ -26,6 +26,7 @@ class SessionModel {
       student: StudentModelShort(
         id: parsedJson['student']['id'],
         fullName: parsedJson['student']['fullName'],
+        avatar: parsedJson['student']['avatar'],
       ),
       status: parsedJson['status'],
       statusEnum: SessionStatus.values.firstWhere((e) => e.value == parsedJson['status']),
@@ -41,6 +42,7 @@ class SessionModel {
       'student': {
         'id': student.id,
         'fullName': student.fullName,
+        'avatar': student.avatar,
       },
       'status': status,
       'unit': unit,
@@ -72,5 +74,10 @@ class SessionModelShort {
       'unit': unit,
       'status': status,
     };
+  }
+
+  @override
+  String toString() {
+    return '{id: $id, unit: $unit, status: $status}';
   }
 }

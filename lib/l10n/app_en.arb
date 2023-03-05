@@ -66,5 +66,10 @@
     "session_modal_price": "Price",
     "session_modal_send": "Send",
     "session_details_title": "Session details",
-    "session_details_name": "Name"
+    "session_details_name": "Name",
+    "session_details_status": "Status",
+    "session_status_active": "Active",
+    "session_status_paid": "Paid",
+    "session_status_closed": "Closed",
+    "session_status_archived": "Archived"
 }

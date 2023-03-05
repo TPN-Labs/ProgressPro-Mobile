@@ -66,5 +66,10 @@
     "session_modal_price": "Pret",
     "session_modal_send": "Trimite",
     "session_details_title": "Detalii sesiune",
-    "session_details_name": "Denumire"
+    "session_details_name": "Denumire",
+    "session_details_status": "Status",
+    "session_status_active": "Activ",
+    "session_status_paid": "Platit",
+    "session_status_closed": "Inchis",
+    "session_status_archived": "Arhivat"
 }
