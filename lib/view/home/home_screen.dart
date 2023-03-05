@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final APIAuthController _apiAuthController = Get.put(APIAuthController());
 
   List<StudentModel>? _allStudents;
-  Map<String, List<MeetingModel>> _allMeetings = {};
+  List<MeetingModel>? _allMeetings;
 
   @override
   void initState() {
@@ -39,17 +39,16 @@ class _HomeScreenState extends State<HomeScreen> {
     _apiMeetingController.userGetAll();
 
     setState(() {
-      List<MeetingModel> allMeetingsUngrouped = _apiMeetingController.getAllMeetings();
       _allStudents = _apiStudentController.getAllStudents();
-      _allMeetings = groupBy(allMeetingsUngrouped, (MeetingModel obj) => obj.student.id);
+      _allMeetings = _apiMeetingController.getAllMeetings();
     });
     super.initState();
   }
 
-  MeetingModel getLatestMeeting(String studentId) {
-    List<MeetingModel> studentMeetings = _allMeetings[studentId]!;
+  MeetingModel? getLatestMeeting(String studentId) {
+    List<MeetingModel> studentMeetings = _allMeetings!.where((e) => e.student.id == studentId).toList();
     studentMeetings.sortBy((element) => element.startAt);
-    return studentMeetings.last;
+    return studentMeetings.lastOrNull;
   }
 
   @override
@@ -130,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           InkWell(
                             onTap: () {
                               Get.to(
-                                    () => const AllMeetingsScreen(),
+                                () => const AllMeetingsScreen(),
                                 transition: Transition.rightToLeft,
                                 duration: const Duration(milliseconds: Constants.transitionDuration),
                               );
@@ -150,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           InkWell(
                             onTap: () {
                               Get.to(
-                                    () => const AllSessionsScreen(),
+                                () => const AllSessionsScreen(),
                                 transition: Transition.rightToLeft,
                                 duration: const Duration(milliseconds: Constants.transitionDuration),
                               );
@@ -216,10 +215,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         children: [
                           if (_allStudents != null) ...[
-                              for (var i = 0; i < _allMeetings.keys.length; i++)
+                            for (var i = 0; i < _allStudents!.length; i++)
+                              if (getLatestMeeting(_allStudents!.elementAt(i).id) != null)
                                 meetingList(
                                   context,
-                                  getLatestMeeting(_allMeetings.keys.elementAt(i)),
+                                  getLatestMeeting(_allStudents!.elementAt(i).id)!,
                                   true,
                                 ),
                           ],
