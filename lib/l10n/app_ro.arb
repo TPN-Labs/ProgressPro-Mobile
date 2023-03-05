@@ -51,6 +51,20 @@
     "student_details_delete_title": "Esti sigur??",
     "student_details_delete_body": "Esti pe cale sa stergi un student",
     "student_details_delete_close": "Inchide",
-    "student_details_delete_confirm": "Sterge"
+    "student_details_delete_confirm": "Sterge",
 
+    "session_all_title": "Toate sesiunile",
+    "session_no_1": "Sesiunea # ",
+    "session_no_2": "Sesiunea ",
+    "session_student": "Student: ",
+    "session_create": "Adauga",
+    "session_create_title": "Adauga sesiune",
+    "session_edit_title": "Editeaza sesiune",
+    "session_modal_student": "Student",
+    "session_modal_student_select": "Selecteaza un student",
+    "session_modal_meetings": "Intalniri totale",
+    "session_modal_price": "Pret",
+    "session_modal_send": "Trimite",
+    "session_details_title": "Detalii sesiune",
+    "session_details_name": "Denumire"
 }

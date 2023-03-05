@@ -51,5 +51,20 @@
     "student_details_delete_title": "Are you sure??",
     "student_details_delete_body": "You are about to delete a student",
     "student_details_delete_close": "Close",
-    "student_details_delete_confirm": "Delete"
+    "student_details_delete_confirm": "Delete",
+
+    "session_all_title": "All sessions",
+    "session_no_1": "Session # ",
+    "session_no_2": "Session ",
+    "session_student": "Student: ",
+    "session_create": "Create",
+    "session_create_title": "Create session",
+    "session_edit_title": "Edit session",
+    "session_modal_student": "Student",
+    "session_modal_student_select": "Select a student",
+    "session_modal_meetings": "Meetings",
+    "session_modal_price": "Price",
+    "session_modal_send": "Send",
+    "session_details_title": "Session details",
+    "session_details_name": "Name"
 }

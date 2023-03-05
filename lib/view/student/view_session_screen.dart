@@ -143,7 +143,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Nume",
+                            l10n.session_details_name,
                             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                   fontSize: 18,
                                   color: Colors.white,
@@ -151,7 +151,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                                 ),
                           ),
                           Text(
-                            'Sesiunea ${_sessionModel!.unit}',
+                            '${l10n.session_no_2} ${_sessionModel!.unit}',
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -164,7 +164,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Pret",
+                            l10n.session_modal_price,
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 18,
                                   color: Colors.white,
@@ -185,7 +185,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Total intalniri",
+                            l10n.session_modal_meetings,
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                               color: Colors.white,

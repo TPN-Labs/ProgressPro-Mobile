@@ -291,7 +291,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: CustomButton(
-                title: 'Done',
+                title: l10n.student_modal_send,
                 type: ButtonChildType.text,
                 onTap: () {
                   widget.studentData == null

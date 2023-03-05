@@ -64,7 +64,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
             ),
           ),
           title: Text(
-            widget.sessionData != null ? l10n.student_edit_title : l10n.student_create_title,
+            widget.sessionData != null ? l10n.session_edit_title : l10n.session_create_title,
             style: Theme.of(context).textTheme.headline6!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -84,7 +84,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Student',
+                          l10n.session_modal_student,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -119,7 +119,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                                       Padding(
                                         padding: const EdgeInsets.only(left: 16.0),
                                         child: Text(
-                                          'Selecteaza Student',
+                                          l10n.session_modal_student_select,
                                           style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
                                         ),
                                       ),
@@ -193,7 +193,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                               ),
                         const SizedBox(height: 18),
                         Text(
-                          'Numarul de intalniri',
+                          l10n.session_modal_meetings,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -212,13 +212,13 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                             signed: true,
                             decimal: false,
                           ),
-                          hintText: 'Numarul de intalniri',
+                          hintText: l10n.session_modal_meetings,
                           textEditingController: _newSessionController.meetingsController.value,
                           capitalization: TextCapitalization.none,
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'Price',
+                          l10n.session_modal_price,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -233,7 +233,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                               size: Constants.iconSize,
                             ),
                           ),
-                          hintText: 'Pret',
+                          hintText: l10n.session_modal_price,
                           limit: [
                             LengthLimitingTextInputFormatter(10),
                             FilteringTextInputFormatter.allow(
@@ -253,7 +253,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: CustomButton(
-                title: 'Done',
+                title: l10n.session_modal_send,
                 type: ButtonChildType.text,
                 onTap: () {
                   widget.sessionData == null
