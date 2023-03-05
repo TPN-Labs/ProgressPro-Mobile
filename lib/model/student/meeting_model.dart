@@ -22,10 +22,11 @@ class MeetingModel {
       student: StudentModelShort(
         id: parsedJson['student']['id'],
         fullName: parsedJson['student']['fullName'],
+        avatar: parsedJson['student']['avatar'],
       ),
       session: SessionModelShort(
         id: parsedJson['session']['id'],
-        name: parsedJson['session']['name'],
+        unit: parsedJson['session']['unit'],
         status: parsedJson['session']['status'],
       ),
       startAt: DateTime(
@@ -50,8 +51,20 @@ class MeetingModel {
       'id': id,
       'student': student,
       'session': session,
-      'startAt': startAt,
-      'endAt': endAt,
+      'startAt': [
+        startAt.year,
+        startAt.month,
+        startAt.day,
+        startAt.hour,
+        startAt.minute,
+      ],
+      'endAt': [
+        endAt.year,
+        endAt.month,
+        endAt.day,
+        endAt.hour,
+        endAt.minute,
+      ],
     };
   }
 

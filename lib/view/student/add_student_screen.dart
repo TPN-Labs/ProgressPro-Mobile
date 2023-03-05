@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/model/student/student_model.dart';
@@ -48,7 +50,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       _studentGender = widget.studentData!.gender;
       _studentAvatar = widget.studentData!.avatar;
       _studentMeetOn = widget.studentData!.knownFrom.toString().substring(0, 10);
-      print(widget.studentData!);
     } else {
       _studentMeetOn = Constants.formatDate(DateTime.now());
     }
@@ -57,6 +58,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -73,7 +75,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             ),
           ),
           title: Text(
-            widget.studentData != null ? 'Add a new student' : 'Edit student',
+            widget.studentData != null ? l10n.student_edit_title : l10n.student_create_title,
             style: Theme.of(context).textTheme.headline6!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
@@ -93,7 +95,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Student fullname',
+                          l10n.student_modal_fullname,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -108,13 +110,13 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                               size: Constants.iconSize,
                             ),
                           ),
-                          hintText: 'Full name',
+                          hintText: l10n.student_modal_fullname,
                           textEditingController: _newStudentController.fullNameController.value,
                           capitalization: TextCapitalization.none,
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'Student height',
+                          l10n.student_modal_height,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -133,13 +135,19 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             signed: false,
                             decimal: true,
                           ),
-                          hintText: 'Student height (in meters)',
+                          limit: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9.,]'),
+                            )
+                          ],
+                          hintText: '${l10n.student_modal_height} (${l10n.student_modal_height_cm})',
                           textEditingController: _newStudentController.heightController.value,
                           capitalization: TextCapitalization.none,
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'Gender',
+                          l10n.student_modal_gender,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -157,7 +165,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                 },
                                 child: genderContainer(
                                   context,
-                                  'Male',
+                                  l10n.student_modal_gender_male,
                                   Icon(
                                     Icons.male,
                                     color: _studentGender == 1 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
@@ -175,7 +183,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                 },
                                 child: genderContainer(
                                   context,
-                                  'Female',
+                                  l10n.student_modal_gender_female,
                                   Icon(
                                     Icons.female,
                                     color: _studentGender == 2 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
@@ -193,7 +201,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                 },
                                 child: genderContainer(
                                   context,
-                                  'Other',
+                                  l10n.student_modal_gender_other,
                                   Icon(
                                     Icons.transgender,
                                     color: _studentGender == 3 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
@@ -207,7 +215,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'Avatar',
+                          l10n.student_modal_avatar,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -245,7 +253,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'First meet on',
+                          l10n.student_modal_first_meet,
                           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontSize: 18,
                               ),
@@ -283,7 +291,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: CustomButton(
-                title: 'Done',
+                title: l10n.student_modal_send,
                 type: ButtonChildType.text,
                 onTap: () {
                   widget.studentData == null

@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
-import 'package:progressp/config/textstyle.dart';
-import 'package:progressp/controller/student/student_controller.dart';
-import 'package:progressp/model/student/student_model.dart';
-import 'package:progressp/view/student/add_student_screen.dart';
-import 'package:progressp/view/student/view_student_screen.dart';
+import 'package:progressp/controller/student/session_controller.dart';
+import 'package:progressp/model/student/session_model.dart';
+import 'package:progressp/view/student/add_session_screen.dart';
+import 'package:progressp/view/student/view_session_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
-import 'package:progressp/widget/custom_student_list.dart';
+import 'package:progressp/widget/custom_session_list.dart';
 
-class AllStudentsScreen extends StatefulWidget {
-  const AllStudentsScreen({Key? key}) : super(key: key);
+class AllSessionsScreen extends StatefulWidget {
+  const AllSessionsScreen({Key? key}) : super(key: key);
 
   @override
-  State<AllStudentsScreen> createState() => _AllStudentsScreenState();
+  State<AllSessionsScreen> createState() => _AllSessionsScreenState();
 }
 
-class _AllStudentsScreenState extends State<AllStudentsScreen> {
-  final _apiStudentController = APIStudentController();
+class _AllSessionsScreenState extends State<AllSessionsScreen> {
+  final _apiSessionController = APISessionController();
 
-  late List<StudentModel> _allStudents;
+  late List<SessionModel> _allSessions;
 
-  bool _areStudentsLoaded = false;
+  bool _areSessionsLoaded = false;
 
-  Future<void> refreshStudentList() async {
+  Future<void> refreshSessionList() async {
     setState(() {
-      _areStudentsLoaded = false;
+      _areSessionsLoaded = false;
     });
-    _apiStudentController.userGetAll();
+    _apiSessionController.userGetAll();
     setState(() {
-      _allStudents = _apiStudentController.getAllStudents()..sort((a, b) => a.fullName.compareTo(b.fullName));
-      _areStudentsLoaded = true;
+      _allSessions = _apiSessionController.getAllSessions()..sort((a, b) => a.status.compareTo(b.status));
+      _areSessionsLoaded = true;
     });
   }
 
   @override
   void initState() {
-    refreshStudentList();
+    refreshSessionList();
     super.initState();
   }
 
@@ -60,7 +59,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
           ),
         ),
         title: Text(
-          l10n.student_all_title,
+          l10n.session_details_title,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -82,11 +81,11 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                   SizedBox(
                     width: Get.width / 3,
                     child: CustomButton(
-                      title: l10n.student_create,
+                      title: l10n.session_create,
                       type: ButtonChildType.text,
                       onTap: () {
                         Get.to(
-                          () => AddStudentScreen(context, null, refreshStudentList, null),
+                          () => AddSessionScreen(context, null, refreshSessionList, null),
                           transition: Transition.rightToLeft,
                           duration: const Duration(
                             milliseconds: Constants.transitionDuration,
@@ -97,22 +96,22 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                   ),
                 ],
               ),
-              if (_areStudentsLoaded == true) ...[
+              if (_areSessionsLoaded == true) ...[
                 Expanded(
                   child: RefreshIndicator(
                     backgroundColor: Theme.of(context).backgroundColor,
-                    onRefresh: refreshStudentList,
+                    onRefresh: refreshSessionList,
                     child: ListView(
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
                         const SizedBox(height: 10),
-                        for (var i = 0; i < _allStudents.length; i++) ...[
+                        for (var i = 0; i < _allSessions.length; i++) ...[
                           Container(
                             height: 110,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
+                              color: _allSessions[i].statusEnum.color,
                               border: Border.all(
                                 color: Theme.of(context).shadowColor,
                                 width: 3,
@@ -125,10 +124,10 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                                 InkWell(
                                   onTap: () {
                                     Get.to(
-                                      () => ViewStudentScreen(
+                                      () => ViewSessionScreen(
                                         context,
-                                        refreshStudentList,
-                                        _allStudents[i],
+                                        refreshSessionList,
+                                        _allSessions[i],
                                       ),
                                       transition: Transition.rightToLeft,
                                       duration: const Duration(
@@ -136,11 +135,11 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                                       ),
                                     );
                                   },
-                                  child: studentList(
+                                  child: sessionList(
                                     context,
-                                    _allStudents[i].fullName,
-                                    i,
-                                    _allStudents[i].avatar,
+                                    '${l10n.session_no_1} ${_allSessions[i].unit}',
+                                    _allSessions[i].statusEnum,
+                                    _allSessions[i].student,
                                   ),
                                 ),
                               ],

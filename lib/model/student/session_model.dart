@@ -1,26 +1,23 @@
+import 'package:progressp/config/constants.dart';
 import 'package:progressp/model/student/student_model.dart';
 
 class SessionModel {
   final String id;
   final StudentModelShort student;
   final int status;
-  final String name;
+  final SessionStatus statusEnum;
+  final int unit;
   final int meetings;
-  final int value;
-  final String currencyCode;
-  final DateTime startAt;
-  final DateTime endAt;
+  final int price;
 
   SessionModel({
     required this.id,
     required this.student,
     required this.status,
-    required this.name,
+    required this.statusEnum,
+    required this.unit,
     required this.meetings,
-    required this.value,
-    required this.currencyCode,
-    required this.startAt,
-    required this.endAt,
+    required this.price,
   });
 
   factory SessionModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -29,22 +26,13 @@ class SessionModel {
       student: StudentModelShort(
         id: parsedJson['student']['id'],
         fullName: parsedJson['student']['fullName'],
+        avatar: parsedJson['student']['avatar'],
       ),
       status: parsedJson['status'],
-      name: parsedJson['name'],
+      statusEnum: SessionStatus.values.firstWhere((e) => e.value == parsedJson['status']),
+      unit: parsedJson['unit'],
       meetings: parsedJson['meetings'],
-      value: parsedJson['value'],
-      currencyCode: parsedJson['currencyCode'],
-      startAt: DateTime(
-        parsedJson['startAt'][0],
-        parsedJson['startAt'][1],
-        parsedJson['startAt'][2],
-      ),
-      endAt: DateTime(
-        parsedJson['endAt'][0],
-        parsedJson['endAt'][1],
-        parsedJson['endAt'][2],
-      ),
+      price: parsedJson['price'],
     );
   }
 
@@ -54,39 +42,42 @@ class SessionModel {
       'student': {
         'id': student.id,
         'fullName': student.fullName,
+        'avatar': student.avatar,
       },
       'status': status,
-      'name': name,
+      'unit': unit,
       'meetings': meetings,
-      'value': value,
-      'currencyCode': currencyCode,
-      'startAt': startAt,
-      'endAt': endAt,
+      'price': price,
     };
   }
 
   @override
   String toString() {
-    return '{name: $name, status: $status, value: $value}';
+    return '{unit: $unit, status: $status, price: $price}';
   }
 }
 
 class SessionModelShort {
   final String id;
-  final String name;
+  final int unit;
   final int status;
 
   SessionModelShort({
     required this.id,
-    required this.name,
+    required this.unit,
     required this.status,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
+      'unit': unit,
       'status': status,
     };
+  }
+
+  @override
+  String toString() {
+    return '{id: $id, unit: $unit, status: $status}';
   }
 }

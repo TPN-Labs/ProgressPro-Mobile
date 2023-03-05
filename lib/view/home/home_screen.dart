@@ -12,7 +12,10 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/controller/user/auth_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/view/student/all_meetings_screen.dart';
+import 'package:progressp/view/student/all_sessions_screen.dart';
 import 'package:progressp/view/student/all_students_screen.dart';
+import 'package:progressp/widget/custom_meeting_list.dart';
 import 'package:progressp/widget/custom_quick.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,8 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final APIMeetingController _apiMeetingController = Get.put(APIMeetingController());
   final APIAuthController _apiAuthController = Get.put(APIAuthController());
 
-  List<StudentModel>? _allStudents = null;
-  Map<String, List<MeetingModel>> _allMeetings = {};
+  List<StudentModel>? _allStudents;
+  List<MeetingModel>? _allMeetings;
 
   @override
   void initState() {
@@ -36,27 +39,16 @@ class _HomeScreenState extends State<HomeScreen> {
     _apiMeetingController.userGetAll();
 
     setState(() {
-      List<MeetingModel> allMeetingsUngrouped = _apiMeetingController.getAllMeetings();
       _allStudents = _apiStudentController.getAllStudents();
-      _allMeetings = groupBy(allMeetingsUngrouped, (MeetingModel obj) => obj.student.id);
+      _allMeetings = _apiMeetingController.getAllMeetings();
     });
     super.initState();
   }
 
-  String getStudentName(String studentId) {
-    for (int i = 0; i < _allStudents!.length; i++) {
-      if (_allStudents![i].id == studentId) {
-        return _allStudents![i].fullName;
-      }
-    }
-    return 'N/A';
-  }
-
-  String getLatestMeeting(String studentId) {
-    List<MeetingModel> studentMeetings = _allMeetings[studentId]!;
+  MeetingModel? getLatestMeeting(String studentId) {
+    List<MeetingModel> studentMeetings = _allMeetings!.where((e) => e.student.id == studentId).toList();
     studentMeetings.sortBy((element) => element.startAt);
-    final DateFormat formatter = DateFormat('yMMMMd', Platform.localeName);
-    return formatter.format(studentMeetings.last.startAt);
+    return studentMeetings.lastOrNull;
   }
 
   @override
@@ -84,17 +76,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             '${l10n.home_title},',
                             style: Theme.of(context).textTheme.headline1!.copyWith(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
                           ),
                           const SizedBox(height: 5),
                           Text(
                             _apiAuthController.getUsernameFromToken(),
                             style: Theme.of(context).textTheme.headline2!.copyWith(
-                              fontSize: 32,
-                              color: Colors.white,
-                            ),
+                                  fontSize: 32,
+                                  color: Colors.white,
+                                ),
                           ),
                         ],
                       ),
@@ -134,32 +126,50 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          quickAccessContainer(
-                            context,
-                            l10n.home_quick_1,
-                            Icon(
-                              Icons.calendar_month,
-                              color: Theme.of(context).primaryColor,
-                              size: 36,
+                          InkWell(
+                            onTap: () {
+                              Get.to(
+                                () => const AllMeetingsScreen(),
+                                transition: Transition.rightToLeft,
+                                duration: const Duration(milliseconds: Constants.transitionDuration),
+                              );
+                            },
+                            child: quickAccessContainer(
+                              context,
+                              l10n.home_quick_1,
+                              Icon(
+                                Icons.calendar_month,
+                                color: Theme.of(context).primaryColor,
+                                size: 36,
+                              ),
+                              null,
                             ),
-                            null,
-                          ),
-                          const SizedBox(width: 25),
-                          quickAccessContainer(
-                            context,
-                            l10n.home_quick_2,
-                            Icon(
-                              Icons.sports_handball,
-                              color: Theme.of(context).primaryColor,
-                              size: 36,
-                            ),
-                            null,
                           ),
                           const SizedBox(width: 25),
                           InkWell(
                             onTap: () {
                               Get.to(
-                                    () => const AllStudentsScreen(),
+                                () => const AllSessionsScreen(),
+                                transition: Transition.rightToLeft,
+                                duration: const Duration(milliseconds: Constants.transitionDuration),
+                              );
+                            },
+                            child: quickAccessContainer(
+                              context,
+                              l10n.home_quick_2,
+                              Icon(
+                                Icons.sports_handball,
+                                color: Theme.of(context).primaryColor,
+                                size: 36,
+                              ),
+                              null,
+                            ),
+                          ),
+                          const SizedBox(width: 25),
+                          InkWell(
+                            onTap: () {
+                              Get.to(
+                                () => const AllStudentsScreen(),
                                 transition: Transition.rightToLeft,
                                 duration: const Duration(milliseconds: Constants.transitionDuration),
                               );
@@ -198,51 +208,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         l10n.home_latest,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontSize: 20,
-                        ),
+                              fontSize: 20,
+                            ),
                       ),
                       const SizedBox(height: 20),
                       Column(
                         children: [
                           if (_allStudents != null) ...[
-                            for(var q = 1; q <= 10; q++)
-                            for (var i = 0; i < _allMeetings.keys.length; i++)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 25),
-                                child: Container(
-                                  height: 100,
-                                  width: Get.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
-                                  ),
-                                  child: Padding(
-                                    padding: Constants.defaultScreenPadding,
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              getStudentName(_allMeetings.keys.elementAt(i)),
-                                              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 24, color: Colors.white),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              '${l10n.home_latest_visited} ${getLatestMeeting(_allMeetings.keys.elementAt(i))}',
-                                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                            for (var i = 0; i < _allStudents!.length; i++)
+                              if (getLatestMeeting(_allStudents!.elementAt(i).id) != null)
+                                meetingList(
+                                  context,
+                                  getLatestMeeting(_allStudents!.elementAt(i).id)!,
+                                  true,
                                 ),
-                              ),
                           ],
                         ],
                       ),

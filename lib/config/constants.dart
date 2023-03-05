@@ -10,6 +10,7 @@ const List<String> allGenders = <String>['Male', 'Female', 'Other'];
 class Constants {
   static const String apiHost = 'server.progress-pro.app';
   static const String apiEndpoint = 'https://$apiHost/api';
+
   // static const String apiEndpoint = 'http://127.0.0.1:3000/api';
 
   static const double topBarHeight = 70.0;
@@ -18,8 +19,7 @@ class Constants {
 
   static const EdgeInsets defaultScreenPadding = EdgeInsets.only(left: 15, right: 15);
   static RegExp regExpenseValue = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-  static String Function(Match) mathFuncExpenseValue =
-      (Match match) => '${match[1]},';
+  static String Function(Match) mathFuncExpenseValue = (Match match) => '${match[1]},';
 
   static String formatDate(DateTime date) {
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
@@ -70,5 +70,18 @@ enum APIMethods {
   update,
   delete,
   readNotification,
-  unreadNotification
+  unreadNotification,
+}
+
+enum SessionStatus {
+  started(1),
+  paid(2),
+  closed(3);
+
+  final int value;
+
+  const SessionStatus(this.value);
+
+  IconData get icon => value == 1 ? Icons.timeline : value == 2 ? Icons.payment : Icons.lock;
+  Color get color => value == 1 ? Colors.blue : value == 2 ? Colors.green : Colors.red;
 }

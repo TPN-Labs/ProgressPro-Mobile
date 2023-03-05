@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:progressp/config/constants.dart';
+import 'package:progressp/model/student/student_model.dart';
 
-Widget studentList(
+Widget sessionList(
   BuildContext context,
   String title,
-  int avatarId,
-  int i,
+  SessionStatus sessionStatus,
+  StudentModelShort student,
 ) {
   final l10n = AppLocalizations.of(context)!;
   return ListTile(
@@ -14,13 +16,17 @@ Widget studentList(
       height: 80,
       width: 80,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: sessionStatus.color,
         borderRadius: BorderRadius.circular(70),
-        image: DecorationImage(
-          image: AssetImage(
-            'assets/avatars/avatar_${i % 15}.png',
-          ),
+        border: Border.all(
+          color: Colors.white,
+          width: 2,
         ),
+      ),
+      child: Icon(
+        sessionStatus.icon,
+        color: Colors.white,
+        size: 42,
       ),
     ),
     title: Text(
@@ -32,7 +38,7 @@ Widget studentList(
           ),
     ),
     subtitle: Text(
-      l10n.student_latest_meeting,
+      "Student: ${student.fullName}",
       style: Theme.of(Get.context!).textTheme.bodySmall!.copyWith(
             color: Colors.white,
             fontSize: 18,

@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
-import 'package:progressp/config/textstyle.dart';
-import 'package:progressp/controller/student/student_controller.dart';
-import 'package:progressp/model/student/student_model.dart';
-import 'package:progressp/view/student/add_student_screen.dart';
-import 'package:progressp/view/student/view_student_screen.dart';
+import 'package:progressp/controller/student/meeting_controller.dart';
+import 'package:progressp/model/student/meeting_model.dart';
+import 'package:progressp/view/student/add_meeting_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
-import 'package:progressp/widget/custom_student_list.dart';
+import 'package:progressp/widget/custom_meeting_list.dart';
 
-class AllStudentsScreen extends StatefulWidget {
-  const AllStudentsScreen({Key? key}) : super(key: key);
+class AllMeetingsScreen extends StatefulWidget {
+  const AllMeetingsScreen({Key? key}) : super(key: key);
 
   @override
-  State<AllStudentsScreen> createState() => _AllStudentsScreenState();
+  State<AllMeetingsScreen> createState() => _AllMeetingsScreenState();
 }
 
-class _AllStudentsScreenState extends State<AllStudentsScreen> {
-  final _apiStudentController = APIStudentController();
+class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
+  final _apiMeetingController = APIMeetingController();
 
-  late List<StudentModel> _allStudents;
+  late List<MeetingModel> _allMeetings;
 
-  bool _areStudentsLoaded = false;
+  bool _areSessionsLoaded = false;
 
-  Future<void> refreshStudentList() async {
+  Future<void> refreshMeetingList() async {
     setState(() {
-      _areStudentsLoaded = false;
+      _areSessionsLoaded = false;
     });
-    _apiStudentController.userGetAll();
+    _apiMeetingController.userGetAll();
     setState(() {
-      _allStudents = _apiStudentController.getAllStudents()..sort((a, b) => a.fullName.compareTo(b.fullName));
-      _areStudentsLoaded = true;
+      _allMeetings = _apiMeetingController.getAllMeetings()..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
+      _areSessionsLoaded = true;
     });
   }
 
   @override
   void initState() {
-    refreshStudentList();
+    refreshMeetingList();
     super.initState();
   }
 
@@ -60,7 +58,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
           ),
         ),
         title: Text(
-          l10n.student_all_title,
+          'Toate intalnirile',
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -82,11 +80,11 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                   SizedBox(
                     width: Get.width / 3,
                     child: CustomButton(
-                      title: l10n.student_create,
+                      title: 'Adauga',
                       type: ButtonChildType.text,
                       onTap: () {
                         Get.to(
-                          () => AddStudentScreen(context, null, refreshStudentList, null),
+                          () => AddMeetingScreen(context, null, refreshMeetingList, null),
                           transition: Transition.rightToLeft,
                           duration: const Duration(
                             milliseconds: Constants.transitionDuration,
@@ -97,27 +95,19 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                   ),
                 ],
               ),
-              if (_areStudentsLoaded == true) ...[
+              if (_areSessionsLoaded == true) ...[
                 Expanded(
                   child: RefreshIndicator(
                     backgroundColor: Theme.of(context).backgroundColor,
-                    onRefresh: refreshStudentList,
+                    onRefresh: refreshMeetingList,
                     child: ListView(
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
                         const SizedBox(height: 10),
-                        for (var i = 0; i < _allStudents.length; i++) ...[
+                        for (var i = 0; i < _allMeetings.length; i++) ...[
                           Container(
                             height: 110,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
-                              border: Border.all(
-                                color: Theme.of(context).shadowColor,
-                                width: 3,
-                              ),
-                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,22 +115,17 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                                 InkWell(
                                   onTap: () {
                                     Get.to(
-                                      () => ViewStudentScreen(
-                                        context,
-                                        refreshStudentList,
-                                        _allStudents[i],
-                                      ),
+                                          () => AddMeetingScreen(context, _allMeetings[i], refreshMeetingList, null),
                                       transition: Transition.rightToLeft,
                                       duration: const Duration(
                                         milliseconds: Constants.transitionDuration,
                                       ),
                                     );
                                   },
-                                  child: studentList(
+                                  child: meetingList(
                                     context,
-                                    _allStudents[i].fullName,
-                                    i,
-                                    _allStudents[i].avatar,
+                                    _allMeetings[i],
+                                    true,
                                   ),
                                 ),
                               ],
