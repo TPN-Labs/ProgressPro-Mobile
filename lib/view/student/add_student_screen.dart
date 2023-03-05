@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/controller/student/student_controller.dart';
@@ -49,7 +50,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       _studentGender = widget.studentData!.gender;
       _studentAvatar = widget.studentData!.avatar;
       _studentMeetOn = widget.studentData!.knownFrom.toString().substring(0, 10);
-      print(widget.studentData!);
     } else {
       _studentMeetOn = Constants.formatDate(DateTime.now());
     }
@@ -135,6 +135,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             signed: false,
                             decimal: true,
                           ),
+                          limit: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9.,]'),
+                            )
+                          ],
                           hintText: '${l10n.student_modal_height} (${l10n.student_modal_height_cm})',
                           textEditingController: _newStudentController.heightController.value,
                           capitalization: TextCapitalization.none,

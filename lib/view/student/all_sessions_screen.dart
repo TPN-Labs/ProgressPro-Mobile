@@ -3,11 +3,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
-import 'package:progressp/controller/student/student_controller.dart';
-import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/controller/student/session_controller.dart';
+import 'package:progressp/model/student/session_model.dart';
+import 'package:progressp/view/student/add_session_screen.dart';
 import 'package:progressp/view/student/add_student_screen.dart';
-import 'package:progressp/view/student/view_student_screen.dart';
+import 'package:progressp/view/student/view_session_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
+import 'package:progressp/widget/custom_session_list.dart';
 import 'package:progressp/widget/custom_student_list.dart';
 
 class AllSessionsScreen extends StatefulWidget {
@@ -18,20 +20,20 @@ class AllSessionsScreen extends StatefulWidget {
 }
 
 class _AllSessionsScreenState extends State<AllSessionsScreen> {
-  final _apiStudentController = APIStudentController();
+  final _apiSessionController = APISessionController();
 
-  late List<StudentModel> _allStudents;
+  late List<SessionModel> _allSessions;
 
-  bool _areStudentsLoaded = false;
+  bool _areSessionsLoaded = false;
 
   Future<void> refreshStudentList() async {
     setState(() {
-      _areStudentsLoaded = false;
+      _areSessionsLoaded = false;
     });
-    _apiStudentController.userGetAll();
+    _apiSessionController.userGetAll();
     setState(() {
-      _allStudents = _apiStudentController.getAllStudents()..sort((a, b) => a.fullName.compareTo(b.fullName));
-      _areStudentsLoaded = true;
+      _allSessions = _apiSessionController.getAllSessions()..sort((a, b) => a.status.compareTo(b.status));
+      _areSessionsLoaded = true;
     });
   }
 
@@ -83,7 +85,7 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
                       type: ButtonChildType.text,
                       onTap: () {
                         Get.to(
-                          () => AddStudentScreen(context, null, refreshStudentList, null),
+                          () => AddSessionScreen(context, null, refreshStudentList, null),
                           transition: Transition.rightToLeft,
                           duration: const Duration(
                             milliseconds: Constants.transitionDuration,
@@ -94,7 +96,7 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
                   ),
                 ],
               ),
-              if (_areStudentsLoaded == true) ...[
+              if (_areSessionsLoaded == true) ...[
                 Expanded(
                   child: RefreshIndicator(
                     backgroundColor: Theme.of(context).backgroundColor,
@@ -104,12 +106,12 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
                       padding: EdgeInsets.zero,
                       children: [
                         const SizedBox(height: 10),
-                        for (var i = 0; i < _allStudents.length; i++) ...[
+                        for (var i = 0; i < _allSessions.length; i++) ...[
                           Container(
                             height: 110,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
+                              color: _allSessions[i].statusEnum.color,
                               border: Border.all(
                                 color: Theme.of(context).shadowColor,
                                 width: 3,
@@ -122,10 +124,10 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
                                 InkWell(
                                   onTap: () {
                                     Get.to(
-                                      () => ViewStudentScreen(
+                                      () => ViewSessionScreen(
                                         context,
                                         refreshStudentList,
-                                        _allStudents[i],
+                                        _allSessions[i],
                                       ),
                                       transition: Transition.rightToLeft,
                                       duration: const Duration(
@@ -133,11 +135,11 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
                                       ),
                                     );
                                   },
-                                  child: studentList(
+                                  child: sessionList(
                                     context,
-                                    _allStudents[i].fullName,
-                                    i,
-                                    _allStudents[i].avatar,
+                                    "Sesiunea # ${_allSessions[i].unit}",
+                                    _allSessions[i].statusEnum,
+                                    _allSessions[i].student,
                                   ),
                                 ),
                               ],

@@ -1,22 +1,23 @@
+import 'package:progressp/config/constants.dart';
 import 'package:progressp/model/student/student_model.dart';
 
 class SessionModel {
   final String id;
   final StudentModelShort student;
   final int status;
+  final SessionStatus statusEnum;
   final int unit;
   final int meetings;
-  final int value;
-  final String currencyCode;
+  final int price;
 
   SessionModel({
     required this.id,
     required this.student,
     required this.status,
+    required this.statusEnum,
     required this.unit,
     required this.meetings,
-    required this.value,
-    required this.currencyCode,
+    required this.price,
   });
 
   factory SessionModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -27,10 +28,10 @@ class SessionModel {
         fullName: parsedJson['student']['fullName'],
       ),
       status: parsedJson['status'],
+      statusEnum: SessionStatus.values.firstWhere((e) => e.value == parsedJson['status']),
       unit: parsedJson['unit'],
       meetings: parsedJson['meetings'],
-      value: parsedJson['value'],
-      currencyCode: parsedJson['currencyCode'],
+      price: parsedJson['price'],
     );
   }
 
@@ -44,14 +45,13 @@ class SessionModel {
       'status': status,
       'unit': unit,
       'meetings': meetings,
-      'value': value,
-      'currencyCode': currencyCode,
+      'price': price,
     };
   }
 
   @override
   String toString() {
-    return '{unit: $unit, status: $status, value: $value}';
+    return '{unit: $unit, status: $status, price: $price}';
   }
 }
 

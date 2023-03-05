@@ -9,57 +9,150 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/model/student/session_model.dart';
+import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/widget/snackbar_containers.dart';
 
 class SessionController extends GetxController {
-  Rx<TextEditingController> fullNameController = TextEditingController().obs;
-  Rx<TextEditingController> heightController = TextEditingController().obs;
+  Rx<TextEditingController> meetingsController = TextEditingController().obs;
+  Rx<TextEditingController> priceController = TextEditingController().obs;
   RxBool isVisible = false.obs;
 }
 
 class APISessionController {
-  List<SessionModel> getUserAllStudents() {
+  List<SessionModel> getAllSessions() {
     List storageSessions = GetStorage().read(StorageKeys.allSessions) ?? List.empty();
     return storageSessions.map((element) => SessionModel.fromJson(element)).toList();
   }
 
-  /*void syncStorageForSession(
-    APIMethods method,
-    String homeId, {
-    String? name,
-    String? currencyCode,
-    String? ownerId,
-  }) {
-    List<StudentModel> storageStudents = getUserAllStudents();
-    if (method == APIMethods.update) {
-      int currentHomeIdx = storageStudents.indexWhere((home) => home.id == homeId);
-      storageStudents[currentHomeIdx] = StudentModel(
-        id: homeId,
-        ownerId: storageStudents[currentHomeIdx].ownerId,
-        name: name!,
-        currencyCode: currencyCode!,
-        users: [],
-      );
-    } else if (method == APIMethods.delete) {
-      int currentHomeIdx = storageStudents.indexWhere((home) => home.id == homeId);
-      storageStudents.removeAt(currentHomeIdx);
-    } else if (method == APIMethods.create) {
-      StudentModel newHome = StudentModel(
-        id: homeId,
-        ownerId: ownerId!,
-        name: name!,
-        currencyCode: currencyCode!,
-        users: [],
-      );
-      storageStudents.add(newHome);
+  void syncStorage(
+      APIMethods method,
+      String sessionId,
+      int unit,
+      int status,
+      StudentModelShort studentModelShort,
+      Map<String, dynamic> formInput,
+      ) {
+    List<SessionModel> storageSessions = getAllSessions();
+    switch (method) {
+      case APIMethods.create:
+        SessionModel newSession = SessionModel(
+          id: sessionId,
+          status: status,
+          statusEnum: SessionStatus.values.firstWhere((e) => e.value == status),
+          unit: unit,
+          meetings: formInput['meetings'],
+          price: formInput['price'], 
+          student: studentModelShort,
+        );
+        storageSessions.add(newSession);
+        break;
+      case APIMethods.update:
+        int currentSessionIdx = storageSessions.indexWhere((session) => session.id == sessionId);
+        storageSessions[currentSessionIdx] = SessionModel(
+          id: sessionId,
+          status: status,
+          statusEnum: SessionStatus.values.firstWhere((e) => e.value == status),
+          unit: unit,
+          meetings: formInput['meetings'],
+          price: formInput['price'],
+          student: studentModelShort,
+        );
+        break;
+      default:
+        break;
     }
-
-    GetStorage().remove(StorageKeys.userHomesOwned);
+    GetStorage().remove(StorageKeys.allSessions);
     GetStorage().write(
-      StorageKeys.userHomesOwned,
-      json.decode(json.encode(storageStudents)),
+      StorageKeys.allSessions,
+      json.decode(json.encode(storageSessions)),
     );
-  }*/
+  }
+  
+  void userUpdate(
+      BuildContext context,
+      String sessionId,
+      StudentModelShort student,
+      int meetings,
+      int price,
+      int status,
+      Function refreshList,
+      Function refreshDetails,
+      ) async {
+    final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'id': sessionId,
+      'studentId': student.id,
+      'status': status,
+      'meetings': meetings,
+      'price': price,
+    };
+    final response = await http.put(
+      Uri.parse('${Constants.apiEndpoint}/students_sessions/my'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Device-Type': Platform.isIOS ? 'ios' : 'android',
+        'Authorization': 'Bearer $authKey',
+      },
+      body: jsonEncode(formInput),
+    );
+    var responseBody = json.decode(response.body);
+    if (response.statusCode != 200) {
+      showErrorSnackBar(context, responseBody['message']);
+    } else {
+      Navigator.of(context).pop();
+      syncStorage(
+        APIMethods.update,
+        responseBody['id'],
+        responseBody['unit'],
+        responseBody['status'],
+        student,
+        formInput,
+      );
+      refreshList();
+      refreshDetails();
+      showSuccessSnackBar(context, 'Session updated successfully');
+    }
+  }
+
+  void userCreate(
+      BuildContext context,
+      StudentModelShort student,
+      int meetings,
+      int price,
+      Function refreshList,
+      ) async {
+    final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'studentId': student.id,
+      'meetings': meetings,
+      'price': price,
+    };
+    final response = await http.post(
+      Uri.parse('${Constants.apiEndpoint}/students_sessions/my'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Device-Type': Platform.isIOS ? 'ios' : 'android',
+        'Authorization': 'Bearer $authKey',
+      },
+      body: jsonEncode(formInput),
+    );
+    var responseBody = json.decode(response.body);
+    if (response.statusCode != 200) {
+      showErrorSnackBar(context, responseBody['message']);
+    } else {
+      Navigator.of(context).pop();
+      syncStorage(
+        APIMethods.create,
+        responseBody['id'],
+        responseBody['unit'],
+        responseBody['status'],
+        student,
+        formInput,
+      );
+      refreshList();
+      showSuccessSnackBar(context, 'Session created successfully');
+    }
+  }
 
   void userGetAll() async {
     final authKey = GetStorage().read('authKey') ?? '';
@@ -79,85 +172,4 @@ class APISessionController {
       GetStorage().write(StorageKeys.allSessions, responseBody);
     }
   }
-
-  /*void userUpdate(
-    BuildContext context,
-    String id,
-    String name,
-    String currencyCode,
-    Function refreshList,
-  ) async {
-    final authKey = GetStorage().read('authKey') ?? '';
-    final response = await http.put(
-      Uri.parse('${Constants.apiEndpoint}/homes/my'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Device-Type': Platform.isIOS ? 'ios' : 'android',
-        'Authorization': 'Bearer $authKey',
-      },
-      body: jsonEncode(
-        <String, String>{
-          'id': id,
-          'name': name,
-          'currencyCode': currencyCode,
-        },
-      ),
-    );
-    var responseBody = json.decode(response.body);
-    if (response.statusCode != 201) {
-      showErrorSnackBar(context, responseBody['message']);
-    } else {
-      Navigator.of(context).pop();
-      syncStorageForHome(
-        APIMethods.update,
-        id,
-        name: name,
-        currencyCode: currencyCode,
-      );
-      refreshList();
-      showSuccessSnackBar(context, 'House updated successfully');
-    }
-  }
-
-  void userCreate(
-    BuildContext context,
-    String fullName,
-    int gender,
-    double height,
-    String knownFrom,
-    Function refreshList,
-  ) async {
-    final authKey = GetStorage().read('authKey') ?? '';
-    final response = await http.post(
-      Uri.parse('${Constants.apiEndpoint}/students/my'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Device-Type': Platform.isIOS ? 'ios' : 'android',
-        'Authorization': 'Bearer $authKey',
-      },
-      body: jsonEncode(
-        <String, dynamic>{
-          'fullName': fullName,
-          'gender': gender,
-          'height': height,
-          'knownFrom': knownFrom,
-        },
-      ),
-    );
-    var responseBody = json.decode(response.body);
-    if (response.statusCode != 200) {
-      showErrorSnackBar(context, responseBody['message']);
-    } else {
-      Navigator.of(context).pop();
-      /*syncStorageForHome(
-        APIMethods.create,
-        responseBody['id'],
-        name: name,
-        currencyCode: currencyCode,
-        ownerId: authKey,
-      );
-      refreshList();*/
-      showSuccessSnackBar(context, 'Student created successfully');
-    }
-  }*/
 }

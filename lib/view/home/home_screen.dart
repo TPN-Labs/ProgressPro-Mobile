@@ -12,6 +12,7 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/controller/user/auth_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/view/student/all_sessions_screen.dart';
 import 'package:progressp/view/student/all_students_screen.dart';
 import 'package:progressp/widget/custom_quick.dart';
 
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final APIMeetingController _apiMeetingController = Get.put(APIMeetingController());
   final APIAuthController _apiAuthController = Get.put(APIAuthController());
 
-  List<StudentModel>? _allStudents = null;
+  List<StudentModel>? _allStudents;
   Map<String, List<MeetingModel>> _allMeetings = {};
 
   @override
@@ -84,17 +85,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             '${l10n.home_title},',
                             style: Theme.of(context).textTheme.headline1!.copyWith(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
                           ),
                           const SizedBox(height: 5),
                           Text(
                             _apiAuthController.getUsernameFromToken(),
                             style: Theme.of(context).textTheme.headline2!.copyWith(
-                              fontSize: 32,
-                              color: Colors.white,
-                            ),
+                                  fontSize: 32,
+                                  color: Colors.white,
+                                ),
                           ),
                         ],
                       ),
@@ -145,21 +146,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             null,
                           ),
                           const SizedBox(width: 25),
-                          quickAccessContainer(
-                            context,
-                            l10n.home_quick_2,
-                            Icon(
-                              Icons.sports_handball,
-                              color: Theme.of(context).primaryColor,
-                              size: 36,
+                          InkWell(
+                            onTap: () {
+                              Get.to(
+                                    () => const AllSessionsScreen(),
+                                transition: Transition.rightToLeft,
+                                duration: const Duration(milliseconds: Constants.transitionDuration),
+                              );
+                            },
+                            child: quickAccessContainer(
+                              context,
+                              l10n.home_quick_2,
+                              Icon(
+                                Icons.sports_handball,
+                                color: Theme.of(context).primaryColor,
+                                size: 36,
+                              ),
+                              null,
                             ),
-                            null,
                           ),
                           const SizedBox(width: 25),
                           InkWell(
                             onTap: () {
                               Get.to(
-                                    () => const AllStudentsScreen(),
+                                () => const AllStudentsScreen(),
                                 transition: Transition.rightToLeft,
                                 duration: const Duration(milliseconds: Constants.transitionDuration),
                               );
@@ -198,51 +208,51 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         l10n.home_latest,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontSize: 20,
-                        ),
+                              fontSize: 20,
+                            ),
                       ),
                       const SizedBox(height: 20),
                       Column(
                         children: [
                           if (_allStudents != null) ...[
-                            for(var q = 1; q <= 10; q++)
-                            for (var i = 0; i < _allMeetings.keys.length; i++)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 25),
-                                child: Container(
-                                  height: 100,
-                                  width: Get.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
-                                  ),
-                                  child: Padding(
-                                    padding: Constants.defaultScreenPadding,
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              getStudentName(_allMeetings.keys.elementAt(i)),
-                                              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 24, color: Colors.white),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              '${l10n.home_latest_visited} ${getLatestMeeting(_allMeetings.keys.elementAt(i))}',
-                                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                            for (var q = 1; q <= 10; q++)
+                              for (var i = 0; i < _allMeetings.keys.length; i++)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 25),
+                                  child: Container(
+                                    height: 100,
+                                    width: Get.width,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
+                                    ),
+                                    child: Padding(
+                                      padding: Constants.defaultScreenPadding,
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                getStudentName(_allMeetings.keys.elementAt(i)),
+                                                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 24, color: Colors.white),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                '${l10n.home_latest_visited} ${getLatestMeeting(_allMeetings.keys.elementAt(i))}',
+                                                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                                      fontSize: 14,
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
                           ],
                         ],
                       ),
