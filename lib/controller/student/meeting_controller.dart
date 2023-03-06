@@ -155,7 +155,7 @@ class APIMeetingController {
     }
   }
 
-  void userGetAll() async {
+  Future<void> userGetAll() async {
     final authKey = GetStorage().read('authKey') ?? '';
     final response = await http.get(
       Uri.parse('${Constants.apiEndpoint}/students_meetings/my'),

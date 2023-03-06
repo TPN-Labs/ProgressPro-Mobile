@@ -16,10 +16,13 @@ this file is the go-to source for all the latest information. We hope you find i
 ### 🌟 Added
 
 - Instructors can now submit student measurements (body size, weight, etc)
+- Implemented a class for customizing the calendar
 
 ### 🛠️ Fixed
 
 - Dark mode colors
+- Contours around form fields.
+- Replaced obsolete colors in Flutter 3
 
 ## [1.1.0] - 2023-03-05
 

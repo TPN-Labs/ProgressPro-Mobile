@@ -9,16 +9,14 @@ String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
 bool isThemeDark() {
   var storageThemeMode = GetStorage().read(StorageKeys.appThemeMode);
-  if (storageThemeMode == null) return false;
-  ThemeMode currentThemeMode = ThemeMode.values
-      .byName(storageThemeMode.toString().replaceFirst('ThemeMode.', ''));
+  if (storageThemeMode == null) return SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+  ThemeMode currentThemeMode = ThemeMode.values.byName(storageThemeMode.toString().replaceFirst('ThemeMode.', ''));
   if (currentThemeMode == ThemeMode.light) {
     return false;
   } else if (currentThemeMode == ThemeMode.dark) {
     return true;
   } else {
-    return SchedulerBinding.instance.window.platformBrightness ==
-        Brightness.dark;
+    return SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
   }
 }
 

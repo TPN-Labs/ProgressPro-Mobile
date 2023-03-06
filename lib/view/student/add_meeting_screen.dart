@@ -9,6 +9,7 @@ import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/model/student/session_model.dart';
 import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/utils/date_range_picker_style.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_session_picker.dart';
 import 'package:progressp/widget/custom_student_picker.dart';
@@ -36,6 +37,7 @@ class AddMeetingScreen extends StatefulWidget {
 class _AddMeetingScreenState extends State<AddMeetingScreen> {
   final _apiSessionController = APISessionController();
   final _apiMeetingController = APIMeetingController();
+  final DateRangePickerStyle _pickerStyle = DateRangePickerStyle();
 
   SessionModel? _selectedSession;
 
@@ -156,7 +158,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                               ? Container(
                                   height: 56,
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).selectedRowColor,
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     boxShadow: [
                                       BoxShadow(
                                         color: Theme.of(context).shadowColor,
@@ -200,7 +202,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                               : Container(
                                   height: 56,
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).selectedRowColor,
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     boxShadow: [
                                       BoxShadow(
                                         color: Theme.of(context).shadowColor,
@@ -263,7 +265,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                           const SizedBox(height: 18),
                           Container(
                             decoration: BoxDecoration(
-                              color: Theme.of(context).selectedRowColor,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               boxShadow: [
                                 BoxShadow(
                                   color: Theme.of(context).shadowColor,
@@ -275,6 +277,10 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 5.0),
                               child: SfDateRangePicker(
+                                headerStyle: _pickerStyle.headerStyle(context),
+                                monthViewSettings: _pickerStyle.monthViewSettings(context, WeekStart.monday),
+                                monthCellStyle: _pickerStyle.monthCellStyle(context),
+                                selectionTextStyle: _pickerStyle.selectionTextStyle(context),
                                 onSelectionChanged: _onSelectionChanged,
                                 initialDisplayDate: widget.meetingData == null
                                     ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
@@ -320,7 +326,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                 height: 56,
                                 width: Get.width / 2 - 30,
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).selectedRowColor,
+                                  color: Theme.of(context).scaffoldBackgroundColor,
                                   boxShadow: [
                                     BoxShadow(
                                       color: Theme.of(context).shadowColor,
@@ -385,7 +391,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                 height: 56,
                                 width: Get.width / 2 - 30,
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).selectedRowColor,
+                                  color: Theme.of(context).scaffoldBackgroundColor,
                                   boxShadow: [
                                     BoxShadow(
                                       color: Theme.of(context).shadowColor,

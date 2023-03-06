@@ -148,16 +148,18 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                       bgColor: SessionStatus.started.color,
                       showBorder: widget.sessionModel.status == SessionStatus.started.value,
                       onTap: () {
-                        _apiSessionController.userUpdate(
-                          context,
-                          _sessionModel!.id,
-                          _sessionModel!.student,
-                          _sessionModel!.meetings,
-                          _sessionModel!.price,
-                          SessionStatus.started.value,
-                          widget.refreshFunction,
-                          widget.refreshFunction,
-                        );
+                        if (widget.sessionModel.status != SessionStatus.started.value) {
+                          _apiSessionController.userUpdate(
+                            context,
+                            _sessionModel!.id,
+                            _sessionModel!.student,
+                            _sessionModel!.meetings,
+                            _sessionModel!.price,
+                            SessionStatus.started.value,
+                            widget.refreshFunction,
+                            widget.refreshFunction,
+                          );
+                        }
                       },
                     ),
                   ),
@@ -170,16 +172,18 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                       bgColor: SessionStatus.paid.color,
                       showBorder: widget.sessionModel.status == SessionStatus.paid.value,
                       onTap: () {
-                        _apiSessionController.userUpdate(
-                          context,
-                          _sessionModel!.id,
-                          _sessionModel!.student,
-                          _sessionModel!.meetings,
-                          _sessionModel!.price,
-                          SessionStatus.paid.value,
-                          widget.refreshFunction,
-                          widget.refreshFunction,
-                        );
+                        if (widget.sessionModel.status != SessionStatus.paid.value) {
+                          _apiSessionController.userUpdate(
+                            context,
+                            _sessionModel!.id,
+                            _sessionModel!.student,
+                            _sessionModel!.meetings,
+                            _sessionModel!.price,
+                            SessionStatus.paid.value,
+                            widget.refreshFunction,
+                            widget.refreshFunction,
+                          );
+                        }
                       },
                     ),
                   ),
@@ -192,16 +196,18 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                       bgColor: SessionStatus.closed.color,
                       showBorder: widget.sessionModel.status == SessionStatus.closed.value,
                       onTap: () {
-                        _apiSessionController.userUpdate(
-                          context,
-                          _sessionModel!.id,
-                          _sessionModel!.student,
-                          _sessionModel!.meetings,
-                          _sessionModel!.price,
-                          SessionStatus.closed.value,
-                          widget.refreshFunction,
-                          widget.refreshFunction,
-                        );
+                        if (widget.sessionModel.status != SessionStatus.closed.value) {
+                          _apiSessionController.userUpdate(
+                            context,
+                            _sessionModel!.id,
+                            _sessionModel!.student,
+                            _sessionModel!.meetings,
+                            _sessionModel!.price,
+                            SessionStatus.closed.value,
+                            widget.refreshFunction,
+                            widget.refreshFunction,
+                          );
+                        }
                       },
                     ),
                   ),
@@ -363,7 +369,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                                 ),
                           ),
                           Text(
-                            _sessionModel!.meetings.toString(),
+                            '${_sessionMeetings!.length} / ${_sessionModel!.meetings}',
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 20,
                                   color: Colors.white,

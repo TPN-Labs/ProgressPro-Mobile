@@ -61,7 +61,7 @@ class StorageKeys {
   static const String authKey = 'authKey';
   static const String allMeetings = 'allMeetings';
   static const String allStudents = 'allStudents';
-  static const String allSessions = 'allSessions';
+  static const String allSessions = 'allSessions5';
 }
 
 enum APIMethods {

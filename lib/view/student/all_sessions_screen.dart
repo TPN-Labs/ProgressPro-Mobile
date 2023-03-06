@@ -29,9 +29,12 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
     setState(() {
       _areSessionsLoaded = false;
     });
-    _apiSessionController.userGetAll();
+    List<SessionModel> allSessions = _apiSessionController.getAllSessions();
+    if(allSessions.isEmpty) {
+      await _apiSessionController.userGetAll();
+    }
     setState(() {
-      _allSessions = _apiSessionController.getAllSessions()..sort((a, b) => a.status.compareTo(b.status));
+      _allSessions = allSessions..sort((a, b) => a.status.compareTo(b.status));
       _areSessionsLoaded = true;
     });
   }
@@ -45,7 +48,6 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).bottomAppBarTheme.color,

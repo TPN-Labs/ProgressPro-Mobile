@@ -24,7 +24,7 @@ Future<SessionModel?> showSessionPickerDialog(
 }) {
   return showDialog<SessionModel?>(
     context: context,
-    barrierColor: Theme.of(context).backgroundColor,
+    barrierColor: Theme.of(context).bottomAppBarTheme.color,
     barrierDismissible: true,
     builder: (_) => Dialog(
       elevation: 0,
@@ -33,7 +33,7 @@ Future<SessionModel?> showSessionPickerDialog(
         right: 10,
         bottom: 60,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).bottomAppBarTheme.color,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(cornerRadius),
@@ -156,7 +156,7 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
     return Container(
       width: Get.width,
       height: Get.height,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).bottomAppBarTheme.color!,
       child: Column(
         children: <Widget>[
           const SizedBox(
@@ -165,12 +165,15 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
           Container(
             height: 56,
             decoration: BoxDecoration(
-              color: Theme.of(context).shadowColor,
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                width: 2,
+                color: Theme.of(context).shadowColor.withOpacity(0.4),
+              ),
             ),
             child: Center(
               child: CustomSearchField(
-                color: Theme.of(context).bottomAppBarTheme.color!,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 onChanged: _onSearch,
                 controller: _controller,
                 capitalization: TextCapitalization.words,
@@ -194,7 +197,7 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).bottomAppBarTheme.color,
                     ),
                     child: ListView.separated(
                       physics: const ClampingScrollPhysics(),
@@ -230,7 +233,7 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
                                   ),
                                 ),
                                 Text(
-                                  'Sesiunea ${_filteredList[index].unit} (${_filteredList[index].student.fullName})',
+                                  '# ${_filteredList[index].unit} (${_filteredList[index].student.fullName})',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context).shadowColor,

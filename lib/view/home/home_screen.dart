@@ -32,15 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
   List<StudentModel>? _allStudents;
   List<MeetingModel>? _allMeetings;
 
-  @override
-  void initState() {
-    _apiStudentController.userGetAll();
-    _apiMeetingController.userGetAll();
+  void loadStudentsAndMeetings() async {
+    await _apiStudentController.userGetAll();
+    await _apiMeetingController.userGetAll();
 
     setState(() {
       _allStudents = _apiStudentController.getAllStudents();
       _allMeetings = _apiMeetingController.getAllMeetings();
     });
+  }
+  @override
+  void initState() {
+    loadStudentsAndMeetings();
     super.initState();
   }
 

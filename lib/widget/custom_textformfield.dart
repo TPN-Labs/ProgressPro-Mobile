@@ -38,7 +38,7 @@ class CustomTextFormField extends StatelessWidget {
       width: width,
       height: 56,
       decoration: BoxDecoration(
-        color: Theme.of(context).selectedRowColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).shadowColor,

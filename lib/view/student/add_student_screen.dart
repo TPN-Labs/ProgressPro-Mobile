@@ -263,7 +263,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           const SizedBox(height: 18),
                           Container(
                             decoration: BoxDecoration(
-                              color: Theme.of(context).selectedRowColor,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               boxShadow: [
                                 BoxShadow(
                                   color: Theme.of(context).shadowColor,
