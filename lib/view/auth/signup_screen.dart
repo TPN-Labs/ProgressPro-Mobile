@@ -181,6 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 CustomButton(
                   title: l10n.signup_button,
                   type: ButtonChildType.text,
+                  showBorder: false,
                   onTap: () {
                     _apiAuthController.sendRegister(
                       context,

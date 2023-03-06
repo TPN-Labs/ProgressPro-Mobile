@@ -128,6 +128,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                             icon: Icons.edit,
                             type: ButtonChildType.icon,
                             bgColor: Colors.cyan,
+                            showBorder: false,
                             onTap: () {
                               Get.to(
                                 () => AddStudentScreen(
@@ -151,6 +152,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                             icon: Icons.delete,
                             type: ButtonChildType.icon,
                             bgColor: Colors.red,
+                            showBorder: false,
                             onTap: () {
                               showDialog(
                                 context: context,

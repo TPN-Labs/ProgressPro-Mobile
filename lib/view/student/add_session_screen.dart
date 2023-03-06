@@ -263,6 +263,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
               child: CustomButton(
                 title: l10n.session_modal_send,
                 type: ButtonChildType.text,
+                showBorder: false,
                 onTap: () {
                   widget.sessionData == null
                       ? _apiSessionController.userCreate(

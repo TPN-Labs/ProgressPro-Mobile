@@ -116,68 +116,98 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    height: 100,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      color: _sessionModel!.statusEnum.color,
-                      borderRadius: BorderRadius.circular(70),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2,
-                      ),
-                    ),
-                    child: Icon(
-                      _sessionModel!.statusEnum.icon,
-                      color: Colors.white,
-                      size: 42,
+                  SizedBox(
+                    width: Get.width / 4 - 15,
+                    height: 60,
+                    child: CustomButton(
+                      icon: Icons.edit,
+                      type: ButtonChildType.icon,
+                      bgColor: Colors.cyan,
+                      showBorder: false,
+                      onTap: () {
+                        Get.to(
+                          () => AddSessionScreen(context, _sessionModel, widget.refreshFunction, refreshSessionDetails),
+                          transition: Transition.rightToLeft,
+                          duration: const Duration(
+                            milliseconds: Constants.transitionDuration,
+                          ),
+                        );
+                      },
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(
-                        () => ViewStudentScreen(
+                  SizedBox(
+                    width: Get.width / 4 - 15,
+                    height: 60,
+                    child: CustomButton(
+                      icon: SessionStatus.started.icon,
+                      type: ButtonChildType.icon,
+                      bgColor: SessionStatus.started.color,
+                      showBorder: widget.sessionModel.status == SessionStatus.started.value,
+                      onTap: () {
+                        _apiSessionController.userUpdate(
                           context,
-                          refreshSessionDetails,
-                          getStudentModel(_sessionModel!.student.id),
-                        ),
-                        transition: Transition.rightToLeft,
-                        duration: const Duration(
-                          milliseconds: Constants.transitionDuration,
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).shadowColor,
-                          width: 3,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).primaryColor.withOpacity(0.6),
-                            blurRadius: 2,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(32),
-                        image: DecorationImage(
-                          scale: 8,
-                          image: AssetImage(
-                            'assets/avatars/avatar_${_sessionModel!.student.avatar % 15}.png',
-                          ),
-                        ),
-                      ),
+                          _sessionModel!.id,
+                          _sessionModel!.student,
+                          _sessionModel!.meetings,
+                          _sessionModel!.price,
+                          SessionStatus.started.value,
+                          widget.refreshFunction,
+                          widget.refreshFunction,
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: Get.width / 4 - 15,
+                    height: 60,
+                    child: CustomButton(
+                      icon: SessionStatus.paid.icon,
+                      type: ButtonChildType.icon,
+                      bgColor: SessionStatus.paid.color,
+                      showBorder: widget.sessionModel.status == SessionStatus.paid.value,
+                      onTap: () {
+                        _apiSessionController.userUpdate(
+                          context,
+                          _sessionModel!.id,
+                          _sessionModel!.student,
+                          _sessionModel!.meetings,
+                          _sessionModel!.price,
+                          SessionStatus.paid.value,
+                          widget.refreshFunction,
+                          widget.refreshFunction,
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: Get.width / 4 - 15,
+                    height: 60,
+                    child: CustomButton(
+                      icon: SessionStatus.closed.icon,
+                      type: ButtonChildType.icon,
+                      bgColor: SessionStatus.closed.color,
+                      showBorder: widget.sessionModel.status == SessionStatus.closed.value,
+                      onTap: () {
+                        _apiSessionController.userUpdate(
+                          context,
+                          _sessionModel!.id,
+                          _sessionModel!.student,
+                          _sessionModel!.meetings,
+                          _sessionModel!.price,
+                          SessionStatus.closed.value,
+                          widget.refreshFunction,
+                          widget.refreshFunction,
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -192,7 +222,51 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.to(
+                                () => ViewStudentScreen(
+                                  context,
+                                  refreshSessionDetails,
+                                  getStudentModel(_sessionModel!.student.id),
+                                ),
+                                transition: Transition.rightToLeft,
+                                duration: const Duration(
+                                  milliseconds: Constants.transitionDuration,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Theme.of(context).shadowColor,
+                                  width: 3,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context).bottomAppBarTheme.color!,
+                                    blurRadius: 2,
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(32),
+                                image: DecorationImage(
+                                  scale: 8,
+                                  image: AssetImage(
+                                    'assets/avatars/avatar_${_sessionModel!.student.avatar % 15}.png',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -303,93 +377,6 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: Get.width / 4 - 15,
-                    height: 60,
-                    child: CustomButton(
-                      icon: Icons.edit,
-                      type: ButtonChildType.icon,
-                      bgColor: Colors.cyan,
-                      onTap: () {
-                        Get.to(
-                          () => AddSessionScreen(context, _sessionModel, widget.refreshFunction, refreshSessionDetails),
-                          transition: Transition.rightToLeft,
-                          duration: const Duration(
-                            milliseconds: Constants.transitionDuration,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: Get.width / 4 - 15,
-                    height: 60,
-                    child: CustomButton(
-                      icon: SessionStatus.started.icon,
-                      type: ButtonChildType.icon,
-                      bgColor: SessionStatus.started.color,
-                      onTap: () {
-                        _apiSessionController.userUpdate(
-                          context,
-                          _sessionModel!.id,
-                          _sessionModel!.student,
-                          _sessionModel!.meetings,
-                          _sessionModel!.price,
-                          SessionStatus.started.value,
-                          widget.refreshFunction,
-                          widget.refreshFunction,
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: Get.width / 4 - 15,
-                    height: 60,
-                    child: CustomButton(
-                      icon: SessionStatus.paid.icon,
-                      type: ButtonChildType.icon,
-                      bgColor: SessionStatus.paid.color,
-                      onTap: () {
-                        _apiSessionController.userUpdate(
-                          context,
-                          _sessionModel!.id,
-                          _sessionModel!.student,
-                          _sessionModel!.meetings,
-                          _sessionModel!.price,
-                          SessionStatus.paid.value,
-                          widget.refreshFunction,
-                          widget.refreshFunction,
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: Get.width / 4 - 15,
-                    height: 60,
-                    child: CustomButton(
-                      icon: SessionStatus.closed.icon,
-                      type: ButtonChildType.icon,
-                      bgColor: SessionStatus.closed.color,
-                      onTap: () {
-                        _apiSessionController.userUpdate(
-                          context,
-                          _sessionModel!.id,
-                          _sessionModel!.student,
-                          _sessionModel!.meetings,
-                          _sessionModel!.price,
-                          SessionStatus.closed.value,
-                          widget.refreshFunction,
-                          widget.refreshFunction,
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
               Expanded(
                 flex: 2,
                 child: ListView(
@@ -400,7 +387,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
                         InkWell(
                           onTap: () {
                             Get.to(
-                                  () => AddMeetingScreen(context, _sessionMeetings!.elementAt(i), refreshSessionDetails, widget.refreshFunction),
+                              () => AddMeetingScreen(context, _sessionMeetings!.elementAt(i), refreshSessionDetails, widget.refreshFunction),
                               transition: Transition.rightToLeft,
                               duration: const Duration(
                                 milliseconds: Constants.transitionDuration,

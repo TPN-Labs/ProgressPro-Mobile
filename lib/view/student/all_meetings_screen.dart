@@ -82,6 +82,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                     child: CustomButton(
                       title: 'Adauga',
                       type: ButtonChildType.text,
+                      showBorder: false,
                       onTap: () {
                         Get.to(
                           () => AddMeetingScreen(context, null, refreshMeetingList, null),

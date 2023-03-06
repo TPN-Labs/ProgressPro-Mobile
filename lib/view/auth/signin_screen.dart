@@ -123,6 +123,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 CustomButton(
                   title: l10n.signin_button,
                   type: ButtonChildType.text,
+                  showBorder: false,
                   onTap: () {
                     _apiAuthController.sendLogin(
                       context,

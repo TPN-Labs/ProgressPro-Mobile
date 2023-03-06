@@ -84,6 +84,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                     child: CustomButton(
                       title: l10n.student_create,
                       type: ButtonChildType.text,
+                      showBorder: false,
                       onTap: () {
                         Get.to(
                           () => AddStudentScreen(context, null, refreshStudentList, null),

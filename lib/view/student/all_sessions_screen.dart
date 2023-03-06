@@ -84,6 +84,7 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
                     child: CustomButton(
                       title: l10n.session_create,
                       type: ButtonChildType.text,
+                      showBorder: false,
                       onTap: () {
                         Get.to(
                           () => AddSessionScreen(context, null, refreshSessionList, null),

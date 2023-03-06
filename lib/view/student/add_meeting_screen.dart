@@ -461,6 +461,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                 child: CustomButton(
                   title: 'Trimite',
                   type: ButtonChildType.text,
+                  showBorder: false,
                   onTap: () {
                     widget.meetingData == null
                         ? _apiMeetingController.userCreate(

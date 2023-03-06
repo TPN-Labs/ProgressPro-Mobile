@@ -12,7 +12,7 @@ Widget meetingList(
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
-      height: 90,
+      height: 80,
       width: Get.width,
       decoration: BoxDecoration(
         border: Border.all(

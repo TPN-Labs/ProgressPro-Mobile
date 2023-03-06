@@ -59,6 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: CustomButton(
                 title: l10n.welcome_login,
                 type: ButtonChildType.text,
+                showBorder: false,
                 onTap: () {
                   Get.to(
                     () => const SignInScreen(),
