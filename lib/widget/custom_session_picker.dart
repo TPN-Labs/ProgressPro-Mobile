@@ -170,7 +170,7 @@ class _StudentPickerWidgetState extends State<StudentPickerWidget> {
             ),
             child: Center(
               child: CustomSearchField(
-                color: Theme.of(context).bottomAppBarColor,
+                color: Theme.of(context).bottomAppBarTheme.color!,
                 onChanged: _onSearch,
                 controller: _controller,
                 capitalization: TextCapitalization.words,

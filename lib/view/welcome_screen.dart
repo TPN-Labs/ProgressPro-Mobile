@@ -22,7 +22,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     return Scaffold(
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

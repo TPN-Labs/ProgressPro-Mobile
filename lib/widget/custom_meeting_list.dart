@@ -12,7 +12,7 @@ Widget meetingList(
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
-      height: 100,
+      height: 90,
       width: Get.width,
       decoration: BoxDecoration(
         border: Border.all(
@@ -65,11 +65,19 @@ Widget meetingList(
                 Text(
                   '${meetingData.startAt.hour.toString().padLeft(2, '0')}:${meetingData.startAt.minute.toString().padLeft(2, '0')} '
                   '- ${meetingData.endAt.hour.toString().padLeft(2, '0')}:${meetingData.endAt.minute.toString().padLeft(2, '0')}',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 20,
+                        color: Theme.of(context).shadowColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 Text(
                   meetingData.student.fullName,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 16,
+                        color: Theme.of(context).shadowColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ],
             ),

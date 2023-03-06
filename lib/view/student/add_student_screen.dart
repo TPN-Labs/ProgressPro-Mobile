@@ -63,7 +63,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).bottomAppBarColor,
+          backgroundColor: Theme.of(context).bottomAppBarTheme.color,
           elevation: 0,
           leading: InkWell(
             onTap: () {
@@ -168,7 +168,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   l10n.student_modal_gender_male,
                                   Icon(
                                     Icons.male,
-                                    color: _studentGender == 1 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
+                                    color: _studentGender == 1 ? Theme.of(context).bottomAppBarTheme.color : Theme.of(context).textTheme.headline6!.color,
                                     size: 36,
                                   ),
                                   _studentGender == 1,
@@ -186,7 +186,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   l10n.student_modal_gender_female,
                                   Icon(
                                     Icons.female,
-                                    color: _studentGender == 2 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
+                                    color: _studentGender == 2 ? Theme.of(context).bottomAppBarTheme.color : Theme.of(context).textTheme.headline6!.color,
                                     size: 36,
                                   ),
                                   _studentGender == 2,
@@ -204,7 +204,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   l10n.student_modal_gender_other,
                                   Icon(
                                     Icons.transgender,
-                                    color: _studentGender == 3 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
+                                    color: _studentGender == 3 ? Theme.of(context).bottomAppBarTheme.color : Theme.of(context).textTheme.headline6!.color,
                                     size: 36,
                                   ),
                                   _studentGender == 3,
@@ -339,11 +339,11 @@ Widget genderContainer(
     width: (Get.width - 80) / 3,
     height: 100,
     decoration: BoxDecoration(
-      color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
+      color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarTheme.color,
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
+          color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarTheme.color!,
           blurRadius: 2,
         ),
       ],
@@ -361,7 +361,7 @@ Widget genderContainer(
           title!,
           style: Theme.of(context).textTheme.caption!.copyWith(
                 fontSize: 14,
-                color: isSelected != false ? Theme.of(context).bottomAppBarColor : Theme.of(context).shadowColor,
+                color: isSelected != false ? Theme.of(context).bottomAppBarTheme.color : Theme.of(context).shadowColor,
                 fontWeight: FontWeight.w600,
               ),
         ),
@@ -379,11 +379,11 @@ Widget avatarContainer(
     width: (Get.width - 80) / 3,
     height: 100,
     decoration: BoxDecoration(
-      color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarColor,
+      color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarTheme.color,
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarColor,
+          color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarTheme.color!,
           blurRadius: 2,
         ),
       ],

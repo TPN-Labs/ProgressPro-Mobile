@@ -25,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).bottomAppBarColor,
+          backgroundColor: Theme.of(context).bottomAppBarTheme.color,
           elevation: 0,
           leading: InkWell(
             onTap: () {

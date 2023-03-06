@@ -21,16 +21,16 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
 
   late List<MeetingModel> _allMeetings;
 
-  bool _areSessionsLoaded = false;
+  bool _areMeetingsLoaded = false;
 
   Future<void> refreshMeetingList() async {
     setState(() {
-      _areSessionsLoaded = false;
+      _areMeetingsLoaded = false;
     });
     _apiMeetingController.userGetAll();
     setState(() {
       _allMeetings = _apiMeetingController.getAllMeetings()..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
-      _areSessionsLoaded = true;
+      _areMeetingsLoaded = true;
     });
   }
 
@@ -46,7 +46,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).bottomAppBarColor,
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -67,13 +67,13 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
         ),
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Padding(
           padding: Constants.defaultScreenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -95,19 +95,20 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                   ),
                 ],
               ),
-              if (_areSessionsLoaded == true) ...[
+              const SizedBox(height: 15),
+              if (_areMeetingsLoaded == true) ...[
                 Expanded(
                   child: RefreshIndicator(
-                    backgroundColor: Theme.of(context).backgroundColor,
+                    backgroundColor: Theme.of(context).bottomAppBarTheme.color,
                     onRefresh: refreshMeetingList,
                     child: ListView(
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         for (var i = 0; i < _allMeetings.length; i++) ...[
-                          Container(
-                            height: 110,
+                          SizedBox(
+                            height: 100,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,7 +132,6 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 10),
                         ],
                       ],
                     ),

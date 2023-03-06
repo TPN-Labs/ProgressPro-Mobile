@@ -56,7 +56,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).bottomAppBarColor,
+          backgroundColor: Theme.of(context).bottomAppBarTheme.color,
           elevation: 0,
           leading: InkWell(
             onTap: () {

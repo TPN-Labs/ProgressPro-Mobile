@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
+import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/controller/student/session_controller.dart';
 import 'package:progressp/model/student/session_model.dart';
 import 'package:progressp/view/student/add_session_screen.dart';
@@ -47,7 +48,7 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).bottomAppBarColor,
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -68,13 +69,13 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
         ),
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Padding(
           padding: Constants.defaultScreenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -108,10 +109,10 @@ class _AllSessionsScreenState extends State<AllSessionsScreen> {
                         const SizedBox(height: 10),
                         for (var i = 0; i < _allSessions.length; i++) ...[
                           Container(
-                            height: 110,
+                            height: 85,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: _allSessions[i].statusEnum.color,
+                              borderRadius: BorderRadius.circular(14),
+                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.2),
                               border: Border.all(
                                 color: Theme.of(context).shadowColor,
                                 width: 3,

@@ -90,7 +90,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).bottomAppBarColor,
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -110,7 +110,7 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
         ),
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Padding(
           padding: Constants.defaultScreenPadding,
           child: Column(

@@ -48,7 +48,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).bottomAppBarColor,
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -69,7 +69,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
         ),
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Padding(
           padding: Constants.defaultScreenPadding,
           child: Column(
@@ -109,10 +109,10 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                         const SizedBox(height: 10),
                         for (var i = 0; i < _allStudents.length; i++) ...[
                           Container(
-                            height: 110,
+                            height: 85,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(14),
+                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.2),
                               border: Border.all(
                                 color: Theme.of(context).shadowColor,
                                 width: 3,

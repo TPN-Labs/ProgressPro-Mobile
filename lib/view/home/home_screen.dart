@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
@@ -97,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 72,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Theme.of(context).appBarTheme.backgroundColor,
+                            color: Theme.of(context).bottomAppBarTheme.color,
                             border: Border.all(
                               color: HexColor(AppTheme.primaryColorString),
                               width: 2,
@@ -110,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(72),
                               child: Icon(
                                 Icons.person,
-                                color: HexColor(AppTheme.primaryColorString),
+                                color: Theme.of(context).shadowColor,
                                 size: 50,
                               ),
                             ),
@@ -139,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               l10n.home_quick_1,
                               Icon(
                                 Icons.calendar_month,
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).shadowColor,
                                 size: 36,
                               ),
                               null,
@@ -159,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               l10n.home_quick_2,
                               Icon(
                                 Icons.sports_handball,
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).shadowColor,
                                 size: 36,
                               ),
                               null,
@@ -179,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               l10n.home_quick_3,
                               Icon(
                                 Icons.person,
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).shadowColor,
                                 size: 36,
                               ),
                               null,
@@ -196,41 +195,44 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             flex: 2,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Padding(
-                  padding: Constants.defaultScreenPadding,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20),
-                      Text(
-                        l10n.home_latest,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontSize: 20,
-                            ),
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        children: [
-                          if (_allStudents != null) ...[
-                            for (var i = 0; i < _allStudents!.length; i++)
-                              if (getLatestMeeting(_allStudents!.elementAt(i).id) != null)
-                                meetingList(
-                                  context,
-                                  getLatestMeeting(_allStudents!.elementAt(i).id)!,
-                                  true,
-                                ),
+            child: Container(
+              color: Theme.of(context).bottomAppBarTheme.color,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  Padding(
+                    padding: Constants.defaultScreenPadding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          l10n.home_latest,
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Column(
+                          children: [
+                            if (_allStudents != null) ...[
+                              for (var i = 0; i < _allStudents!.length; i++)
+                                if (getLatestMeeting(_allStudents!.elementAt(i).id) != null)
+                                  meetingList(
+                                    context,
+                                    getLatestMeeting(_allStudents!.elementAt(i).id)!,
+                                    true,
+                                  ),
+                            ],
                           ],
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            )
           ),
         ],
       ),

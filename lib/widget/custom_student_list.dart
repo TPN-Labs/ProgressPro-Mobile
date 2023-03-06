@@ -14,7 +14,7 @@ Widget studentList(
       height: 80,
       width: 80,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).shadowColor,
         borderRadius: BorderRadius.circular(70),
         image: DecorationImage(
           image: AssetImage(
@@ -26,7 +26,7 @@ Widget studentList(
     title: Text(
       title,
       style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
-            color: Colors.white,
+            color: Theme.of(context).shadowColor,
             fontSize: 24,
             fontWeight: FontWeight.w700,
           ),
@@ -34,7 +34,7 @@ Widget studentList(
     subtitle: Text(
       l10n.student_latest_meeting,
       style: Theme.of(Get.context!).textTheme.bodySmall!.copyWith(
-            color: Colors.white,
+            color: Theme.of(context).shadowColor,
             fontSize: 18,
             fontWeight: FontWeight.w300,
           ),
