@@ -6,7 +6,15 @@
 
 ⏰ This app is perfect for busy fitness instructors who want to stay organized and on top of their clients' progress without spending hours on paperwork and manual tracking.
 
-# 🚀 ProgressPro API: [here](https://github.com/hopingsteam/ProgressPro-API)
+### [🚀 ProgressPro API (Ktor)](https://github.com/hopingsteam/ProgressPro-API)
+### [🌎 ProgressPro Web (React)](https://github.com/hopingsteam/ProgressPro-Web)
+
+# 📱 ProgressPro Mobile (Flutter)
+
+Home screen                |  All meetings screen      | Session details screen
+:-------------------------:|:-------------------------:|:-------------------------:
+![Simulator Screen Shot - iPhone 11 - 2023-03-06 at 16 52 09](https://user-images.githubusercontent.com/11734201/223145571-504aae63-82cd-4de0-890f-4fa2672fef46.png)  |  ![Simulator Screen Shot - iPhone 11 - 2023-03-06 at 16 52 12](https://user-images.githubusercontent.com/11734201/223145578-9ced644d-04d1-45ca-96f9-47970a202d16.png)  |  ![Simulator Screen Shot - iPhone 11 - 2023-03-06 at 16 52 19](https://user-images.githubusercontent.com/11734201/223145586-374bd931-8c9d-4e57-a6ae-b055c66fbd61.png)
+
 
 ## 💻 Development
 
@@ -39,10 +47,28 @@ The application was built with:
 
         - main.dart <- The main class
 
-## 🔨 Building
+## 📦 Installing dependencies
 
     flutter pub get
 
 ## ▶️ Running
 
     flutter run
+
+## 🔨 Building
+
+Please following the official documentation of Flutter for the pre-requisites steps required for building the
+app for a specific platform.
+- [iOS Deployment (Flutter docs)](https://docs.flutter.dev/deployment/ios)
+- [Android Deployment (Flutter docs)](https://docs.flutter.dev/deployment/android)
+
+
+    flutter build ipa
+
+Will build an .ipa file in `./build/ios/ipa/[project_name].ipa`. You will use that file for uploading your app
+on App Store.
+
+    flutter build appbundle
+
+Will build an .aab file in `./build/app/outputs/bundle/release/app-release.aab`. You will use that file for uploading
+your app on Play Store.
