@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:progressp/config/constants.dart';
+import 'package:progressp/controller/user/auth_controller.dart';
 import 'package:progressp/utils/storage_utils.dart';
 import 'package:progressp/view/settings/language_dialog.dart';
 import 'package:progressp/view/settings/theme_dialog.dart';
@@ -17,6 +18,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final APIAuthController _apiAuthController = Get.put(APIAuthController());
+
   late String _currentThemeMode;
   late String _currentWeekBeginsOn;
   late String _currentLanguage;
@@ -29,7 +32,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _setThemeMode(ThemeMode themeMode) {
     setState(() {
-      _currentThemeMode = themeMode.toString().replaceFirst('ThemeMode.', '').capitalize!;
+      _currentThemeMode = themeMode
+          .toString()
+          .replaceFirst('ThemeMode.', '')
+          .capitalize!;
     });
   }
 
@@ -58,7 +64,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
+        backgroundColor: Theme
+            .of(context)
+            .bottomAppBarTheme
+            .color,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -66,12 +75,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           },
           child: Icon(
             Icons.arrow_back,
-            color: Theme.of(context).textTheme.titleLarge!.color,
+            color: Theme
+                .of(context)
+                .textTheme
+                .titleLarge!
+                .color,
           ),
         ),
         title: Text(
           l10n.settings_title,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          style: Theme
+              .of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(
             fontSize: 20,
             fontWeight: FontWeight.w800,
           ),
@@ -82,7 +99,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Container(
             height: Get.height,
             width: Get.width,
-            color: Theme.of(context).bottomAppBarTheme.color,
+            color: Theme
+                .of(context)
+                .bottomAppBarTheme
+                .color,
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -117,9 +137,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: settingsRow(context, l10n.settings_language, Icons.language, _currentLanguage, null),
                     ),
                     const SizedBox(height: 48),
-                    settingsRow(context, l10n.settings_logout, Icons.logout, null, null),
+                    InkWell(
+                      onTap: () {
+                        _apiAuthController.sendLogout(context);
+                      },
+                      child: settingsRow(context, l10n.settings_logout, Icons.logout, null, null),
+                    ),
                     const SizedBox(height: 48),
-                    settingsRow(context, l10n.settings_delete_account, Icons.delete, null, Colors.red),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext contextDialog) {
+                            return AlertDialog(
+                              title: Text(l10n.settings_delete_title),
+                              icon: const Icon(Icons.warning_amber_rounded),
+                              backgroundColor: Theme.of(contextDialog).appBarTheme.backgroundColor,
+                              content: SingleChildScrollView(
+                                child: Text(
+                                  l10n.settings_delete_body,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: Text(l10n.settings_delete_close),
+                                  onPressed: () {
+                                    Navigator.of(contextDialog).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(
+                                    l10n.settings_delete_confirm,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    _apiAuthController.sendDelete(context);
+                                    Navigator.of(contextDialog).pop();
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: settingsRow(context, l10n.settings_delete_account, Icons.delete, null, Colors.red),
+                    ),
                     const SizedBox(height: 36),
                   ],
                 ),

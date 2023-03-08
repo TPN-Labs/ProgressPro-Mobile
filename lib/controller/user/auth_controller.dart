@@ -32,6 +32,22 @@ class APIAuthController {
     return parseJwt(authKey)['username'];
   }
 
+  void deleteUserStorage() {
+    GetStorage().remove(StorageKeys.authKey);
+    GetStorage().remove(StorageKeys.appWeekStart);
+    GetStorage().remove(StorageKeys.appThemeMode);
+    GetStorage().remove(StorageKeys.appLanguage);
+
+    GetStorage().remove(StorageKeys.allStudents);
+    GetStorage().remove(StorageKeys.allMeetings);
+    GetStorage().remove(StorageKeys.allSessions);
+  }
+
+  void sendLogout(BuildContext context) async {
+    deleteUserStorage();
+    Get.offAll(() => const WelcomeScreen());
+  }
+
   void sendLogin(BuildContext context, String user, String password) async {
     final response = await http.post(
       Uri.parse('${Constants.apiEndpoint}/auth/login'),
@@ -84,9 +100,25 @@ class APIAuthController {
     }
   }
 
-  void sendLogout(BuildContext context) async {
-    GetStorage().remove(StorageKeys.authKey);
-    GetStorage().remove(StorageKeys.appThemeMode);
-    Get.offAll(const WelcomeScreen());
+  void sendDelete(BuildContext context) async {
+    final authKey = GetStorage().read('authKey') ?? '';
+    final response = await http.post(
+      Uri.parse('${Constants.apiEndpoint}/auth/delete'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Device-Type': Platform.isIOS ? 'ios' : 'android',
+        'Authorization': 'Bearer $authKey',
+      },
+      body: '',
+    );
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode != 200) {
+      // ignore: use_build_context_synchronously
+      showErrorSnackBar(context, response.body);
+    } else {
+      deleteUserStorage();
+      Get.offAll(() => const SignInScreen());
+    }
   }
 }

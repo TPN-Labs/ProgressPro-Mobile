@@ -1,5 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 
@@ -38,6 +39,7 @@ class _WeekStartsDialogWidgetState extends State<WeekStartsDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40),
       child: Container(
@@ -91,7 +93,12 @@ class _WeekStartsDialogWidgetState extends State<WeekStartsDialogWidget> {
               const SizedBox(height: 13),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text('Monday', style: TextStyle(color: Theme.of(context).shadowColor)),
+                title: Text(
+                  l10n.settings_week_monday,
+                  style: TextStyle(
+                    color: Theme.of(context).shadowColor,
+                  ),
+                ),
                 leading: Radio<WeekStart>(
                   activeColor: Theme.of(context).shadowColor,
                   fillColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).shadowColor),
@@ -107,7 +114,12 @@ class _WeekStartsDialogWidgetState extends State<WeekStartsDialogWidget> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text('Sunday', style: TextStyle(color: Theme.of(context).shadowColor)),
+                title: Text(
+                  l10n.settings_week_sunday,
+                  style: TextStyle(
+                    color: Theme.of(context).shadowColor,
+                  ),
+                ),
                 leading: Radio<WeekStart>(
                   activeColor: Theme.of(context).shadowColor,
                   fillColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).shadowColor),

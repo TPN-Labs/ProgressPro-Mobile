@@ -111,7 +111,6 @@ class _MyAppState extends State<MyApp> {
       _apiStudentController.userGetAll();
     }
 
-    print('locale is: $_appLocale');
     return GetMaterialApp(
       title: 'Progress Pro',
       debugShowCheckedModeBanner: false,

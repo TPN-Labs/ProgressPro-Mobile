@@ -66,7 +66,7 @@ class _ThemeDialogWidgetState extends State<ThemeDialogWidget> {
                       },
                       child: Icon(
                         Icons.close,
-                        color: Theme.of(context).shadowColor,
+                        color: isThemeDark() == true ? Colors.white : Colors.black,
                         size: 20,
                       ),
                     ),
@@ -96,8 +96,8 @@ class _ThemeDialogWidgetState extends State<ThemeDialogWidget> {
                 contentPadding: EdgeInsets.zero,
                 title: Text('System', style: TextStyle(color: isThemeDark() == true ? Colors.white : Colors.black)),
                 leading: Radio<ThemeMode>(
-                  activeColor: Theme.of(context).shadowColor,
-                  fillColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).shadowColor),
+                  activeColor: isThemeDark() == true ? Colors.white : Colors.black,
+                  fillColor: MaterialStateProperty.resolveWith((states) => isThemeDark() == true ? Colors.white : Colors.black),
                   value: ThemeMode.system,
                   groupValue: _currentThemeMode,
                   onChanged: (ThemeMode? value) {
@@ -112,8 +112,8 @@ class _ThemeDialogWidgetState extends State<ThemeDialogWidget> {
                 contentPadding: EdgeInsets.zero,
                 title: Text('Dark', style: TextStyle(color: isThemeDark() == true ? Colors.white : Colors.black)),
                 leading: Radio<ThemeMode>(
-                  activeColor: Theme.of(context).shadowColor,
-                  fillColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).shadowColor),
+                  activeColor: isThemeDark() == true ? Colors.white : Colors.black,
+                  fillColor: MaterialStateProperty.resolveWith((states) => isThemeDark() == true ? Colors.white : Colors.black),
                   value: ThemeMode.dark,
                   groupValue: _currentThemeMode,
                   onChanged: (ThemeMode? value) {
@@ -128,8 +128,8 @@ class _ThemeDialogWidgetState extends State<ThemeDialogWidget> {
                 contentPadding: EdgeInsets.zero,
                 title: Text('Light', style: TextStyle(color: isThemeDark() == true ? Colors.white : Colors.black)),
                 leading: Radio<ThemeMode>(
-                  activeColor: Theme.of(context).shadowColor,
-                  fillColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).shadowColor),
+                  activeColor: isThemeDark() == true ? Colors.white : Colors.black,
+                  fillColor: MaterialStateProperty.resolveWith((states) => isThemeDark() == true ? Colors.white : Colors.black),
                   value: ThemeMode.light,
                   groupValue: _currentThemeMode,
                   onChanged: (ThemeMode? value) {

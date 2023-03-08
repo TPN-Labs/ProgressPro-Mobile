@@ -89,5 +89,11 @@
     "settings_week_starts_on": "Week starts on",
     "settings_language": "Language",
     "settings_logout": "Logout",
-    "settings_delete_account": "Delete your account"
+    "settings_delete_account": "Delete your account",
+    "settings_week_monday": "Monday",
+    "settings_week_sunday": "Sunday",
+    "settings_delete_title": "Are you sure??",
+    "settings_delete_body": "You are about to delete your account",
+    "settings_delete_close": "Close",
+    "settings_delete_confirm": "Delete"
 }
