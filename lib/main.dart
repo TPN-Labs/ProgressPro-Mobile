@@ -32,6 +32,17 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
+
+  static setColorTheme(BuildContext context, ThemeMode colorScheme) async {
+    final _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setColorTheme(colorScheme);
+  }
+
+  static setLocale(BuildContext context, Locale locale) async {
+    final _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(locale);
+    Get.updateLocale(locale);
+  }
 }
 
 class _MyAppState extends State<MyApp> {
@@ -42,14 +53,16 @@ class _MyAppState extends State<MyApp> {
 
   ThemeMode _colorScheme = ThemeMode.system;
 
-  ThemeMode getFromStorage() {
+  late Locale _appLocale = getLanguageFromStorage().locale;
+
+  ThemeMode getThemeFromStorage() {
     var storageThemeMode = GetStorage().read(StorageKeys.appThemeMode);
     if (storageThemeMode == null) return ThemeMode.system;
     return ThemeMode.values.byName(storageThemeMode.toString().replaceFirst('ThemeMode.', ''));
   }
 
   ThemeData getThemeMode() {
-    ThemeMode currentThemeMode = getFromStorage();
+    ThemeMode currentThemeMode = getThemeFromStorage();
     if (currentThemeMode == ThemeMode.light) {
       return AppTheme.lightTheme();
     } else if (currentThemeMode == ThemeMode.dark) {
@@ -78,28 +91,42 @@ class _MyAppState extends State<MyApp> {
     GetStorage().write(StorageKeys.appThemeMode, _colorScheme.toString());
   }
 
+  AppLanguage getLanguageFromStorage() {
+    var storageLanguage = GetStorage().read(StorageKeys.appLanguage);
+    if (storageLanguage == null) return AppLanguage.system;
+    return AppLanguage.values.byName(storageLanguage.toString().replaceFirst('AppLanguage.', ''));
+  }
+
+  setLocale(Locale value) {
+    setState(() {
+      _appLocale = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    if(_authKey != null) {
+    if (_authKey != null) {
       _apiMeetingController.userGetAll();
       _apiSessionController.userGetAll();
       _apiStudentController.userGetAll();
     }
 
+    print('locale is: $_appLocale');
     return GetMaterialApp(
       title: 'Progress Pro',
       debugShowCheckedModeBanner: false,
       theme: getThemeMode(),
       home: _authKey != null ? const HomeScreen() : const WelcomeScreen(),
+      locale: _appLocale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en'), // English
-        Locale('ro'), // Romanian
+      supportedLocales: [
+        AppLanguage.english.locale, // English
+        AppLanguage.romanian.locale // Romanian
       ],
     );
   }

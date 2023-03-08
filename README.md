@@ -59,8 +59,8 @@ The application was built with:
 
 Please following the official documentation of Flutter for the pre-requisites steps required for building the
 app for a specific platform.
-- [iOS Deployment (Flutter docs)](https://docs.flutter.dev/deployment/ios)
-- [Android Deployment (Flutter docs)](https://docs.flutter.dev/deployment/android)
+< [iOS Deployment (Flutter docs)](https://docs.flutter.dev/deployment/ios)
+< [Android Deployment (Flutter docs)](https://docs.flutter.dev/deployment/android)
 
 
     flutter build ipa

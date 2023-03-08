@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/utils/date_range_picker_style.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
@@ -31,6 +32,7 @@ class AddStudentScreen extends StatefulWidget {
 class _AddStudentScreenState extends State<AddStudentScreen> {
   final _apiStudentController = APIStudentController();
   final _newStudentController = Get.put(StudentController());
+  final DateRangePickerStyle _pickerStyle = DateRangePickerStyle();
 
   int _studentGender = 0;
   int _studentAvatar = 0;
@@ -71,12 +73,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             },
             child: Icon(
               Icons.arrow_back,
-              color: Theme.of(context).textTheme.headline6!.color,
+              color: Theme.of(context).textTheme.titleLarge!.color,
             ),
           ),
           title: Text(
             widget.studentData != null ? l10n.student_edit_title : l10n.student_create_title,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                 ),
@@ -98,7 +100,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         children: [
                           Text(
                             l10n.student_modal_fullname,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),
@@ -119,7 +121,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           const SizedBox(height: 18),
                           Text(
                             l10n.student_modal_height,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),
@@ -150,7 +152,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           const SizedBox(height: 18),
                           Text(
                             l10n.student_modal_gender,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),
@@ -170,7 +172,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                     l10n.student_modal_gender_male,
                                     Icon(
                                       Icons.male,
-                                      color: _studentGender == 1 ? Colors.white : Theme.of(context).textTheme.headline6!.color,
+                                      color: _studentGender == 1 ? Colors.white : Theme.of(context).textTheme.titleLarge!.color,
                                       size: 36,
                                     ),
                                     _studentGender == 1,
@@ -188,7 +190,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                     l10n.student_modal_gender_female,
                                     Icon(
                                       Icons.female,
-                                      color: _studentGender == 2 ? Colors.white : Theme.of(context).textTheme.headline6!.color,
+                                      color: _studentGender == 2 ? Colors.white : Theme.of(context).textTheme.titleLarge!.color,
                                       size: 36,
                                     ),
                                     _studentGender == 2,
@@ -206,7 +208,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                     l10n.student_modal_gender_other,
                                     Icon(
                                       Icons.transgender,
-                                      color: _studentGender == 3 ? Colors.white : Theme.of(context).textTheme.headline6!.color,
+                                      color: _studentGender == 3 ? Colors.white : Theme.of(context).textTheme.titleLarge!.color,
                                       size: 36,
                                     ),
                                     _studentGender == 3,
@@ -218,7 +220,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           const SizedBox(height: 18),
                           Text(
                             l10n.student_modal_avatar,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),
@@ -256,7 +258,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           const SizedBox(height: 18),
                           Text(
                             l10n.student_modal_first_meet,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),
@@ -275,6 +277,10 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 5.0),
                               child: SfDateRangePicker(
+                                headerStyle: _pickerStyle.headerStyle(context),
+                                monthViewSettings: _pickerStyle.monthViewSettings(context, WeekStart.monday),
+                                monthCellStyle: _pickerStyle.monthCellStyle(context),
+                                selectionTextStyle: _pickerStyle.selectionTextStyle(context),
                                 onSelectionChanged: _onSelectionChanged,
                                 initialSelectedDate: widget.studentData == null
                                     ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)

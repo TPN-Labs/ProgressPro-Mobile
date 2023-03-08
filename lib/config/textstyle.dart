@@ -36,7 +36,7 @@ class AppTheme {
     return base.copyWith(
       headline6: GoogleFonts.manrope(
         textStyle: TextStyle(
-          color: base.headline6!.color,
+          color: base.titleLarge!.color,
           fontSize: 20,
           fontWeight: FontWeight.w500,
         ),
@@ -52,7 +52,7 @@ class AppTheme {
         ),
       ),
       bodyText2: GoogleFonts.manrope(
-        textStyle: TextStyle(color: base.bodyText2!.color, fontSize: 16),
+        textStyle: TextStyle(color: base.bodyMedium!.color, fontSize: 16),
       ),
       bodyText1: GoogleFonts.manrope(
         textStyle: TextStyle(color: base.bodyText1!.color, fontSize: 14),
@@ -138,7 +138,7 @@ class AppTheme {
       popupMenuTheme: const PopupMenuThemeData(color: Colors.black),
       primaryColor: primaryColor,
       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
-      scaffoldBackgroundColor: const Color(0xff363257),
+      scaffoldBackgroundColor: const Color(0xff211F32),
       shadowColor: const Color(0xffF9F9FA),
       splashColor: Colors.white24,
       splashFactory: InkRipple.splashFactory,

@@ -122,12 +122,12 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
             },
             child: Icon(
               Icons.arrow_back,
-              color: Theme.of(context).textTheme.headline6!.color,
+              color: Theme.of(context).textTheme.titleLarge!.color,
             ),
           ),
           title: Text(
-            widget.meetingData != null ? 'l10n.session_edit_title' : 'l10n.session_create_title',
-            style: Theme.of(context).textTheme.headline6!.copyWith(
+            widget.meetingData != null ? l10n.meeting_edit_title : l10n.meeting_create_title,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                 ),
@@ -148,8 +148,8 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Sesiune',
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            l10n.meeting_modal_session,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 18,
                                 ),
                           ),
@@ -183,8 +183,8 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                         Padding(
                                           padding: const EdgeInsets.only(left: 16.0),
                                           child: Text(
-                                            'Selecteaza o sesiune',
-                                            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
+                                            l10n.meeting_modal_session_select,
+                                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
                                           ),
                                         ),
                                         Padding(
@@ -192,7 +192,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                           child: Icon(
                                             Icons.arrow_forward_ios,
                                             size: 22,
-                                            color: HexColor(AppTheme.primaryColorString),
+                                            color: Theme.of(context).shadowColor,
                                           ),
                                         ),
                                       ],
@@ -228,7 +228,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                           padding: const EdgeInsets.only(bottom: 8.0, left: 15.0, top: 8.0),
                                           child: Icon(
                                             Icons.person,
-                                            color: Theme.of(Get.context!).textTheme.headline6!.color!,
+                                            color: Theme.of(Get.context!).textTheme.titleLarge!.color!,
                                             size: 28,
                                           ),
                                         ),
@@ -257,8 +257,8 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                 ),
                           const SizedBox(height: 18),
                           Text(
-                            'Data',
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            l10n.meeting_modal_data,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 18,
                                 ),
                           ),
@@ -305,14 +305,14 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Ora inceput',
-                                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                l10n.meeting_modal_start_time,
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                       fontSize: 18,
                                     ),
                               ),
                               Text(
-                                'Ora final',
-                                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                l10n.meeting_modal_end_time,
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                       fontSize: 18,
                                     ),
                               ),
@@ -349,7 +349,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                               padding: const EdgeInsets.only(left: 16.0),
                                               child: Text(
                                                 'Selecteaza ora inceput',
-                                                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -368,7 +368,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                               padding: const EdgeInsets.only(bottom: 8.0, left: 15.0, top: 8.0),
                                               child: Icon(
                                                 Icons.access_time,
-                                                color: Theme.of(Get.context!).textTheme.headline6!.color!,
+                                                color: Theme.of(Get.context!).textTheme.titleLarge!.color!,
                                                 size: 28,
                                               ),
                                             ),
@@ -414,7 +414,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                               padding: const EdgeInsets.only(left: 16.0),
                                               child: Text(
                                                 'Selecteaza ora final',
-                                                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -433,7 +433,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                               padding: const EdgeInsets.only(bottom: 8.0, left: 15.0, top: 8.0),
                                               child: Icon(
                                                 Icons.access_time,
-                                                color: Theme.of(Get.context!).textTheme.headline6!.color!,
+                                                color: Theme.of(Get.context!).textTheme.titleLarge!.color!,
                                                 size: 28,
                                               ),
                                             ),
@@ -465,7 +465,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                 child: CustomButton(
-                  title: 'Trimite',
+                  title: l10n.meeting_modal_send,
                   type: ButtonChildType.text,
                   showBorder: false,
                   onTap: () {

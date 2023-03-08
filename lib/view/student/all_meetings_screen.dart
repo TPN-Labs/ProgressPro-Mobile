@@ -58,7 +58,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
           ),
         ),
         title: Text(
-          'Toate intalnirile',
+          l10n.meeting_all_title,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -80,7 +80,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                   SizedBox(
                     width: Get.width / 3,
                     child: CustomButton(
-                      title: 'Adauga',
+                      title: l10n.meeting_all_create,
                       type: ButtonChildType.text,
                       showBorder: false,
                       onTap: () {
@@ -109,7 +109,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                         const SizedBox(height: 5),
                         for (var i = 0; i < _allMeetings.length; i++) ...[
                           SizedBox(
-                            height: 100,
+                            height: 90,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
@@ -11,6 +8,7 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/controller/user/auth_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/view/settings/settings_screen.dart';
 import 'package:progressp/view/student/all_meetings_screen.dart';
 import 'package:progressp/view/student/all_sessions_screen.dart';
 import 'package:progressp/view/student/all_students_screen.dart';
@@ -36,21 +34,24 @@ class _HomeScreenState extends State<HomeScreen> {
     await _apiStudentController.userGetAll();
     await _apiMeetingController.userGetAll();
 
+    List<StudentModel> allStudents = _apiStudentController.getAllStudents();
+    List<MeetingModel> upcomingMeetings = List<MeetingModel>.empty(growable: true);
+    for (var student in allStudents) {
+      MeetingModel? latestMeeting = _apiMeetingController.getLatestMeeting(student.id);
+      if(latestMeeting != null) {
+        upcomingMeetings.add(latestMeeting);
+      }
+    }
+
     setState(() {
-      _allStudents = _apiStudentController.getAllStudents();
-      _allMeetings = _apiMeetingController.getAllMeetings();
+      _allStudents = allStudents;
+      _allMeetings = upcomingMeetings..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
     });
   }
   @override
   void initState() {
     loadStudentsAndMeetings();
     super.initState();
-  }
-
-  MeetingModel? getLatestMeeting(String studentId) {
-    List<MeetingModel> studentMeetings = _allMeetings!.where((e) => e.student.id == studentId).toList();
-    studentMeetings.sortBy((element) => element.startAt);
-    return studentMeetings.lastOrNull;
   }
 
   @override
@@ -93,7 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(
+                            () => const SettingsScreen(),
+                            transition: Transition.rightToLeft,
+                            duration: const Duration(milliseconds: Constants.transitionDuration),
+                          );
+                        },
                         child: Container(
                           height: 72,
                           width: 72,
@@ -210,20 +217,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         const SizedBox(height: 20),
                         Text(
-                          l10n.home_latest,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontSize: 20,
+                          l10n.home_upcoming,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 18,
                           ),
                         ),
                         const SizedBox(height: 20),
                         Column(
                           children: [
                             if (_allStudents != null) ...[
-                              for (var i = 0; i < _allStudents!.length; i++)
-                                if (getLatestMeeting(_allStudents!.elementAt(i).id) != null)
+                              for (var i = 0; i < _allMeetings!.length; i++)
                                   meetingList(
                                     context,
-                                    getLatestMeeting(_allStudents!.elementAt(i).id)!,
+                                    _allMeetings!.elementAt(i),
                                     true,
                                   ),
                             ],
@@ -267,7 +273,7 @@ Widget circleCard(BuildContext context, IconData icon, String text, Color color)
         const SizedBox(height: 10),
         Text(
           text,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 height: 1.4,

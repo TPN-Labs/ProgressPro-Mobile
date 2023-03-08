@@ -31,7 +31,7 @@ Widget sessionList(
     ),
     title: Text(
       title,
-      style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+      style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
             color: Theme.of(context).shadowColor,
             fontSize: 24,
             fontWeight: FontWeight.w700,

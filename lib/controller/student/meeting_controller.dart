@@ -1,8 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,11 +18,19 @@ class MeetingController extends GetxController {
 }
 
 class APIMeetingController {
+
   List<MeetingModel> getAllMeetings() {
     List allMeetings = GetStorage().read(StorageKeys.allMeetings) ?? List.empty();
     List<MeetingModel> storageMeetings = allMeetings.map((element) => MeetingModel.fromJson(element)).toList();
     storageMeetings.removeWhere((e) => e.session.status > 1);
     return storageMeetings;
+  }
+
+  MeetingModel? getLatestMeeting(String studentId) {
+    List<MeetingModel> allMeetings = getAllMeetings();
+    List<MeetingModel> studentMeetings = allMeetings.where((e) => e.student.id == studentId).toList();
+    studentMeetings.sortBy((element) => element.startAt);
+    return studentMeetings.lastOrNull;
   }
 
   void syncStorage(

@@ -105,107 +105,101 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    height: 150,
-                    width: Get.width - 50,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/avatars/avatar_${_studentModel!.avatar % 15}.png',
-                        ),
-                      ),
+                  SizedBox(
+                    width: Get.width / 3 - 20,
+                    child: CustomButton(
+                      icon: Icons.note,
+                      type: ButtonChildType.icon,
+                      bgColor: Colors.green,
+                      showBorder: false,
+                      onTap: () {
+                      },
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: Get.width / 6,
-                          child: CustomButton(
-                            icon: Icons.edit,
-                            type: ButtonChildType.icon,
-                            bgColor: Colors.cyan,
-                            showBorder: false,
-                            onTap: () {
-                              Get.to(
-                                () => AddStudentScreen(
-                                  context,
-                                  _studentModel,
-                                  widget.refreshFunction,
-                                  refreshStudentDetails,
-                                ),
-                                transition: Transition.rightToLeft,
-                                duration: const Duration(
-                                  milliseconds: Constants.transitionDuration,
-                                ),
-                              );
-                            },
+                  ),
+                  SizedBox(
+                    width: Get.width / 3 - 20,
+                    child: CustomButton(
+                      icon: Icons.edit,
+                      type: ButtonChildType.icon,
+                      bgColor: Colors.cyan,
+                      showBorder: false,
+                      onTap: () {
+                        Get.to(
+                              () => AddStudentScreen(
+                            context,
+                            _studentModel,
+                            widget.refreshFunction,
+                            refreshStudentDetails,
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: Get.width / 6,
-                          child: CustomButton(
-                            icon: Icons.delete,
-                            type: ButtonChildType.icon,
-                            bgColor: Colors.red,
-                            showBorder: false,
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext contextDialog) {
-                                  return AlertDialog(
-                                    title: Text(l10n.student_details_delete_title),
-                                    icon: const Icon(Icons.warning_amber_rounded),
-                                    backgroundColor: Theme.of(contextDialog).appBarTheme.backgroundColor,
-                                    content: SingleChildScrollView(
-                                      child: Text(
-                                        l10n.student_details_delete_body,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        child: Text(l10n.student_details_delete_close),
-                                        onPressed: () {
-                                          Navigator.of(contextDialog).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text(
-                                          l10n.student_details_delete_confirm,
-                                          style: const TextStyle(color: Colors.red),
-                                        ),
-                                        onPressed: () {
-                                          _apiStudentController.userDelete(
-                                            widget.parentContext,
-                                            _studentModel!.id,
-                                            widget.refreshFunction,
-                                          );
-                                          Navigator.of(contextDialog).pop();
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            _isDeleted = true;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                          transition: Transition.rightToLeft,
+                          duration: const Duration(
+                            milliseconds: Constants.transitionDuration,
                           ),
-                        ),
-                      ],
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: Get.width / 3 - 20,
+                    child: CustomButton(
+                      icon: Icons.delete,
+                      type: ButtonChildType.icon,
+                      bgColor: Colors.red,
+                      showBorder: false,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext contextDialog) {
+                            return AlertDialog(
+                              title: Text(l10n.student_details_delete_title),
+                              icon: const Icon(Icons.warning_amber_rounded),
+                              backgroundColor: Theme.of(contextDialog).appBarTheme.backgroundColor,
+                              content: SingleChildScrollView(
+                                child: Text(
+                                  l10n.student_details_delete_body,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: Text(l10n.student_details_delete_close),
+                                  onPressed: () {
+                                    Navigator.of(contextDialog).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(
+                                    l10n.student_details_delete_confirm,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    _apiStudentController.userDelete(
+                                      widget.parentContext,
+                                      _studentModel!.id,
+                                      widget.refreshFunction,
+                                    );
+                                    Navigator.of(contextDialog).pop();
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _isDeleted = true;
+                                    });
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -220,7 +214,36 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Theme.of(context).shadowColor,
+                                width: 3,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context).bottomAppBarTheme.color!,
+                                  blurRadius: 2,
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(32),
+                              image: DecorationImage(
+                                scale: 8,
+                                image: AssetImage(
+                                  'assets/avatars/avatar_${_studentModel!.avatar % 15}.png',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

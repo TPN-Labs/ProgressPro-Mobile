@@ -23,6 +23,8 @@ this file is the go-to source for all the latest information. We hope you find i
 - Dark mode colors
 - Contours around form fields.
 - Replaced obsolete colors in Flutter 3
+- Meetings are sorted in descending order on the Home screen
+- The latest meeting is now displayed in the All Students screen
 
 ## [1.1.0] - 2023-03-05
 

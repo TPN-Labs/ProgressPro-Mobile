@@ -64,12 +64,12 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
             },
             child: Icon(
               Icons.arrow_back,
-              color: Theme.of(context).textTheme.headline6!.color,
+              color: Theme.of(context).textTheme.titleLarge!.color,
             ),
           ),
           title: Text(
             widget.sessionData != null ? l10n.session_edit_title : l10n.session_create_title,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                 ),
@@ -91,7 +91,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                         children: [
                           Text(
                             l10n.session_modal_student,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),
@@ -126,7 +126,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                                     padding: const EdgeInsets.only(left: 16.0),
                                     child: Text(
                                       l10n.session_modal_student_select,
-                                      style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 16),
                                     ),
                                   ),
                                   Padding(
@@ -170,7 +170,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                                     padding: const EdgeInsets.only(bottom: 8.0, left: 15.0, top: 8.0),
                                     child: Icon(
                                       Icons.person,
-                                      color: Theme.of(Get.context!).textTheme.headline6!.color!,
+                                      color: Theme.of(Get.context!).textTheme.titleLarge!.color!,
                                       size: 28,
                                     ),
                                   ),
@@ -200,7 +200,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                           const SizedBox(height: 18),
                           Text(
                             l10n.session_modal_meetings,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),
@@ -228,7 +228,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                           const SizedBox(height: 18),
                           Text(
                             l10n.session_modal_price,
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                             ),
                           ),

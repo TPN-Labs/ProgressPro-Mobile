@@ -29,7 +29,7 @@
     "home_quick_1": "Meetings",
     "home_quick_2": "Sessions",
     "home_quick_3": "Students",
-    "home_latest": "Latest meetings",
+    "home_upcoming": "Upcoming meetings",
     "home_latest_visited": "Latest visit on",
 
     "student_all_title": "All Students",
@@ -71,5 +71,23 @@
     "session_status_active": "Active",
     "session_status_paid": "Paid",
     "session_status_closed": "Closed",
-    "session_status_archived": "Archived"
+    "session_status_archived": "Archived",
+
+    "meeting_all_title": "All meetings",
+    "meeting_all_create": "Create",
+    "meeting_create_title": "Create meeting",
+    "meeting_edit_title": "Edit meeting",
+    "meeting_modal_session": "Session",
+    "meeting_modal_session_select": "Select a session",
+    "meeting_modal_data": "Date",
+    "meeting_modal_start_time": "Start Time",
+    "meeting_modal_end_time": "End Time",
+    "meeting_modal_send": "Send",
+
+    "settings_title": "App Settings",
+    "settings_theme": "Theme",
+    "settings_week_starts_on": "Week starts on",
+    "settings_language": "Language",
+    "settings_logout": "Logout",
+    "settings_delete_account": "Delete your account"
 }

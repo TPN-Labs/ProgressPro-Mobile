@@ -33,12 +33,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
             child: Icon(
               Icons.arrow_back,
-              color: Theme.of(context).textTheme.headline6!.color,
+              color: Theme.of(context).textTheme.titleLarge!.color,
             ),
           ),
           title: Text(
             l10n.signup_title,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                 ),
@@ -141,7 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           children: <TextSpan>[
                             TextSpan(
                               text: '${l10n.signup_notice_1} ',
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: Theme.of(context).shadowColor,
@@ -149,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             TextSpan(
                               text: '${l10n.signup_terms} ',
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: HexColor(AppTheme.primaryColorString),
@@ -157,7 +157,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             TextSpan(
                               text: '${l10n.signup_notice_2} ',
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: Theme.of(context).shadowColor,
@@ -165,7 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             TextSpan(
                               text: '${l10n.signup_cookies} ',
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: HexColor(AppTheme.primaryColorString),
@@ -203,7 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Text(
                         l10n.signup_already_acc,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w400,
                             ),
@@ -211,7 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(width: 5),
                       Text(
                         l10n.signup_login,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w800,
                             ),

@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
+import 'package:progressp/controller/student/meeting_controller.dart';
 import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/view/student/add_student_screen.dart';
@@ -20,6 +21,7 @@ class AllStudentsScreen extends StatefulWidget {
 
 class _AllStudentsScreenState extends State<AllStudentsScreen> {
   final _apiStudentController = APIStudentController();
+  final _apiMeetingController = APIMeetingController();
 
   late List<StudentModel> _allStudents;
 
@@ -142,6 +144,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                                     _allStudents[i].fullName,
                                     i,
                                     _allStudents[i].avatar,
+                                    _apiMeetingController.getLatestMeeting(_allStudents[i].id)?.endAt,
                                   ),
                                 ),
                               ],

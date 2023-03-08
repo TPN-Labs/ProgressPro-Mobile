@@ -69,7 +69,7 @@ class DateRangePickerStyle {
       textStyle: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 15,
-        color: Theme.of(context).textTheme.headline6!.color,
+        color: Theme.of(context).textTheme.titleLarge!.color,
       ),
       todayTextStyle: TextStyle(
         fontStyle: FontStyle.italic,
@@ -137,7 +137,7 @@ class DateRangePickerStyle {
       todayTextStyle: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 18,
-        color: Theme.of(context).textTheme.headline6!.color,
+        color: Theme.of(context).textTheme.titleLarge!.color,
       ),
       cellDecoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background.withOpacity(0.9),
@@ -151,7 +151,7 @@ class DateRangePickerStyle {
       textStyle: TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 18,
-        color: Theme.of(context).textTheme.headline6!.color,
+        color: Theme.of(context).textTheme.titleLarge!.color,
       ),
       disabledDatesDecoration: disabledMonthBoxDecoration,
       disabledDatesTextStyle: disabledMonthTextStyle,

@@ -24,8 +24,8 @@ Widget meetingList(
       ),
       child: Padding(
         padding: const EdgeInsets.only(
-          left: 16,
-          right: 16,
+          left: 10,
+          right: 10,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
