@@ -17,6 +17,7 @@ this file is the go-to source for all the latest information. We hope you find i
 
 - Instructors can now submit student measurements (body size, weight, etc)
 - Implemented a class for customizing the calendar
+- Implemented a settings page where you can change various app settings.
 
 ### 🛠️ Fixed
 
@@ -25,6 +26,7 @@ this file is the go-to source for all the latest information. We hope you find i
 - Replaced obsolete colors in Flutter 3
 - Meetings are sorted in descending order on the Home screen
 - The latest meeting is now displayed in the All Students screen
+- Accounts can now be deleted
 
 ## [1.1.0] - 2023-03-05
 

@@ -9,6 +9,7 @@ import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/view/student/add_meeting_screen.dart';
 import 'package:progressp/view/student/add_student_screen.dart';
+import 'package:progressp/view/student/all_notes_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_meeting_list.dart';
 
@@ -117,6 +118,11 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                       bgColor: Colors.green,
                       showBorder: false,
                       onTap: () {
+                        Get.to(
+                          () => AllNotesScreen(_studentModel!),
+                          transition: Transition.rightToLeft,
+                          duration: const Duration(milliseconds: Constants.transitionDuration),
+                        );
                       },
                     ),
                   ),
@@ -129,7 +135,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                       showBorder: false,
                       onTap: () {
                         Get.to(
-                              () => AddStudentScreen(
+                          () => AddStudentScreen(
                             context,
                             _studentModel,
                             widget.refreshFunction,
@@ -322,7 +328,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                         InkWell(
                           onTap: () {
                             Get.to(
-                                  () => AddMeetingScreen(context, _sessionMeetings!.elementAt(i), refreshStudentDetails, widget.refreshFunction),
+                              () => AddMeetingScreen(context, _sessionMeetings!.elementAt(i), refreshStudentDetails, widget.refreshFunction),
                               transition: Transition.rightToLeft,
                               duration: const Duration(
                                 milliseconds: Constants.transitionDuration,

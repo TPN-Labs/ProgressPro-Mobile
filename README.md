@@ -15,6 +15,14 @@ Home screen                |  All meetings screen      | Session details screen
 :-------------------------:|:-------------------------:|:-------------------------:
 ![Simulator Screen Shot - iPhone 11 - 2023-03-06 at 16 52 09](https://user-images.githubusercontent.com/11734201/223145571-504aae63-82cd-4de0-890f-4fa2672fef46.png)  |  ![Simulator Screen Shot - iPhone 11 - 2023-03-06 at 16 52 12](https://user-images.githubusercontent.com/11734201/223145578-9ced644d-04d1-45ca-96f9-47970a202d16.png)  |  ![Simulator Screen Shot - iPhone 11 - 2023-03-06 at 16 52 19](https://user-images.githubusercontent.com/11734201/223145586-374bd931-8c9d-4e57-a6ae-b055c66fbd61.png)
 
+----
+#### 💾 Download it from
+
+Google Play Store          |  Apple App Store      |
+:-------------------------:|:----------------------:
+[![google_store](https://user-images.githubusercontent.com/11734201/224337224-49da8a33-1822-4180-ad46-506dd98ee1a8.png)](https://play.google.com/store/apps/details?id=com.tpnindustries.progressp)   |   [![apple_store](https://user-images.githubusercontent.com/11734201/224337220-ab05546b-069e-4085-a76f-cabf5794922c.png)](https://apps.apple.com/app/progress-pro/id6446066882)
+
+----
 
 ## 💻 Development
 

@@ -27,6 +27,9 @@ Widget studentList(
     ),
     title: Text(
       title,
+      overflow: TextOverflow.fade,
+      maxLines: 1,
+      softWrap: false,
       style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
             color: Theme.of(context).shadowColor,
             fontSize: 20,

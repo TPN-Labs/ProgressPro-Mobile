@@ -44,6 +44,9 @@ Widget sessionList(
             fontSize: 18,
             fontWeight: FontWeight.w300,
           ),
+      overflow: TextOverflow.fade,
+      maxLines: 1,
+      softWrap: false,
     ),
   );
 }
