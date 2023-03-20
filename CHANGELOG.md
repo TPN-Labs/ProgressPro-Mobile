@@ -11,7 +11,7 @@ and ensure that everyone is aware of the latest developments.
 Whether you're a developer working on the project or a user looking for information on recent updates,
 this file is the go-to source for all the latest information. We hope you find it useful and informative!
 
-## [Unreleased] - Unreleased
+## [1.1.2] - 2023-03-20
 
 ### 🌟 Added
 
