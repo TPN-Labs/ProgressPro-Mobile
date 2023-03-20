@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/config/constants.dart';
-import 'package:progressp/model/student/meeting_model.dart';
+import 'package:progressp/model/student/note_model.dart';
 
-Widget meetingList(
+Widget noteList(
   BuildContext context,
-  MeetingModel meetingData,
-  bool showAvatar,
+  NoteModel noteData,
 ) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
@@ -32,7 +31,7 @@ Widget meetingList(
           children: [
             Container(
               height: 64,
-              width: 48,
+              width: 70,
               decoration: BoxDecoration(
                 color: HexColor(AppTheme.primaryColorString),
                 borderRadius: BorderRadius.circular(5),
@@ -41,17 +40,10 @@ Widget meetingList(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    meetingData.startAt.day.toString().padLeft(2, '0'),
+                    noteData.measurementValue.toString(),
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    Constants().convertMonthNumber(meetingData.startAt.month).substring(0, 3),
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontSize: 14,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
                           color: Colors.white,
                         ),
                   ),
@@ -63,8 +55,7 @@ Widget meetingList(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '${meetingData.startAt.hour.toString().padLeft(2, '0')}:${meetingData.startAt.minute.toString().padLeft(2, '0')} '
-                  '- ${meetingData.endAt.hour.toString().padLeft(2, '0')}:${meetingData.endAt.minute.toString().padLeft(2, '0')}',
+                  '${Constants().convertMonthNumber(noteData.tookAt.month).substring(0, 3)} ${noteData.tookAt.day.toString().padLeft(2, '0')} ${noteData.tookAt.year}',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         fontSize: 20,
                         color: Theme.of(context).shadowColor,
@@ -72,9 +63,9 @@ Widget meetingList(
                       ),
                 ),
                 Text(
-                  meetingData.student.fullName,
+                  noteData.measurementName,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Theme.of(context).shadowColor,
                         fontWeight: FontWeight.w600,
                       ),
@@ -82,19 +73,15 @@ Widget meetingList(
               ],
             ),
             const SizedBox(width: 50),
-            if (showAvatar) ...[
-              Container(
-                height: 64,
-                width: 48,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/avatars/avatar_${meetingData.student.avatar % 15}.png',
-                    ),
-                  ),
-                ),
+            SizedBox(
+              height: 64,
+              width: 48,
+              child: Icon(
+                noteData.measurementType.icon,
+                color: Theme.of(context).shadowColor,
+                size: 36.0,
               ),
-            ],
+            ),
           ],
         ),
       ),

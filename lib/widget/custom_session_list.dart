@@ -19,7 +19,7 @@ Widget sessionList(
         color: sessionStatus.color,
         borderRadius: BorderRadius.circular(70),
         border: Border.all(
-          color: Colors.white,
+          color: Theme.of(context).shadowColor,
           width: 2,
         ),
       ),
@@ -31,19 +31,22 @@ Widget sessionList(
     ),
     title: Text(
       title,
-      style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
-            color: Colors.white,
+      style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
+            color: Theme.of(context).shadowColor,
             fontSize: 24,
             fontWeight: FontWeight.w700,
           ),
     ),
     subtitle: Text(
-      "Student: ${student.fullName}",
+      'Student: ${student.fullName}',
       style: Theme.of(Get.context!).textTheme.bodySmall!.copyWith(
-            color: Colors.white,
+            color: Theme.of(context).shadowColor,
             fontSize: 18,
             fontWeight: FontWeight.w300,
           ),
+      overflow: TextOverflow.fade,
+      maxLines: 1,
+      softWrap: false,
     ),
   );
 }

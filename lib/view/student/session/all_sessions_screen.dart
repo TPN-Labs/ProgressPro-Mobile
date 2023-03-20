@@ -3,50 +3,54 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
-import 'package:progressp/controller/student/meeting_controller.dart';
-import 'package:progressp/model/student/meeting_model.dart';
-import 'package:progressp/view/student/add_meeting_screen.dart';
+import 'package:progressp/config/textstyle.dart';
+import 'package:progressp/controller/student/session_controller.dart';
+import 'package:progressp/model/student/session_model.dart';
+import 'package:progressp/view/student/session/add_session_screen.dart';
+import 'package:progressp/view/student/session/view_session_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
-import 'package:progressp/widget/custom_meeting_list.dart';
+import 'package:progressp/widget/custom_session_list.dart';
 
-class AllMeetingsScreen extends StatefulWidget {
-  const AllMeetingsScreen({Key? key}) : super(key: key);
+class AllSessionsScreen extends StatefulWidget {
+  const AllSessionsScreen({Key? key}) : super(key: key);
 
   @override
-  State<AllMeetingsScreen> createState() => _AllMeetingsScreenState();
+  State<AllSessionsScreen> createState() => _AllSessionsScreenState();
 }
 
-class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
-  final _apiMeetingController = APIMeetingController();
+class _AllSessionsScreenState extends State<AllSessionsScreen> {
+  final _apiSessionController = APISessionController();
 
-  late List<MeetingModel> _allMeetings;
+  late List<SessionModel> _allSessions;
 
   bool _areSessionsLoaded = false;
 
-  Future<void> refreshMeetingList() async {
+  Future<void> refreshSessionList() async {
     setState(() {
       _areSessionsLoaded = false;
     });
-    _apiMeetingController.userGetAll();
+    List<SessionModel> allSessions = _apiSessionController.getAllSessions();
+    if(allSessions.isEmpty) {
+      await _apiSessionController.userGetAll();
+    }
     setState(() {
-      _allMeetings = _apiMeetingController.getAllMeetings()..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
+      _allSessions = allSessions..sort((a, b) => a.status.compareTo(b.status));
       _areSessionsLoaded = true;
     });
   }
 
   @override
   void initState() {
-    refreshMeetingList();
+    refreshSessionList();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).bottomAppBarColor,
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -58,7 +62,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
           ),
         ),
         title: Text(
-          'Toate intalnirile',
+          l10n.session_details_title,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -67,24 +71,25 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
         ),
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Padding(
           padding: Constants.defaultScreenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(
                     width: Get.width / 3,
                     child: CustomButton(
-                      title: 'Adauga',
+                      title: l10n.session_create,
                       type: ButtonChildType.text,
+                      showBorder: false,
                       onTap: () {
                         Get.to(
-                          () => AddMeetingScreen(context, null, refreshMeetingList, null),
+                          () => AddSessionScreen(context, null, refreshSessionList, null),
                           transition: Transition.rightToLeft,
                           duration: const Duration(
                             milliseconds: Constants.transitionDuration,
@@ -99,15 +104,23 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                 Expanded(
                   child: RefreshIndicator(
                     backgroundColor: Theme.of(context).backgroundColor,
-                    onRefresh: refreshMeetingList,
+                    onRefresh: refreshSessionList,
                     child: ListView(
                       physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
                         const SizedBox(height: 10),
-                        for (var i = 0; i < _allMeetings.length; i++) ...[
+                        for (var i = 0; i < _allSessions.length; i++) ...[
                           Container(
-                            height: 110,
+                            height: 85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.2),
+                              border: Border.all(
+                                color: Theme.of(context).shadowColor,
+                                width: 3,
+                              ),
+                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,17 +128,22 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                                 InkWell(
                                   onTap: () {
                                     Get.to(
-                                          () => AddMeetingScreen(context, _allMeetings[i], refreshMeetingList, null),
+                                      () => ViewSessionScreen(
+                                        context,
+                                        refreshSessionList,
+                                        _allSessions[i],
+                                      ),
                                       transition: Transition.rightToLeft,
                                       duration: const Duration(
                                         milliseconds: Constants.transitionDuration,
                                       ),
                                     );
                                   },
-                                  child: meetingList(
+                                  child: sessionList(
                                     context,
-                                    _allMeetings[i],
-                                    true,
+                                    '${l10n.session_no_1} ${_allSessions[i].unit}',
+                                    _allSessions[i].statusEnum,
+                                    _allSessions[i].student,
                                   ),
                                 ),
                               ],

@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
+import 'package:progressp/controller/student/meeting_controller.dart';
 import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/view/student/add_student_screen.dart';
@@ -20,6 +21,7 @@ class AllStudentsScreen extends StatefulWidget {
 
 class _AllStudentsScreenState extends State<AllStudentsScreen> {
   final _apiStudentController = APIStudentController();
+  final _apiMeetingController = APIMeetingController();
 
   late List<StudentModel> _allStudents;
 
@@ -48,7 +50,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).bottomAppBarColor,
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -69,7 +71,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
         ),
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Padding(
           padding: Constants.defaultScreenPadding,
           child: Column(
@@ -84,6 +86,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                     child: CustomButton(
                       title: l10n.student_create,
                       type: ButtonChildType.text,
+                      showBorder: false,
                       onTap: () {
                         Get.to(
                           () => AddStudentScreen(context, null, refreshStudentList, null),
@@ -109,10 +112,10 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                         const SizedBox(height: 10),
                         for (var i = 0; i < _allStudents.length; i++) ...[
                           Container(
-                            height: 110,
+                            height: 85,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(14),
+                              color: HexColor(AppTheme.primaryColorString).withOpacity(0.2),
                               border: Border.all(
                                 color: Theme.of(context).shadowColor,
                                 width: 3,
@@ -141,6 +144,7 @@ class _AllStudentsScreenState extends State<AllStudentsScreen> {
                                     _allStudents[i].fullName,
                                     i,
                                     _allStudents[i].avatar,
+                                    _apiMeetingController.getLatestMeeting(_allStudents[i].id)?.endAt,
                                   ),
                                 ),
                               ],

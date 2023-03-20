@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/utils/date_range_picker_style.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
@@ -31,6 +32,7 @@ class AddStudentScreen extends StatefulWidget {
 class _AddStudentScreenState extends State<AddStudentScreen> {
   final _apiStudentController = APIStudentController();
   final _newStudentController = Get.put(StudentController());
+  final DateRangePickerStyle _pickerStyle = DateRangePickerStyle();
 
   int _studentGender = 0;
   int _studentAvatar = 0;
@@ -63,7 +65,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).bottomAppBarColor,
+          backgroundColor: Theme.of(context).bottomAppBarTheme.color,
           elevation: 0,
           leading: InkWell(
             onTap: () {
@@ -71,259 +73,267 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             },
             child: Icon(
               Icons.arrow_back,
-              color: Theme.of(context).textTheme.headline6!.color,
+              color: Theme.of(context).textTheme.titleLarge!.color,
             ),
           ),
           title: Text(
             widget.studentData != null ? l10n.student_edit_title : l10n.student_create_title,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                 ),
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 28),
-            Expanded(
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: Constants.defaultScreenPadding,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.student_modal_fullname,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
-                              ),
-                        ),
-                        const SizedBox(height: 18),
-                        CustomTextFormField(
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            child: Icon(
-                              Icons.person,
-                              color: Theme.of(context).shadowColor,
-                              size: Constants.iconSize,
+        body: Container(
+          color: Theme.of(context).bottomAppBarTheme.color,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 28),
+              Expanded(
+                child: ListView(
+                  children: [
+                    Padding(
+                      padding: Constants.defaultScreenPadding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.student_modal_fullname,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 18,
                             ),
                           ),
-                          hintText: l10n.student_modal_fullname,
-                          textEditingController: _newStudentController.fullNameController.value,
-                          capitalization: TextCapitalization.none,
-                        ),
-                        const SizedBox(height: 18),
-                        Text(
-                          l10n.student_modal_height,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
+                          const SizedBox(height: 18),
+                          CustomTextFormField(
+                            prefix: Padding(
+                              padding: const EdgeInsets.only(top: 10, bottom: 10),
+                              child: Icon(
+                                Icons.person,
+                                color: Theme.of(context).shadowColor,
+                                size: Constants.iconSize,
                               ),
-                        ),
-                        const SizedBox(height: 18),
-                        CustomTextFormField(
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            child: Icon(
-                              Icons.height,
-                              color: Theme.of(context).shadowColor,
-                              size: Constants.iconSize,
+                            ),
+                            hintText: l10n.student_modal_fullname,
+                            textEditingController: _newStudentController.fullNameController.value,
+                            capitalization: TextCapitalization.none,
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            l10n.student_modal_height,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 18,
                             ),
                           ),
-                          inputType: const TextInputType.numberWithOptions(
-                            signed: false,
-                            decimal: true,
-                          ),
-                          limit: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'[0-9.,]'),
-                            )
-                          ],
-                          hintText: '${l10n.student_modal_height} (${l10n.student_modal_height_cm})',
-                          textEditingController: _newStudentController.heightController.value,
-                          capitalization: TextCapitalization.none,
-                        ),
-                        const SizedBox(height: 18),
-                        Text(
-                          l10n.student_modal_gender,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
+                          const SizedBox(height: 18),
+                          CustomTextFormField(
+                            prefix: Padding(
+                              padding: const EdgeInsets.only(top: 10, bottom: 10),
+                              child: Icon(
+                                Icons.height,
+                                color: Theme.of(context).shadowColor,
+                                size: Constants.iconSize,
                               ),
-                        ),
-                        const SizedBox(height: 18),
-                        SizedBox(
-                          width: Get.width,
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _studentGender = 1;
-                                  });
-                                },
-                                child: genderContainer(
-                                  context,
-                                  l10n.student_modal_gender_male,
-                                  Icon(
-                                    Icons.male,
-                                    color: _studentGender == 1 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
-                                    size: 36,
-                                  ),
-                                  _studentGender == 1,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _studentGender = 2;
-                                  });
-                                },
-                                child: genderContainer(
-                                  context,
-                                  l10n.student_modal_gender_female,
-                                  Icon(
-                                    Icons.female,
-                                    color: _studentGender == 2 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
-                                    size: 36,
-                                  ),
-                                  _studentGender == 2,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _studentGender = 3;
-                                  });
-                                },
-                                child: genderContainer(
-                                  context,
-                                  l10n.student_modal_gender_other,
-                                  Icon(
-                                    Icons.transgender,
-                                    color: _studentGender == 3 ? Theme.of(context).bottomAppBarColor : Theme.of(context).textTheme.headline6!.color,
-                                    size: 36,
-                                  ),
-                                  _studentGender == 3,
-                                ),
-                              ),
+                            ),
+                            inputType: const TextInputType.numberWithOptions(
+                              signed: false,
+                              decimal: true,
+                            ),
+                            limit: [
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.,]'),
+                              )
                             ],
+                            hintText: '${l10n.student_modal_height} (${l10n.student_modal_height_cm})',
+                            textEditingController: _newStudentController.heightController.value,
+                            capitalization: TextCapitalization.none,
                           ),
-                        ),
-                        const SizedBox(height: 18),
-                        Text(
-                          l10n.student_modal_avatar,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
-                              ),
-                        ),
-                        const SizedBox(height: 18),
-                        SizedBox(
-                          width: Get.width,
-                          height: 100,
-                          child: Scrollbar(
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
+                          const SizedBox(height: 18),
+                          Text(
+                            l10n.student_modal_gender,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          SizedBox(
+                            width: Get.width,
+                            child: Row(
                               children: [
-                                Row(
-                                  children: [
-                                    for (var i = 0; i < 15; i++) ...[
-                                      InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _studentAvatar = i;
-                                          });
-                                        },
-                                        child: avatarContainer(
-                                          context,
-                                          i,
-                                          _studentAvatar == i,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                    ]
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _studentGender = 1;
+                                    });
+                                  },
+                                  child: genderContainer(
+                                    context,
+                                    l10n.student_modal_gender_male,
+                                    Icon(
+                                      Icons.male,
+                                      color: _studentGender == 1 ? Colors.white : Theme.of(context).textTheme.titleLarge!.color,
+                                      size: 36,
+                                    ),
+                                    _studentGender == 1,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _studentGender = 2;
+                                    });
+                                  },
+                                  child: genderContainer(
+                                    context,
+                                    l10n.student_modal_gender_female,
+                                    Icon(
+                                      Icons.female,
+                                      color: _studentGender == 2 ? Colors.white : Theme.of(context).textTheme.titleLarge!.color,
+                                      size: 36,
+                                    ),
+                                    _studentGender == 2,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _studentGender = 3;
+                                    });
+                                  },
+                                  child: genderContainer(
+                                    context,
+                                    l10n.student_modal_gender_other,
+                                    Icon(
+                                      Icons.transgender,
+                                      color: _studentGender == 3 ? Colors.white : Theme.of(context).textTheme.titleLarge!.color,
+                                      size: 36,
+                                    ),
+                                    _studentGender == 3,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 18),
-                        Text(
-                          l10n.student_modal_first_meet,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontSize: 18,
-                              ),
-                        ),
-                        const SizedBox(height: 18),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).selectedRowColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).shadowColor,
-                                blurRadius: 2,
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: SfDateRangePicker(
-                              onSelectionChanged: _onSelectionChanged,
-                              initialSelectedDate: widget.studentData == null
-                                  ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-                                  : widget.studentData!.knownFrom,
-                              selectionMode: DateRangePickerSelectionMode.single,
+                          const SizedBox(height: 18),
+                          Text(
+                            l10n.student_modal_avatar,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 18,
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 25),
-                      ],
+                          const SizedBox(height: 18),
+                          SizedBox(
+                            width: Get.width,
+                            height: 100,
+                            child: Scrollbar(
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  Row(
+                                    children: [
+                                      for (var i = 0; i < 15; i++) ...[
+                                        InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              _studentAvatar = i;
+                                            });
+                                          },
+                                          child: avatarContainer(
+                                            context,
+                                            i,
+                                            _studentAvatar == i,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                      ]
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            l10n.student_modal_first_meet,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context).shadowColor,
+                                  blurRadius: 2,
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: SfDateRangePicker(
+                                headerStyle: _pickerStyle.headerStyle(context),
+                                monthViewSettings: _pickerStyle.monthViewSettings(context, WeekStart.monday),
+                                monthCellStyle: _pickerStyle.monthCellStyle(context),
+                                selectionTextStyle: _pickerStyle.selectionTextStyle(context),
+                                onSelectionChanged: _onSelectionChanged,
+                                initialSelectedDate: widget.studentData == null
+                                    ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+                                    : widget.studentData!.knownFrom,
+                                selectionMode: DateRangePickerSelectionMode.single,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-              child: CustomButton(
-                title: l10n.student_modal_send,
-                type: ButtonChildType.text,
-                onTap: () {
-                  widget.studentData == null
-                      ? _apiStudentController.userCreate(
-                          context,
-                          _newStudentController.fullNameController.value.text,
-                          _studentGender,
-                          double.parse(
-                            _newStudentController.heightController.value.text,
-                          ),
-                          _studentAvatar,
-                          _studentMeetOn,
-                          widget.mainRefreshFunction,
-                        )
-                      : _apiStudentController.userUpdate(
-                          context,
-                          widget.studentData!.id,
-                          _newStudentController.fullNameController.value.text,
-                          _studentGender,
-                          double.parse(
-                            _newStudentController.heightController.value.text,
-                          ),
-                          _studentAvatar,
-                          _studentMeetOn,
-                          widget.mainRefreshFunction,
-                          widget.secondRefreshFunction!,
-                        );
-                },
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                child: CustomButton(
+                  title: l10n.student_modal_send,
+                  type: ButtonChildType.text,
+                  showBorder: false,
+                  onTap: () {
+                    widget.studentData == null
+                        ? _apiStudentController.userCreate(
+                      context,
+                      _newStudentController.fullNameController.value.text,
+                      _studentGender,
+                      double.parse(
+                        _newStudentController.heightController.value.text,
+                      ),
+                      _studentAvatar,
+                      _studentMeetOn,
+                      widget.mainRefreshFunction,
+                    )
+                        : _apiStudentController.userUpdate(
+                      context,
+                      widget.studentData!.id,
+                      _newStudentController.fullNameController.value.text,
+                      _studentGender,
+                      double.parse(
+                        _newStudentController.heightController.value.text,
+                      ),
+                      _studentAvatar,
+                      _studentMeetOn,
+                      widget.mainRefreshFunction,
+                      widget.secondRefreshFunction!,
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        )
       ),
     );
   }
@@ -339,14 +349,12 @@ Widget genderContainer(
     width: (Get.width - 80) / 3,
     height: 100,
     decoration: BoxDecoration(
-      color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
-      borderRadius: BorderRadius.circular(16),
-      boxShadow: [
-        BoxShadow(
-          color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarColor,
-          blurRadius: 2,
-        ),
-      ],
+      color: isSelected != false ? HexColor(AppTheme.primaryColorString) : Theme.of(context).bottomAppBarTheme.color,
+      borderRadius: BorderRadius.circular(100),
+      border: Border.all(
+        color: Theme.of(context).shadowColor,
+        width: 1.5,
+      ),
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -361,7 +369,7 @@ Widget genderContainer(
           title!,
           style: Theme.of(context).textTheme.caption!.copyWith(
                 fontSize: 14,
-                color: isSelected != false ? Theme.of(context).bottomAppBarColor : Theme.of(context).shadowColor,
+                color: isSelected != false ? Colors.white : Theme.of(context).shadowColor,
                 fontWeight: FontWeight.w600,
               ),
         ),
@@ -377,16 +385,13 @@ Widget avatarContainer(
 ) {
   return Container(
     width: (Get.width - 80) / 3,
-    height: 100,
     decoration: BoxDecoration(
-      color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarColor,
-      borderRadius: BorderRadius.circular(16),
-      boxShadow: [
-        BoxShadow(
-          color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarColor,
-          blurRadius: 2,
-        ),
-      ],
+      color: isSelected != false ? HexColor(AppTheme.primaryColorString).withOpacity(0.5) : Theme.of(context).bottomAppBarTheme.color,
+      borderRadius: BorderRadius.circular(100),
+      border: Border.all(
+        color: Theme.of(context).shadowColor,
+        width: 1.5,
+      ),
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:collection/collection.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
@@ -12,8 +8,9 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/controller/user/auth_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
-import 'package:progressp/view/student/all_meetings_screen.dart';
-import 'package:progressp/view/student/all_sessions_screen.dart';
+import 'package:progressp/view/settings/settings_screen.dart';
+import 'package:progressp/view/student/meeting/all_meetings_screen.dart';
+import 'package:progressp/view/student/session/all_sessions_screen.dart';
 import 'package:progressp/view/student/all_students_screen.dart';
 import 'package:progressp/widget/custom_meeting_list.dart';
 import 'package:progressp/widget/custom_quick.dart';
@@ -33,22 +30,28 @@ class _HomeScreenState extends State<HomeScreen> {
   List<StudentModel>? _allStudents;
   List<MeetingModel>? _allMeetings;
 
-  @override
-  void initState() {
-    _apiStudentController.userGetAll();
-    _apiMeetingController.userGetAll();
+  void loadStudentsAndMeetings() async {
+    await _apiStudentController.userGetAll();
+    await _apiMeetingController.userGetAll();
+
+    List<StudentModel> allStudents = _apiStudentController.getAllStudents();
+    List<MeetingModel> upcomingMeetings = List<MeetingModel>.empty(growable: true);
+    for (var student in allStudents) {
+      MeetingModel? latestMeeting = _apiMeetingController.getLatestMeeting(student.id);
+      if(latestMeeting != null) {
+        upcomingMeetings.add(latestMeeting);
+      }
+    }
 
     setState(() {
-      _allStudents = _apiStudentController.getAllStudents();
-      _allMeetings = _apiMeetingController.getAllMeetings();
+      _allStudents = allStudents;
+      _allMeetings = upcomingMeetings..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
     });
-    super.initState();
   }
-
-  MeetingModel? getLatestMeeting(String studentId) {
-    List<MeetingModel> studentMeetings = _allMeetings!.where((e) => e.student.id == studentId).toList();
-    studentMeetings.sortBy((element) => element.startAt);
-    return studentMeetings.lastOrNull;
+  @override
+  void initState() {
+    loadStudentsAndMeetings();
+    super.initState();
   }
 
   @override
@@ -91,13 +94,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(
+                            () => const SettingsScreen(),
+                            transition: Transition.rightToLeft,
+                            duration: const Duration(milliseconds: Constants.transitionDuration),
+                          );
+                        },
                         child: Container(
                           height: 72,
                           width: 72,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Theme.of(context).appBarTheme.backgroundColor,
+                            color: Theme.of(context).bottomAppBarTheme.color,
                             border: Border.all(
                               color: HexColor(AppTheme.primaryColorString),
                               width: 2,
@@ -110,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(72),
                               child: Icon(
                                 Icons.person,
-                                color: HexColor(AppTheme.primaryColorString),
+                                color: Theme.of(context).shadowColor,
                                 size: 50,
                               ),
                             ),
@@ -139,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               l10n.home_quick_1,
                               Icon(
                                 Icons.calendar_month,
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).shadowColor,
                                 size: 36,
                               ),
                               null,
@@ -159,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               l10n.home_quick_2,
                               Icon(
                                 Icons.sports_handball,
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).shadowColor,
                                 size: 36,
                               ),
                               null,
@@ -179,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               l10n.home_quick_3,
                               Icon(
                                 Icons.person,
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).shadowColor,
                                 size: 36,
                               ),
                               null,
@@ -196,41 +205,43 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             flex: 2,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Padding(
-                  padding: Constants.defaultScreenPadding,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20),
-                      Text(
-                        l10n.home_latest,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontSize: 20,
-                            ),
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        children: [
-                          if (_allStudents != null) ...[
-                            for (var i = 0; i < _allStudents!.length; i++)
-                              if (getLatestMeeting(_allStudents!.elementAt(i).id) != null)
-                                meetingList(
-                                  context,
-                                  getLatestMeeting(_allStudents!.elementAt(i).id)!,
-                                  true,
-                                ),
+            child: Container(
+              color: Theme.of(context).bottomAppBarTheme.color,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  Padding(
+                    padding: Constants.defaultScreenPadding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          l10n.home_upcoming,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Column(
+                          children: [
+                            if (_allStudents != null) ...[
+                              for (var i = 0; i < _allMeetings!.length; i++)
+                                  meetingList(
+                                    context,
+                                    _allMeetings!.elementAt(i),
+                                    true,
+                                  ),
+                            ],
                           ],
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            )
           ),
         ],
       ),
@@ -262,7 +273,7 @@ Widget circleCard(BuildContext context, IconData icon, String text, Color color)
         const SizedBox(height: 10),
         Text(
           text,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 height: 1.4,

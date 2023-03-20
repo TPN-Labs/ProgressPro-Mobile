@@ -29,7 +29,7 @@
     "home_quick_1": "Intalniri",
     "home_quick_2": "Sesiuni",
     "home_quick_3": "Studenti",
-    "home_latest": "Ultimele intalniri",
+    "home_upcoming": "Urmatoarele intalniri",
     "home_latest_visited": "Ultima vizita pe ",
 
     "student_all_title": "Toti studentii",
@@ -71,5 +71,29 @@
     "session_status_active": "Activ",
     "session_status_paid": "Platit",
     "session_status_closed": "Inchis",
-    "session_status_archived": "Arhivat"
+    "session_status_archived": "Arhivat",
+
+    "meeting_all_title": "Toate intalnirile",
+    "meeting_all_create": "Adauga",
+    "meeting_create_title": "Adauga intalnire",
+    "meeting_edit_title": "Editeaza intalnire",
+    "meeting_modal_session": "Sesiune",
+    "meeting_modal_session_select": "Selecteaza o sesiune",
+    "meeting_modal_data": "Data",
+    "meeting_modal_start_time": "Ora inceput",
+    "meeting_modal_end_time": "Ora final",
+    "meeting_modal_send": "Trimite",
+
+    "settings_title": "Setarile aplicatiei",
+    "settings_theme": "Tema",
+    "settings_week_starts_on": "Inceputul saptamanii",
+    "settings_language": "Limba",
+    "settings_logout": "Delogheaza-te",
+    "settings_delete_account": "Sterge-ti contul",
+    "settings_week_monday": "Luni",
+    "settings_week_sunday": "Duminica",
+    "settings_delete_title": "Esti sigur??",
+    "settings_delete_body": "Esti pe cale sa iti stergi contul",
+    "settings_delete_close": "Inchide",
+    "settings_delete_confirm": "Sterge"
 }

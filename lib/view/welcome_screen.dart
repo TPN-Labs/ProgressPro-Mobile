@@ -22,7 +22,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     return Scaffold(
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -40,14 +40,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             const SizedBox(height: 20),
             Text(
               l10n.welcome,
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontSize: 34,
                   ),
             ),
             const SizedBox(height: 10),
             Text(
               l10n.welcome_headline,
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontSize: 16,
                     height: 1.4,
                   ),
@@ -59,6 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: CustomButton(
                 title: l10n.welcome_login,
                 type: ButtonChildType.text,
+                showBorder: false,
                 onTap: () {
                   Get.to(
                     () => const SignInScreen(),
@@ -84,7 +85,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 children: [
                   Text(
                     l10n.welcome_no_account,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                         ),
@@ -94,7 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   Text(
                     l10n.welcome_register,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
                         ),

@@ -13,6 +13,7 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final VoidCallback onTap;
   final double? size;
+  final bool showBorder;
 
   const CustomButton({
     Key? key,
@@ -23,6 +24,7 @@ class CustomButton extends StatelessWidget {
     required this.onTap,
     this.textColor,
     this.size,
+    required this.showBorder,
   }) : super(key: key);
 
   @override
@@ -37,6 +39,10 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: bgColor ?? HexColor(AppTheme.primaryColorString),
           borderRadius: BorderRadius.circular(5),
+          border: showBorder == true ? Border.all(
+            color: Theme.of(context).shadowColor,
+            width: 4,
+          ) : Border.all(width: 0),
         ),
         child: Center(
           child: (type == ButtonChildType.text)

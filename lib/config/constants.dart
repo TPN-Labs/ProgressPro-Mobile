@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
 
+enum AppLanguage {
+  system('sys'),
+  english('en'),
+  romanian('ro');
+
+  final String langCode;
+
+  const AppLanguage(this.langCode);
+
+  Locale get locale => langCode == 'sys'
+      ? WidgetsBinding.instance.window.locales.first
+      : langCode == 'en'
+          ? const Locale('en')
+          : const Locale('ro');
+}
+
 enum WeekStart {
   sunday,
   monday,
@@ -58,8 +74,11 @@ class Constants {
 
 class StorageKeys {
   static const String appThemeMode = 'appThemeMode';
+  static const String appWeekStart = 'appWeekStart';
+  static const String appLanguage = 'appLanguage';
   static const String authKey = 'authKey';
   static const String allMeetings = 'allMeetings';
+  static const String allNotes = 'allNotes';
   static const String allStudents = 'allStudents';
   static const String allSessions = 'allSessions';
 }
@@ -82,6 +101,15 @@ enum SessionStatus {
 
   const SessionStatus(this.value);
 
-  IconData get icon => value == 1 ? Icons.timeline : value == 2 ? Icons.payment : Icons.lock;
-  Color get color => value == 1 ? Colors.blue : value == 2 ? Colors.green : Colors.red;
+  IconData get icon => value == 1
+      ? Icons.timeline
+      : value == 2
+          ? Icons.payment
+          : Icons.lock;
+
+  Color get color => value == 1
+      ? Colors.blue
+      : value == 2
+          ? Colors.green
+          : Colors.red;
 }

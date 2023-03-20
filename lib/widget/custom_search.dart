@@ -74,7 +74,7 @@ class CustomSearchField extends StatelessWidget {
         obscureText: obscure,
         onChanged: onChanged,
         readOnly: readOnly!,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Theme.of(context).textTheme.headline6!.color, fontFamily: 'Manrope'),
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Theme.of(context).textTheme.titleLarge!.color, fontFamily: 'Manrope'),
         textAlign: TextAlign.left,
       ),
     );

@@ -36,7 +36,7 @@ class AppTheme {
     return base.copyWith(
       headline6: GoogleFonts.manrope(
         textStyle: TextStyle(
-          color: base.headline6!.color,
+          color: base.titleLarge!.color,
           fontSize: 20,
           fontWeight: FontWeight.w500,
         ),
@@ -52,7 +52,7 @@ class AppTheme {
         ),
       ),
       bodyText2: GoogleFonts.manrope(
-        textStyle: TextStyle(color: base.bodyText2!.color, fontSize: 16),
+        textStyle: TextStyle(color: base.bodyMedium!.color, fontSize: 16),
       ),
       bodyText1: GoogleFonts.manrope(
         textStyle: TextStyle(color: base.bodyText1!.color, fontSize: 14),
@@ -99,11 +99,10 @@ class AppTheme {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
       appBarTheme: const AppBarTheme(color: Colors.white),
-      backgroundColor: Colors.white,
-      bottomAppBarColor: const Color(0xfff1efff),
+      bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xffd9d6ff)),
       canvasColor: Colors.white,
       cardColor: Colors.white,
-      colorScheme: colorScheme,
+      colorScheme: colorScheme.copyWith(background: Colors.white),
       disabledColor: HexColor('#D5D7D8'),
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
@@ -112,8 +111,7 @@ class AppTheme {
       popupMenuTheme: const PopupMenuThemeData(color: Colors.white),
       primaryColor: primaryColor,
       primaryTextTheme: _buildTextTheme(base.textTheme),
-      scaffoldBackgroundColor: Colors.white,
-      selectedRowColor: const Color(0xfff1efff),
+      scaffoldBackgroundColor: const Color(0xfff1efff),
       shadowColor: const Color(0xff211F32),
       splashColor: Colors.white.withOpacity(0.1),
       splashFactory: InkRipple.splashFactory,
@@ -131,18 +129,16 @@ class AppTheme {
     final ThemeData base = ThemeData.dark();
     return base.copyWith(
       appBarTheme: const AppBarTheme(color: Color(0xff15141F)),
-      backgroundColor: const Color(0xff15141F),
-      bottomAppBarColor: const Color(0xff211F32),
+      bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xff211F32)),
       canvasColor: Colors.white,
       cardColor: const Color(0xff211F32),
-      colorScheme: colorScheme,
+      colorScheme: colorScheme.copyWith(background: const Color(0xff15141F)),
       indicatorColor: Colors.white,
       platform: TargetPlatform.iOS,
       popupMenuTheme: const PopupMenuThemeData(color: Colors.black),
       primaryColor: primaryColor,
       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
-      scaffoldBackgroundColor: Colors.grey[850],
-      selectedRowColor: const Color(0xff363257),
+      scaffoldBackgroundColor: const Color(0xff211F32),
       shadowColor: const Color(0xffF9F9FA),
       splashColor: Colors.white24,
       splashFactory: InkRipple.splashFactory,

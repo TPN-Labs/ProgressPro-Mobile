@@ -6,7 +6,7 @@ Widget quickAccessContainer(BuildContext context, String? title, Icon icon, Stri
     width: (Get.width - 90) / 3,
     height: 100,
     decoration: BoxDecoration(
-      color: Theme.of(context).bottomAppBarColor,
+      color: Theme.of(context).bottomAppBarTheme.color,
       borderRadius: BorderRadius.circular(16),
       boxShadow: const [
         BoxShadow(
@@ -28,7 +28,7 @@ Widget quickAccessContainer(BuildContext context, String? title, Icon icon, Stri
           title!,
           style: Theme.of(context).textTheme.caption!.copyWith(
             fontSize: 14,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).shadowColor,
             fontWeight: FontWeight.w600,
           ),
         ),
