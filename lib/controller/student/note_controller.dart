@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:progressp/config/body_measurements.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/model/student/note_model.dart';
 import 'package:progressp/model/student/note_model.dart';
@@ -46,6 +47,7 @@ class APINoteController {
           student: studentModelShort,
           measurementName: formInput['measurementName'],
           measurementValue: formInput['measurementValue'],
+          measurementType: BodyMeasurementType.values.firstWhere((element) => element.name == formInput['measurementName']),
           tookAt: DateTime(
             int.parse(tookAtArr[0]),
             int.parse(tookAtArr[1]),
@@ -61,6 +63,7 @@ class APINoteController {
           student: studentModelShort,
           measurementName: formInput['measurementName'],
           measurementValue: formInput['measurementValue'],
+          measurementType: BodyMeasurementType.values.firstWhere((element) => element.name == formInput['measurementName']),
           tookAt: DateTime(
             int.parse(tookAtArr[0]),
             int.parse(tookAtArr[1]),

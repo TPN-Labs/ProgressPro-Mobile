@@ -6,8 +6,8 @@ import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/controller/student/session_controller.dart';
 import 'package:progressp/model/student/session_model.dart';
-import 'package:progressp/view/student/add_session_screen.dart';
-import 'package:progressp/view/student/view_session_screen.dart';
+import 'package:progressp/view/student/session/add_session_screen.dart';
+import 'package:progressp/view/student/session/view_session_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_session_list.dart';
 

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:progressp/config/body_measurements.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/controller/student/note_controller.dart';
 import 'package:progressp/model/student/note_model.dart';
 import 'package:progressp/model/student/student_model.dart';
-import 'package:progressp/view/student/add_note_screen.dart';
+import 'package:progressp/view/student/note/add_note_screen.dart';
+import 'package:progressp/view/student/note/view_note_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_measurement.dart';
 
@@ -49,6 +51,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
             id: 'id',
             measurementName: '',
             measurementValue: -13,
+            measurementType: BodyMeasurementType.waist,
             tookAt: DateTime(1970, 01, 01),
             student: StudentModelShort(id: 'id', fullName: 'No Model', avatar: 0),
           );
@@ -144,16 +147,28 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                           const SizedBox(height: 5),
                           for (var i = 0; i < _notesByMeasurement.keys.length; i++) ...[
                             if (_notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!.measurementValue != -13) ...[
-                              measurementContainer(
-                                context,
-                                _notesByMeasurement.keys.elementAt(i),
-                                _notesByMeasurement.keys.elementAt(i).name.capitalize!,
-                                _notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!.measurementValue.toString(),
-                                _notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!.tookAt.day.toString(),
-                                Constants()
-                                    .convertMonthNumber(_notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!.tookAt.month)
-                                    .capitalizeFirst!
-                                    .substring(0, 3),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(
+                                    () => ViewNoteScreen(
+                                      context,
+                                      refreshNoteList,
+                                      _notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!,
+                                    ),
+                                    transition: Transition.rightToLeft,
+                                  );
+                                },
+                                child: measurementContainer(
+                                  context,
+                                  _notesByMeasurement.keys.elementAt(i),
+                                  _notesByMeasurement.keys.elementAt(i).name.capitalize!,
+                                  _notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!.measurementValue.toString(),
+                                  _notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!.tookAt.day.toString(),
+                                  Constants()
+                                      .convertMonthNumber(_notesByMeasurement[_notesByMeasurement.keys.elementAt(i)]!.tookAt.month)
+                                      .capitalizeFirst!
+                                      .substring(0, 3),
+                                ),
                               ),
                               const SizedBox(height: 15),
                             ]

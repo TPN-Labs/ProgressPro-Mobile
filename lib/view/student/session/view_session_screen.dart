@@ -9,8 +9,8 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/session_model.dart';
 import 'package:progressp/model/student/student_model.dart';
-import 'package:progressp/view/student/add_meeting_screen.dart';
-import 'package:progressp/view/student/add_session_screen.dart';
+import 'package:progressp/view/student/meeting/add_meeting_screen.dart';
+import 'package:progressp/view/student/session/add_session_screen.dart';
 import 'package:progressp/view/student/view_student_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_meeting_list.dart';
@@ -43,9 +43,9 @@ class _ViewSessionScreenState extends State<ViewSessionScreen> {
   void refreshSessionDetails() {
     if (_isDeleted) return;
     List<SessionModel>? allSessions = _apiSessionController.getAllSessions();
-    int currentStudentIdx = allSessions.indexWhere((e) => e.id == widget.sessionModel.id);
+    int currentSessionIdx = allSessions.indexWhere((e) => e.id == widget.sessionModel.id);
     setState(() {
-      _sessionModel = allSessions[currentStudentIdx];
+      _sessionModel = allSessions[currentSessionIdx];
       _sessionMeetings = getMeetings();
     });
   }

@@ -1,4 +1,4 @@
-import 'package:progressp/model/student/session_model.dart';
+import 'package:progressp/config/body_measurements.dart';
 import 'package:progressp/model/student/student_model.dart';
 
 class NoteModel {
@@ -6,6 +6,7 @@ class NoteModel {
   final StudentModelShort student;
   final String measurementName;
   final double measurementValue;
+  final BodyMeasurementType measurementType;
   final DateTime tookAt;
 
   NoteModel({
@@ -13,6 +14,7 @@ class NoteModel {
     required this.student,
     required this.measurementName,
     required this.measurementValue,
+    required this.measurementType,
     required this.tookAt,
   });
 
@@ -26,6 +28,7 @@ class NoteModel {
       ),
       measurementName: parsedJson['measurementName'],
       measurementValue: parsedJson['measurementValue'],
+      measurementType: BodyMeasurementType.values.firstWhere((element) => element.name == parsedJson['measurementName']),
       tookAt: DateTime(
         parsedJson['tookAt'][0],
         parsedJson['tookAt'][1],
@@ -40,6 +43,7 @@ class NoteModel {
       'student': student,
       'measurementName': measurementName,
       'measurementValue': measurementValue,
+      'measurementType': measurementType.name,
       'tookAt': [
         tookAt.year,
         tookAt.month,

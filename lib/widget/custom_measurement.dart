@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:progressp/config/constants.dart';
+import 'package:progressp/config/body_measurements.dart';
 
 Widget measurementContainer(
   BuildContext context,
@@ -34,7 +34,7 @@ Widget measurementContainer(
                 children: [
                   Icon(
                     measurementType.icon,
-                    color: Theme.of(context).shadowColor,
+                    color: Colors.white,
                     size: 36,
                   ),
                 ],
@@ -49,7 +49,7 @@ Widget measurementContainer(
                 value,
                 style: Theme.of(context).textTheme.caption!.copyWith(
                   fontSize: 28,
-                  color: Theme.of(context).shadowColor,
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -57,7 +57,7 @@ Widget measurementContainer(
                 title,
                 style: Theme.of(context).textTheme.caption!.copyWith(
                   fontSize: 14,
-                  color: Theme.of(context).shadowColor,
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -74,7 +74,7 @@ Widget measurementContainer(
                     month,
                     style: Theme.of(context).textTheme.caption!.copyWith(
                       fontSize: 28,
-                      color: Theme.of(context).shadowColor,
+                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -82,7 +82,7 @@ Widget measurementContainer(
                     day,
                     style: Theme.of(context).textTheme.caption!.copyWith(
                       fontSize: 22,
-                      color: Theme.of(context).shadowColor,
+                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

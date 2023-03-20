@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.17.0
   pinput: ^2.2.12
   syncfusion_flutter_datepicker: ^20.2.44
+  syncfusion_flutter_charts: ^20.4.54
 
 dev_dependencies:
   flutter_test:

@@ -16,6 +16,7 @@ this file is the go-to source for all the latest information. We hope you find i
 ### 🌟 Added
 
 - Instructors can now submit student measurements (body size, weight, etc)
+- A separated page for viewing a histogram of previous measurements
 - Implemented a class for customizing the calendar
 - Implemented a settings page where you can change various app settings.
 

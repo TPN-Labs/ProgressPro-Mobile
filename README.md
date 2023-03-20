@@ -33,7 +33,8 @@ The application was built with:
 - [Flutter 3](https://github.com/flutter/flutter) as mobile framework
 - [Get Storage 2.0](https://github.com/InsertKoinIO/koin) as local database for caching data
 - [Intl 0.17](https://github.com/dart-lang/intl) for internationalization and localization support
-- [Syncfusion Datepicker 20.2](https://github.com/syncfusion/flutter-examples) for picking dates from a calendar
+- [Syncfusion Datepicker 20.2](https://pub.dev/packages/syncfusion_flutter_datepicker) for picking dates from a calendar
+- [Syncfusion Charts 20.4](https://pub.dev/packages/syncfusion_flutter_charts) for displaying histograms of body measurements
 
 ### 📁 Project Structure
 

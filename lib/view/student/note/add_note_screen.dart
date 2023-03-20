@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:progressp/config/body_measurements.dart';
 import 'package:progressp/controller/student/note_controller.dart';
 import 'package:progressp/model/student/note_model.dart';
 import 'package:progressp/config/constants.dart';
@@ -53,7 +54,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     if (widget.noteData != null) {
       _newNoteController.valueController.value.text = widget.noteData!.measurementValue.toString();
       _noteTookAt = widget.noteData!.tookAt.toString().substring(0, 10);
-      _bodyMeasurement = BodyMeasurementType.values.firstWhere((element) => element.name == widget.noteData!.measurementName).value;
+      _bodyMeasurement = availableMeasurements[widget.student.gender]!.indexOf(widget.noteData!.measurementType);
       _selectedMeasurement = BodyMeasurementType.values.firstWhere((element) => element.name == widget.noteData!.measurementName);
     }
     _allMeasurements = availableMeasurements[widget.student.gender]!;

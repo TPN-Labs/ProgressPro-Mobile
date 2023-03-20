@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
-import 'package:progressp/view/student/add_meeting_screen.dart';
+import 'package:progressp/view/student/meeting/add_meeting_screen.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_meeting_list.dart';
 
