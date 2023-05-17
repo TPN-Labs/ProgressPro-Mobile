@@ -111,12 +111,28 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: Get.width / 3 - 20,
+                    width: Get.width / 2 - 20,
                     child: CustomButton(
-                      icon: Icons.note,
-                      type: ButtonChildType.icon,
+                      type: ButtonChildType.text,
+                      bgColor: Colors.blue,
+                      showBorder: false,
+                      title: l10n.student_details_add_meeting,
+                      onTap: () {
+                        Get.to(
+                          () => AddMeetingScreen(context, null, refreshStudentDetails, null),
+                          transition: Transition.rightToLeft,
+                          duration: const Duration(milliseconds: Constants.transitionDuration),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: Get.width / 2 - 20,
+                    child: CustomButton(
+                      type: ButtonChildType.text,
                       bgColor: Colors.green,
                       showBorder: false,
+                      title: l10n.student_details_add_note,
                       onTap: () {
                         Get.to(
                           () => AllNotesScreen(_studentModel!),
@@ -126,13 +142,20 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                       },
                     ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   SizedBox(
-                    width: Get.width / 3 - 20,
+                    width: Get.width / 2 - 20,
                     child: CustomButton(
-                      icon: Icons.edit,
-                      type: ButtonChildType.icon,
-                      bgColor: Colors.cyan,
+                      icon: Icons.note,
+                      type: ButtonChildType.text,
+                      bgColor: Colors.teal,
                       showBorder: false,
+                      title: l10n.student_details_edit,
                       onTap: () {
                         Get.to(
                           () => AddStudentScreen(
@@ -142,20 +165,19 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                             refreshStudentDetails,
                           ),
                           transition: Transition.rightToLeft,
-                          duration: const Duration(
-                            milliseconds: Constants.transitionDuration,
-                          ),
+                          duration: const Duration(milliseconds: Constants.transitionDuration),
                         );
                       },
                     ),
                   ),
                   SizedBox(
-                    width: Get.width / 3 - 20,
+                    width: Get.width / 2 - 20,
                     child: CustomButton(
                       icon: Icons.delete,
-                      type: ButtonChildType.icon,
+                      type: ButtonChildType.text,
                       bgColor: Colors.red,
                       showBorder: false,
+                      title: l10n.student_details_delete,
                       onTap: () {
                         showDialog(
                           context: context,

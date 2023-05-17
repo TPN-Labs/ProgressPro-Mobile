@@ -10,7 +10,6 @@ import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/view/settings/settings_screen.dart';
 import 'package:progressp/view/student/meeting/all_meetings_screen.dart';
-import 'package:progressp/view/student/session/all_sessions_screen.dart';
 import 'package:progressp/view/student/all_students_screen.dart';
 import 'package:progressp/widget/custom_meeting_list.dart';
 import 'package:progressp/widget/custom_quick.dart';
@@ -148,26 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               l10n.home_quick_1,
                               Icon(
                                 Icons.calendar_month,
-                                color: Theme.of(context).shadowColor,
-                                size: 36,
-                              ),
-                              null,
-                            ),
-                          ),
-                          const SizedBox(width: 25),
-                          InkWell(
-                            onTap: () {
-                              Get.to(
-                                () => const AllSessionsScreen(),
-                                transition: Transition.rightToLeft,
-                                duration: const Duration(milliseconds: Constants.transitionDuration),
-                              );
-                            },
-                            child: quickAccessContainer(
-                              context,
-                              l10n.home_quick_2,
-                              Icon(
-                                Icons.sports_handball,
                                 color: Theme.of(context).shadowColor,
                                 size: 36,
                               ),

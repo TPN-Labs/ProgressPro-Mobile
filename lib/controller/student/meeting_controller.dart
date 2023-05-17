@@ -7,7 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/model/student/meeting_model.dart';
-import 'package:progressp/model/student/session_model.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/widget/snackbar_containers.dart';
 
@@ -22,7 +21,6 @@ class APIMeetingController {
   List<MeetingModel> getAllMeetings() {
     List allMeetings = GetStorage().read(StorageKeys.allMeetings) ?? List.empty();
     List<MeetingModel> storageMeetings = allMeetings.map((element) => MeetingModel.fromJson(element)).toList();
-    storageMeetings.removeWhere((e) => e.session.status > 1);
     return storageMeetings;
   }
 
@@ -36,10 +34,10 @@ class APIMeetingController {
   void syncStorage(
     APIMethods method,
     String meetingId,
+    bool firstInMonth,
     DateTime startTime,
     DateTime endTime,
     StudentModelShort studentModelShort,
-    SessionModelShort sessionModelShort,
   ) {
     List<MeetingModel> storageMeetings = getAllMeetings();
     switch (method) {
@@ -47,7 +45,7 @@ class APIMeetingController {
         MeetingModel newMeeting = MeetingModel(
           id: meetingId,
           student: studentModelShort,
-          session: sessionModelShort,
+          firstInMonth: firstInMonth,
           startAt: startTime,
           endAt: endTime,
         );
@@ -58,7 +56,7 @@ class APIMeetingController {
         storageMeetings[currentSessionIdx] = MeetingModel(
           id: meetingId,
           student: studentModelShort,
-          session: sessionModelShort,
+          firstInMonth: firstInMonth,
           startAt: startTime,
           endAt: endTime,
         );
@@ -77,7 +75,7 @@ class APIMeetingController {
     BuildContext context,
     String meetingId,
     StudentModelShort student,
-    SessionModelShort session,
+    bool firstInMonth,
     DateTime startTime,
     DateTime endTime,
     Function refreshList,
@@ -87,7 +85,7 @@ class APIMeetingController {
     final formInput = <String, dynamic>{
       'id': meetingId,
       'studentId': student.id,
-      'sessionId': session.id,
+      'firstInMonth': firstInMonth,
       'startAt': startTime.toIso8601String(),
       'endAt': endTime.toIso8601String(),
     };
@@ -108,10 +106,10 @@ class APIMeetingController {
       syncStorage(
         APIMethods.update,
         meetingId,
+        firstInMonth,
         startTime,
         endTime,
         student,
-        session,
       );
       refreshList();
       refreshDetails();
@@ -122,7 +120,7 @@ class APIMeetingController {
   void userCreate(
     BuildContext context,
     StudentModelShort student,
-    SessionModelShort session,
+    bool firstInMonth,
     DateTime startTime,
     DateTime endTime,
     Function refreshList,
@@ -130,7 +128,7 @@ class APIMeetingController {
     final authKey = GetStorage().read('authKey') ?? '';
     final formInput = <String, dynamic>{
       'studentId': student.id,
-      'sessionId': session.id,
+      'firstInMonth': firstInMonth,
       'startAt': startTime.toIso8601String(),
       'endAt': endTime.toIso8601String(),
     };
@@ -151,10 +149,10 @@ class APIMeetingController {
       syncStorage(
         APIMethods.create,
         responseBody['id'],
+        firstInMonth,
         startTime,
         endTime,
         student,
-        session,
       );
       refreshList();
       showSuccessSnackBar(context, 'Meeting created successfully');

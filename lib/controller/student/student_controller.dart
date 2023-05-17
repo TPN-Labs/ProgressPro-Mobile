@@ -38,11 +38,6 @@ class APIStudentController {
           gender: formInput['gender'],
           height: formInput['height'],
           avatar: formInput['avatar'],
-          knownFrom: DateTime(
-            int.parse(knownFromArr[0]),
-            int.parse(knownFromArr[1]),
-            int.parse(knownFromArr[2]),
-          ),
         );
         storageStudents.add(newStudent);
         break;
@@ -55,11 +50,6 @@ class APIStudentController {
           gender: formInput['gender'],
           avatar: formInput['avatar'],
           height: formInput['height'],
-          knownFrom: DateTime(
-            int.parse(knownFromArr[0]),
-            int.parse(knownFromArr[1]),
-            int.parse(knownFromArr[2]),
-          ),
         );
         break;
       case APIMethods.delete:

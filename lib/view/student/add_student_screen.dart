@@ -51,9 +51,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       _newStudentController.heightController.value.text = widget.studentData!.height.toString();
       _studentGender = widget.studentData!.gender;
       _studentAvatar = widget.studentData!.avatar;
-      _studentMeetOn = widget.studentData!.knownFrom.toString().substring(0, 10);
-    } else {
-      _studentMeetOn = Constants.formatDate(DateTime.now());
     }
     super.initState();
   }
@@ -252,40 +249,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                     ],
                                   ),
                                 ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 18),
-                          Text(
-                            l10n.student_modal_first_meet,
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(height: 18),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context).shadowColor,
-                                  blurRadius: 2,
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: SfDateRangePicker(
-                                headerStyle: _pickerStyle.headerStyle(context),
-                                monthViewSettings: _pickerStyle.monthViewSettings(context, WeekStart.monday),
-                                monthCellStyle: _pickerStyle.monthCellStyle(context),
-                                selectionTextStyle: _pickerStyle.selectionTextStyle(context),
-                                onSelectionChanged: _onSelectionChanged,
-                                initialSelectedDate: widget.studentData == null
-                                    ? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-                                    : widget.studentData!.knownFrom,
-                                selectionMode: DateRangePickerSelectionMode.single,
                               ),
                             ),
                           ),

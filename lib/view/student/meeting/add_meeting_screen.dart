@@ -3,17 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
-import 'package:progressp/controller/student/session_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
-import 'package:progressp/model/student/session_model.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/utils/date_range_picker_style.dart';
 import 'package:progressp/widget/custom_button.dart';
-import 'package:progressp/widget/custom_session_picker.dart';
 import 'package:progressp/widget/custom_student_picker.dart';
-import 'package:progressp/widget/custom_textformfield.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddMeetingScreen extends StatefulWidget {
@@ -35,12 +31,10 @@ class AddMeetingScreen extends StatefulWidget {
 }
 
 class _AddMeetingScreenState extends State<AddMeetingScreen> {
-  final _apiSessionController = APISessionController();
   final _apiMeetingController = APIMeetingController();
   final DateRangePickerStyle _pickerStyle = DateRangePickerStyle();
 
-  SessionModel? _selectedSession;
-
+  StudentModelShort? _selectedStudent;
   DateTime? _meetingDate;
   TimeOfDay? _meetingStart;
   TimeOfDay? _meetingEnd;
@@ -96,7 +90,6 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
   @override
   void initState() {
     if (widget.meetingData != null) {
-      _selectedSession = _apiSessionController.getById(widget.meetingData!.session.id);
       _meetingStart = TimeOfDay(hour: widget.meetingData!.startAt.hour, minute: widget.meetingData!.startAt.minute);
       _meetingEnd = TimeOfDay(hour: widget.meetingData!.endAt.hour, minute: widget.meetingData!.endAt.minute);
     } else {
@@ -154,7 +147,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                 ),
                           ),
                           const SizedBox(height: 18),
-                          _selectedSession == null
+                          _selectedStudent == null
                               ? Container(
                                   height: 56,
                                   decoration: BoxDecoration(
@@ -174,7 +167,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                     splashColor: Colors.transparent,
                                     onTap: () {
                                       setState(() {
-                                        _onPressedShowSessionDialog();
+                                        _onPressedShowStudentDialog();
                                       });
                                     },
                                     child: Row(
@@ -218,7 +211,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                     splashColor: Colors.transparent,
                                     onTap: () {
                                       setState(() {
-                                        _onPressedShowSessionDialog();
+                                        _onPressedShowStudentDialog();
                                       });
                                     },
                                     child: Row(
@@ -235,7 +228,7 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: Text(
-                                            '#${_selectedSession!.unit} (${_selectedSession!.student.fullName})',
+                                            _selectedStudent!.fullName,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: const TextStyle(
@@ -472,12 +465,8 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                     widget.meetingData == null
                         ? _apiMeetingController.userCreate(
                             context,
-                            _selectedSession!.student,
-                            SessionModelShort(
-                              id: _selectedSession!.id,
-                              unit: _selectedSession!.unit,
-                              status: _selectedSession!.status,
-                            ),
+                            _selectedStudent!,
+                            false,
                             DateTime(_meetingDate!.year, _meetingDate!.month, _meetingDate!.day, _meetingStart!.hour, _meetingStart!.minute),
                             DateTime(_meetingDate!.year, _meetingDate!.month, _meetingDate!.day, _meetingEnd!.hour, _meetingEnd!.minute),
                             widget.mainRefreshFunction,
@@ -485,12 +474,8 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
                         : _apiMeetingController.userUpdate(
                             context,
                             widget.meetingData!.id,
-                            _selectedSession!.student,
-                            SessionModelShort(
-                              id: _selectedSession!.id,
-                              unit: _selectedSession!.unit,
-                              status: _selectedSession!.status,
-                            ),
+                            _selectedStudent!,
+                            false,
                             DateTime(_meetingDate!.year, _meetingDate!.month, _meetingDate!.day, _meetingStart!.hour, _meetingStart!.minute),
                             DateTime(_meetingDate!.year, _meetingDate!.month, _meetingDate!.day, _meetingEnd!.hour, _meetingEnd!.minute),
                             widget.mainRefreshFunction,
@@ -506,13 +491,13 @@ class _AddMeetingScreenState extends State<AddMeetingScreen> {
     );
   }
 
-  void _onPressedShowSessionDialog() async {
-    final session = await showSessionPickerDialog(
+  void _onPressedShowStudentDialog() async {
+    final student = await showStudentPickerDialog(
       context,
     );
-    if (session != null) {
+    if (student != null) {
       setState(() {
-        _selectedSession = session;
+        _selectedStudent = student;
       });
     }
   }
