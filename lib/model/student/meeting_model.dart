@@ -1,19 +1,18 @@
-import 'package:progressp/model/student/session_model.dart';
 import 'package:progressp/model/student/student_model.dart';
 
 class MeetingModel {
   final String id;
   final StudentModelShort student;
-  final SessionModelShort session;
   final DateTime startAt;
   final DateTime endAt;
+  final bool firstInMonth;
 
   MeetingModel({
     required this.id,
     required this.student,
-    required this.session,
     required this.startAt,
     required this.endAt,
+    required this.firstInMonth,
   });
 
   factory MeetingModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -24,11 +23,7 @@ class MeetingModel {
         fullName: parsedJson['student']['fullName'],
         avatar: parsedJson['student']['avatar'],
       ),
-      session: SessionModelShort(
-        id: parsedJson['session']['id'],
-        unit: parsedJson['session']['unit'],
-        status: parsedJson['session']['status'],
-      ),
+      firstInMonth: parsedJson['firstInMonth'],
       startAt: DateTime(
         parsedJson['startAt'][0],
         parsedJson['startAt'][1],
@@ -50,7 +45,7 @@ class MeetingModel {
     return {
       'id': id,
       'student': student,
-      'session': session,
+      'firstInMonth': firstInMonth,
       'startAt': [
         startAt.year,
         startAt.month,
@@ -70,6 +65,6 @@ class MeetingModel {
 
   @override
   String toString() {
-    return '{id: $id, student: $student, session: $session, startAt: $startAt}\n';
+    return '{id: $id, student: $student, startAt: $startAt}\n';
   }
 }

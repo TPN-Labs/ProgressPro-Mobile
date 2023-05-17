@@ -9,7 +9,6 @@ import 'package:progressp/config/constants.dart';
 import 'package:progressp/config/textstyle.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
 import 'package:progressp/controller/student/note_controller.dart';
-import 'package:progressp/controller/student/session_controller.dart';
 import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/view/home/home_screen.dart';
 import 'package:progressp/view/welcome_screen.dart';
@@ -48,7 +47,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final APIMeetingController _apiMeetingController = Get.put(APIMeetingController());
-  final APISessionController _apiSessionController = Get.put(APISessionController());
   final APIStudentController _apiStudentController = Get.put(APIStudentController());
   final APINoteController _apiNoteController = Get.put(APINoteController());
   final String? _authKey = GetStorage().read(StorageKeys.authKey);
@@ -107,12 +105,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (_authKey != null) {
-      _apiMeetingController.userGetAll();
-      _apiSessionController.userGetAll();
-      _apiStudentController.userGetAll();
-      _apiNoteController.userGetAll();
-    }
+    _apiMeetingController.userGetAll();
+    _apiStudentController.userGetAll();
+    _apiNoteController.userGetAll();
 
     return GetMaterialApp(
       title: 'Progress Pro',

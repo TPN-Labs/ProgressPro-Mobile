@@ -9,7 +9,6 @@ import 'package:progressp/config/body_measurements.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/model/student/note_model.dart';
 import 'package:progressp/model/student/note_model.dart';
-import 'package:progressp/model/student/session_model.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/widget/snackbar_containers.dart';
 

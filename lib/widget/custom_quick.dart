@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 Widget quickAccessContainer(BuildContext context, String? title, Icon icon, String? highlightColor) {
   return Container(
-    width: (Get.width - 90) / 3,
+    width: (Get.width - 90) / 2,
     height: 100,
     decoration: BoxDecoration(
       color: Theme.of(context).bottomAppBarTheme.color,
