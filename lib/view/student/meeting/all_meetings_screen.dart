@@ -6,7 +6,6 @@ import 'package:progressp/config/constants.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/view/student/meeting/add_meeting_screen.dart';
-import 'package:progressp/widget/custom_button.dart';
 import 'package:progressp/widget/custom_meeting_list.dart';
 
 class AllMeetingsScreen extends StatefulWidget {
@@ -74,7 +73,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 15),
-              Row(
+              /* Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(
@@ -95,7 +94,7 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                     ),
                   ),
                 ],
-              ),
+              ), */
               const SizedBox(height: 15),
               if (_areMeetingsLoaded == true) ...[
                 Expanded(
@@ -128,6 +127,8 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                                     context,
                                     _allMeetings[i],
                                     true,
+                                    null,
+                                    null,
                                   ),
                                 ),
                               ],
