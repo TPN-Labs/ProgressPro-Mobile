@@ -175,7 +175,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: Get.width / 3 - 20,
+                    width: Get.width / 2 - 20,
                     child: CustomButton(
                       type: ButtonChildType.text,
                       bgColor: Colors.green,
@@ -192,8 +192,14 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                       },
                     ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   SizedBox(
-                    width: Get.width / 3 - 20,
+                    width: Get.width / 2 - 20,
                     child: CustomButton(
                       icon: Icons.note,
                       type: ButtonChildType.text,
@@ -209,15 +215,13 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                             refreshStudentDetails,
                           ),
                           transition: Transition.rightToLeft,
-                          duration: const Duration(
-                            milliseconds: Constants.transitionDuration,
-                          ),
+                          duration: const Duration(milliseconds: Constants.transitionDuration),
                         );
                       },
                     ),
                   ),
                   SizedBox(
-                    width: Get.width / 3 - 20,
+                    width: Get.width / 2 - 20,
                     child: CustomButton(
                       icon: Icons.delete,
                       type: ButtonChildType.text,
