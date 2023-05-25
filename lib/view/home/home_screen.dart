@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<MeetingModel> upcomingMeetings = List<MeetingModel>.empty(growable: true);
     for (var student in allStudents) {
       MeetingModel? latestMeeting = _apiMeetingController.getLatestMeeting(student.id);
-      if(latestMeeting != null) {
+      if (latestMeeting != null) {
         upcomingMeetings.add(latestMeeting);
       }
     }
@@ -47,6 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
       _allMeetings = upcomingMeetings..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
     });
   }
+
+  StudentModel? getStudentOfMeeting(MeetingModel meetingModel) {
+    for (var student in _allStudents!) {
+      if (student.id == meetingModel.student.id) {
+        return student;
+      }
+    }
+  }
+
   @override
   void initState() {
     loadStudentsAndMeetings();
@@ -183,45 +192,46 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Expanded(
-            flex: 2,
-            child: Container(
-              color: Theme.of(context).bottomAppBarTheme.color,
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  Padding(
-                    padding: Constants.defaultScreenPadding,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        Text(
-                          l10n.home_upcoming,
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontSize: 18,
+              flex: 2,
+              child: Container(
+                color: Theme.of(context).bottomAppBarTheme.color,
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Padding(
+                      padding: Constants.defaultScreenPadding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 20),
+                          Text(
+                            l10n.home_upcoming,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  fontSize: 18,
+                                ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        Column(
-                          children: [
-                            if (_allStudents != null) ...[
-                              for (var i = 0; i < _allMeetings!.length; i++)
+                          const SizedBox(height: 20),
+                          Column(
+                            children: [
+                              if (_allStudents != null) ...[
+                                for (var i = 0; i < _allMeetings!.length; i++)
                                   meetingList(
                                     context,
                                     _allMeetings!.elementAt(i),
                                     true,
+                                    getStudentOfMeeting(_allMeetings!.elementAt(i)),
+                                    loadStudentsAndMeetings,
                                   ),
+                              ],
                             ],
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                      ],
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ),
+                  ],
+                ),
+              )),
         ],
       ),
     );
