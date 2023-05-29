@@ -24,7 +24,7 @@ class NoteModel {
       student: StudentModelShort(
         id: parsedJson['student']['id'],
         fullName: parsedJson['student']['fullName'],
-        avatar: parsedJson['student']['avatar'],
+        totalMeetings: parsedJson['student']['totalMeetings'],
       ),
       measurementName: parsedJson['measurementName'],
       measurementValue: parsedJson['measurementValue'],

@@ -8,6 +8,7 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/controller/user/auth_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
+import 'package:progressp/utils/transform_models.dart';
 import 'package:progressp/view/settings/settings_screen.dart';
 import 'package:progressp/view/student/meeting/all_meetings_screen.dart';
 import 'package:progressp/view/student/all_students_screen.dart';
@@ -22,8 +23,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final APIStudentController _apiStudentController = Get.put(APIStudentController());
-  final APIMeetingController _apiMeetingController = Get.put(APIMeetingController());
+  final APIStudentController _apiStudentController =
+      Get.put(APIStudentController());
+  final APIMeetingController _apiMeetingController =
+      Get.put(APIMeetingController());
   final APIAuthController _apiAuthController = Get.put(APIAuthController());
 
   List<StudentModel>? _allStudents;
@@ -34,9 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
     await _apiMeetingController.userGetAll();
 
     List<StudentModel> allStudents = _apiStudentController.getAllStudents();
-    List<MeetingModel> upcomingMeetings = List<MeetingModel>.empty(growable: true);
+    List<MeetingModel> upcomingMeetings =
+        List<MeetingModel>.empty(growable: true);
     for (var student in allStudents) {
-      MeetingModel? latestMeeting = _apiMeetingController.getLatestMeeting(student.id);
+      MeetingModel? latestMeeting =
+          _apiMeetingController.getLatestMeeting(student.id);
       if (latestMeeting != null) {
         upcomingMeetings.add(latestMeeting);
       }
@@ -44,16 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     setState(() {
       _allStudents = allStudents;
-      _allMeetings = upcomingMeetings..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
+      _allMeetings = upcomingMeetings
+        ..sort((a, b) => b.startAt.toString().compareTo(a.startAt.toString()));
     });
-  }
-
-  StudentModel? getStudentOfMeeting(MeetingModel meetingModel) {
-    for (var student in _allStudents!) {
-      if (student.id == meetingModel.student.id) {
-        return student;
-      }
-    }
   }
 
   @override
@@ -86,18 +84,37 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Text(
                             '${l10n.home_title},',
-                            style: Theme.of(context).textTheme.headline1!.copyWith(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.headline1!.copyWith(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            _apiAuthController.getUsernameFromToken(),
-                            style: Theme.of(context).textTheme.headline2!.copyWith(
-                                  fontSize: 32,
-                                  color: Colors.white,
+                          SizedBox(
+                            width: Get.width - 110,
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    strutStyle:
+                                        const StrutStyle(fontSize: 12.0),
+                                    text: TextSpan(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline2!
+                                          .copyWith(
+                                            fontSize: 32,
+                                            color: Colors.white,
+                                          ),
+                                      text: _apiAuthController
+                                          .getUsernameFromToken(),
+                                    ),
+                                  ),
                                 ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -106,7 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.to(
                             () => const SettingsScreen(),
                             transition: Transition.rightToLeft,
-                            duration: const Duration(milliseconds: Constants.transitionDuration),
+                            duration: const Duration(
+                              milliseconds: Constants.transitionDuration,
+                            ),
                           );
                         },
                         child: Container(
@@ -148,7 +167,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               Get.to(
                                 () => const AllMeetingsScreen(),
                                 transition: Transition.rightToLeft,
-                                duration: const Duration(milliseconds: Constants.transitionDuration),
+                                duration: const Duration(
+                                  milliseconds: Constants.transitionDuration,
+                                ),
                               );
                             },
                             child: quickAccessContainer(
@@ -168,7 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               Get.to(
                                 () => const AllStudentsScreen(),
                                 transition: Transition.rightToLeft,
-                                duration: const Duration(milliseconds: Constants.transitionDuration),
+                                duration: const Duration(
+                                  milliseconds: Constants.transitionDuration,
+                                ),
                               );
                             },
                             child: quickAccessContainer(
@@ -192,53 +215,62 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Expanded(
-              flex: 2,
-              child: Container(
-                color: Theme.of(context).bottomAppBarTheme.color,
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    Padding(
-                      padding: Constants.defaultScreenPadding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 20),
-                          Text(
-                            l10n.home_upcoming,
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  fontSize: 18,
-                                ),
-                          ),
-                          const SizedBox(height: 20),
-                          Column(
-                            children: [
-                              if (_allStudents != null) ...[
-                                for (var i = 0; i < _allMeetings!.length; i++)
-                                  meetingList(
-                                    context,
-                                    _allMeetings!.elementAt(i),
-                                    true,
-                                    getStudentOfMeeting(_allMeetings!.elementAt(i)),
-                                    loadStudentsAndMeetings,
+            flex: 2,
+            child: Container(
+              color: Theme.of(context).bottomAppBarTheme.color,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  Padding(
+                    padding: Constants.defaultScreenPadding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          l10n.home_upcoming,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: 18,
                                   ),
-                              ],
+                        ),
+                        const SizedBox(height: 20),
+                        Column(
+                          children: [
+                            if (_allStudents != null) ...[
+                              for (var i = 0; i < _allMeetings!.length; i++)
+                                meetingList(
+                                  context: context,
+                                  meetingData: _allMeetings!.elementAt(i),
+                                  isOnHomeScreen: true,
+                                  studentModel: getStudentOfMeeting(
+                                    _allMeetings!.elementAt(i),
+                                  ),
+                                  refreshList: loadStudentsAndMeetings,
+                                ),
                             ],
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-                      ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-Widget circleCard(BuildContext context, IconData icon, String text, Color color) {
+Widget circleCard(
+  BuildContext context,
+  IconData icon,
+  String text,
+  Color color,
+) {
   return SizedBox(
     width: (Get.width - 50) / 4,
     child: Column(
@@ -259,7 +291,7 @@ Widget circleCard(BuildContext context, IconData icon, String text, Color color)
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: DefaultMargins.smallMargin),
         Text(
           text,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(

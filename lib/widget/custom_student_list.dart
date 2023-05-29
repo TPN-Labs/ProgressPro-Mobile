@@ -6,25 +6,11 @@ import 'package:progressp/config/constants.dart';
 Widget studentList(
   BuildContext context,
   String title,
-  int avatarId,
   int i,
   DateTime? lastMeeting,
 ) {
   final l10n = AppLocalizations.of(context)!;
   return ListTile(
-    trailing: Container(
-      height: 80,
-      width: 80,
-      decoration: BoxDecoration(
-        color: Theme.of(context).shadowColor,
-        borderRadius: BorderRadius.circular(70),
-        image: DecorationImage(
-          image: AssetImage(
-            'assets/avatars/avatar_${i % 15}.png',
-          ),
-        ),
-      ),
-    ),
     title: Text(
       title,
       overflow: TextOverflow.fade,

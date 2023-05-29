@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:progressp/config/constants.dart';
 import 'package:progressp/controller/student/meeting_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
+import 'package:progressp/utils/transform_models.dart';
 import 'package:progressp/view/student/meeting/add_meeting_screen.dart';
 import 'package:progressp/widget/custom_meeting_list.dart';
 
@@ -124,11 +125,11 @@ class _AllMeetingsScreenState extends State<AllMeetingsScreen> {
                                     );
                                   },
                                   child: meetingList(
-                                    context,
-                                    _allMeetings[i],
-                                    true,
-                                    null,
-                                    null,
+                                    context: context,
+                                    meetingData: _allMeetings[i],
+                                    studentModel: getStudentOfMeeting(_allMeetings[i]),
+                                    isOnHomeScreen: false,
+                                    refreshList: refreshMeetingList,
                                   ),
                                 ),
                               ],

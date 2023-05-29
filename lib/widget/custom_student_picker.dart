@@ -15,7 +15,7 @@ Future<List<StudentModelShort>> getStudents(BuildContext context) async {
         (e) => StudentModelShort(
           id: e.id,
           fullName: e.fullName,
-          avatar: e.avatar,
+          totalMeetings: e.totalMeetings,
         ),
       )
       .toList();

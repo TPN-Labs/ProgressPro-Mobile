@@ -44,7 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     fontSize: 34,
                   ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: DefaultMargins.smallMargin),
             Text(
               l10n.welcome_headline,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(

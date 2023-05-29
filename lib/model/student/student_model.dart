@@ -2,15 +2,13 @@ class StudentModel {
   final String id;
   final String fullName;
   final int gender;
-  final int avatar;
-  final double height;
+  final int totalMeetings;
 
   StudentModel({
     required this.id,
     required this.fullName,
     required this.gender,
-    required this.avatar,
-    required this.height,
+    required this.totalMeetings,
   });
 
   factory StudentModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -18,8 +16,7 @@ class StudentModel {
       id: parsedJson['id'].toString(),
       fullName: parsedJson['fullName'].toString(),
       gender: parsedJson['gender'],
-      avatar: parsedJson['avatar'],
-      height: parsedJson['height'],
+      totalMeetings: parsedJson['totalMeetings'],
     );
   }
 
@@ -28,8 +25,7 @@ class StudentModel {
       'id': id,
       'fullName': fullName,
       'gender': gender,
-      'avatar': avatar,
-      'height': height,
+      'totalMeetings': totalMeetings,
     };
   }
 
@@ -42,19 +38,19 @@ class StudentModel {
 class StudentModelShort {
   final String id;
   final String fullName;
-  final int avatar;
+  final int totalMeetings;
 
   StudentModelShort({
     required this.id,
     required this.fullName,
-    required this.avatar,
+    required this.totalMeetings,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'fullName': fullName,
-      'avatar': avatar,
+      'totalMeetings': totalMeetings,
     };
   }
 

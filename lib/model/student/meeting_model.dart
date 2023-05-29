@@ -21,7 +21,7 @@ class MeetingModel {
       student: StudentModelShort(
         id: parsedJson['student']['id'],
         fullName: parsedJson['student']['fullName'],
-        avatar: parsedJson['student']['avatar'],
+        totalMeetings: parsedJson['student']['totalMeetings'],
       ),
       firstInMonth: parsedJson['firstInMonth'],
       startAt: DateTime(

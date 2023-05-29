@@ -13,7 +13,7 @@ import 'package:progressp/widget/snackbar_containers.dart';
 
 class StudentController extends GetxController {
   Rx<TextEditingController> fullNameController = TextEditingController().obs;
-  Rx<TextEditingController> heightController = TextEditingController().obs;
+  Rx<TextEditingController> totalMeetingsController = TextEditingController().obs;
   RxBool isVisible = false.obs;
 }
 
@@ -31,25 +31,21 @@ class APIStudentController {
     List<StudentModel> storageStudents = getAllStudents();
     switch (method) {
       case APIMethods.create:
-        List<String> knownFromArr = formInput['knownFrom'].split('-');
         StudentModel newStudent = StudentModel(
           id: studentId,
           fullName: formInput['fullName'],
           gender: formInput['gender'],
-          height: formInput['height'],
-          avatar: formInput['avatar'],
+          totalMeetings: formInput['totalMeetings'],
         );
         storageStudents.add(newStudent);
         break;
       case APIMethods.update:
         int currentStudentIdx = storageStudents.indexWhere((student) => student.id == studentId);
-        List<String> knownFromArr = formInput['knownFrom'].split('-');
         storageStudents[currentStudentIdx] = StudentModel(
           id: studentId,
           fullName: formInput['fullName'],
           gender: formInput['gender'],
-          avatar: formInput['avatar'],
-          height: formInput['height'],
+          totalMeetings: formInput['totalMeetings'],
         );
         break;
       case APIMethods.delete:
@@ -90,9 +86,7 @@ class APIStudentController {
     String studentId,
     String fullName,
     int gender,
-    double height,
-    int avatarId,
-    String knownFrom,
+    int totalMeetings,
     Function refreshList,
     Function refreshDetails,
   ) async {
@@ -101,9 +95,7 @@ class APIStudentController {
       'id': studentId,
       'fullName': fullName,
       'gender': gender,
-      'height': height,
-      'avatar': avatarId,
-      'knownFrom': knownFrom,
+      'totalMeetings': totalMeetings,
     };
     final response = await http.put(
       Uri.parse('${Constants.apiEndpoint}/students/my'),
@@ -166,18 +158,14 @@ class APIStudentController {
     BuildContext context,
     String fullName,
     int gender,
-    double height,
-    int avatarId,
-    String knownFrom,
+    int totalMeetings,
     Function refreshList,
   ) async {
     final authKey = GetStorage().read('authKey') ?? '';
     final formInput = <String, dynamic>{
       'fullName': fullName,
       'gender': gender,
-      'height': height,
-      'avatar': avatarId,
-      'knownFrom': knownFrom,
+      'totalMeetings': totalMeetings,
     };
     final response = await http.post(
       Uri.parse('${Constants.apiEndpoint}/students/my'),
