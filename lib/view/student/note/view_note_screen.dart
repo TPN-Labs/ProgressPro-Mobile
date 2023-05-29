@@ -158,10 +158,10 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: DefaultMargins.smallMargin),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: DefaultMargins.smallMargin),
               Expanded(
                 flex: 2,
                 child: ListView(

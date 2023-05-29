@@ -34,6 +34,7 @@ class Constants {
   static const int transitionDuration = 350;
 
   static const EdgeInsets defaultScreenPadding = EdgeInsets.only(left: 15, right: 15);
+  static const EdgeInsets modalPadding = EdgeInsets.only(left: 30, right: 30);
   static RegExp regExpenseValue = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
   static String Function(Match) mathFuncExpenseValue = (Match match) => '${match[1]},';
 
@@ -70,6 +71,10 @@ class Constants {
     }
     return 'UNK';
   }
+}
+
+class DefaultMargins {
+  static const double smallMargin = 10.0;
 }
 
 class StorageKeys {

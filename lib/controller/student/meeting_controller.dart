@@ -17,16 +17,18 @@ class MeetingController extends GetxController {
 }
 
 class APIMeetingController {
-
   List<MeetingModel> getAllMeetings() {
-    List allMeetings = GetStorage().read(StorageKeys.allMeetings) ?? List.empty();
-    List<MeetingModel> storageMeetings = allMeetings.map((element) => MeetingModel.fromJson(element)).toList();
+    List allMeetings =
+        GetStorage().read(StorageKeys.allMeetings) ?? List.empty();
+    List<MeetingModel> storageMeetings =
+        allMeetings.map((element) => MeetingModel.fromJson(element)).toList();
     return storageMeetings;
   }
 
   MeetingModel? getLatestMeeting(String studentId) {
     List<MeetingModel> allMeetings = getAllMeetings();
-    List<MeetingModel> studentMeetings = allMeetings.where((e) => e.student.id == studentId).toList();
+    List<MeetingModel> studentMeetings =
+        allMeetings.where((e) => e.student.id == studentId).toList();
     studentMeetings.sortBy((element) => element.startAt);
     return studentMeetings.lastOrNull;
   }
@@ -52,7 +54,8 @@ class APIMeetingController {
         storageMeetings.add(newMeeting);
         break;
       case APIMethods.update:
-        int currentSessionIdx = storageMeetings.indexWhere((meeting) => meeting.id == meetingId);
+        int currentSessionIdx =
+            storageMeetings.indexWhere((meeting) => meeting.id == meetingId);
         storageMeetings[currentSessionIdx] = MeetingModel(
           id: meetingId,
           student: studentModelShort,
@@ -60,6 +63,10 @@ class APIMeetingController {
           startAt: startTime,
           endAt: endTime,
         );
+        break;
+      case APIMethods.delete:
+        int currentMeetingIdx = storageMeetings.indexWhere((meeting) => meeting.id == meetingId);
+        storageMeetings.removeAt(currentMeetingIdx);
         break;
       default:
         break;
@@ -156,6 +163,43 @@ class APIMeetingController {
       );
       refreshList();
       showSuccessSnackBar(context, 'Meeting created successfully');
+    }
+  }
+
+  void userDelete(
+    BuildContext context,
+    String studentId,
+    String meetingId,
+    Function refreshList,
+  ) async {
+    final authKey = GetStorage().read('authKey') ?? '';
+    final formInput = <String, dynamic>{
+      'id': meetingId,
+      'studentId': studentId,
+    };
+    final response = await http.delete(
+      Uri.parse('${Constants.apiEndpoint}/students_meetings/my'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Device-Type': Platform.isIOS ? 'ios' : 'android',
+        'Authorization': 'Bearer $authKey',
+      },
+      body: jsonEncode(formInput),
+    );
+    var responseBody = json.decode(response.body);
+    if (response.statusCode != 200) {
+      showErrorSnackBar(context, responseBody['message']);
+    } else {
+      syncStorage(
+        APIMethods.delete,
+        meetingId,
+        false,
+        DateTime.now(),
+        DateTime.now(),
+        StudentModelShort(id: studentId, fullName: '', totalMeetings: 0),
+      );
+      refreshList();
+      showSuccessSnackBar(context, 'Meeting deleted successfully');
     }
   }
 

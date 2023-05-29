@@ -222,7 +222,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       StudentModelShort(
                         id: widget.student.id,
                         fullName: widget.student.fullName,
-                        avatar: widget.student.avatar,
+                        totalMeetings: widget.student.totalMeetings,
                       ),
                       _selectedMeasurement.name,
                       double.parse(
@@ -237,7 +237,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       StudentModelShort(
                         id: widget.student!.id,
                         fullName: widget.student!.fullName,
-                        avatar: widget.student!.avatar,
+                        totalMeetings: widget.student!.totalMeetings,
                       ),
                       _selectedMeasurement.name,
                       double.parse(

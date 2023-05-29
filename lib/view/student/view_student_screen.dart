@@ -8,9 +8,8 @@ import 'package:progressp/controller/student/student_controller.dart';
 import 'package:progressp/model/student/meeting_model.dart';
 import 'package:progressp/model/student/student_model.dart';
 import 'package:progressp/utils/date_range_picker_style.dart';
-import 'package:progressp/view/student/meeting/add_meeting_screen.dart';
-import 'package:progressp/view/student/add_student_screen.dart';
 import 'package:progressp/view/student/note/all_notes_screen.dart';
+import 'package:progressp/view/student/student_modal.dart';
 import 'package:progressp/widget/custom_button.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -43,14 +42,14 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
   TimeOfDay? _meetingStart;
   TimeOfDay? _meetingEnd;
 
-  String genderToString(int gender) {
+  String genderToString(AppLocalizations l10n, int gender) {
     switch (gender) {
       case 1:
-        return 'male';
+        return l10n.student_modal_gender_male;
       case 2:
-        return 'female';
+        return l10n.student_modal_gender_female;
       case 3:
-        return 'other';
+        return l10n.student_modal_gender_other;
     }
     return 'n/a';
   }
@@ -170,12 +169,12 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 15),
+              const SizedBox(height: DefaultMargins.smallMargin),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: Get.width / 2 - 20,
+                    width: Get.width / 3 - 20,
                     child: CustomButton(
                       type: ButtonChildType.text,
                       bgColor: Colors.green,
@@ -192,14 +191,8 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                       },
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
                   SizedBox(
-                    width: Get.width / 2 - 20,
+                    width: Get.width / 3 - 20,
                     child: CustomButton(
                       icon: Icons.note,
                       type: ButtonChildType.text,
@@ -207,21 +200,17 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                       showBorder: false,
                       title: l10n.student_details_edit,
                       onTap: () {
-                        Get.to(
-                              () => AddStudentScreen(
-                            context,
-                            _studentModel,
-                            widget.refreshFunction!,
-                            refreshStudentDetails,
-                          ),
-                          transition: Transition.rightToLeft,
-                          duration: const Duration(milliseconds: Constants.transitionDuration),
+                        showStudentModal(
+                          context: context,
+                          studentModel: _studentModel,
+                          mainRefreshFunction: widget.refreshFunction!,
+                          secondRefreshFunction: refreshStudentDetails,
                         );
                       },
                     ),
                   ),
                   SizedBox(
-                    width: Get.width / 2 - 20,
+                    width: Get.width / 3 - 20,
                     child: CustomButton(
                       icon: Icons.delete,
                       type: ButtonChildType.text,
@@ -280,7 +269,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: DefaultMargins.smallMargin),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -296,38 +285,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context).shadowColor,
-                                width: 3,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context)
-                                      .bottomAppBarTheme
-                                      .color!,
-                                  blurRadius: 2,
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(32),
-                              image: DecorationImage(
-                                scale: 8,
-                                image: AssetImage(
-                                  'assets/avatars/avatar_${_studentModel!.avatar % 15}.png',
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: DefaultMargins.smallMargin),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -352,12 +310,62 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: DefaultMargins.smallMargin),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            l10n.student_modal_gender,
+                            style:
+                            Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            genderToString(l10n, _studentModel!.gender),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: DefaultMargins.smallMargin),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            l10n.student_modal_meetings,
+                            style:
+                            Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            _studentModel!.totalMeetings.toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: DefaultMargins.smallMargin),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: DefaultMargins.smallMargin),
               Expanded(
                 child: ListView(
                   children: [
@@ -587,7 +595,7 @@ class _ViewStudentScreenState extends State<ViewStudentScreen> {
                       StudentModelShort(
                         id: _studentModel!.id,
                         fullName: _studentModel!.fullName,
-                        avatar: _studentModel!.avatar,
+                        totalMeetings: _studentModel!.totalMeetings,
                       ),
                       false,
                       DateTime(_meetingDate!.year, _meetingDate!.month, _meetingDate!.day, _meetingStart!.hour, _meetingStart!.minute),

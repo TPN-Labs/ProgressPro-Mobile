@@ -54,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
             padding: Constants.defaultScreenPadding,
             child: Column(
               children: [
-                const SizedBox(height: 10),
+                const SizedBox(height: DefaultMargins.smallMargin),
                 Container(
                   height: 300,
                   decoration: const BoxDecoration(

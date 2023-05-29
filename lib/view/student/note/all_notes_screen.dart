@@ -53,7 +53,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
             measurementValue: -13,
             measurementType: BodyMeasurementType.waist,
             tookAt: DateTime(1970, 01, 01),
-            student: StudentModelShort(id: 'id', fullName: 'No Model', avatar: 0),
+            student: StudentModelShort(id: 'id', fullName: 'No Model', totalMeetings: 1),
           );
       if (note != null) {
         allMeasurements = allMeasurements + 1;
@@ -104,7 +104,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10),
+              const SizedBox(height: DefaultMargins.smallMargin),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -133,7 +133,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: DefaultMargins.smallMargin),
               if (_areNotesLoaded == true) ...[
                 if (_allMeasurements > 0) ...[
                   Expanded(
